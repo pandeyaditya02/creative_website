@@ -116,11 +116,11 @@ const HeroVideo = () => {
 
       {/* Overlay Content */}
       <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
-        <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+        <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
           <div className="flex flex-col gap-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
-              Bringing ideas to life<br />
-              one frame at a time
+            <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white mix-blend-difference drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
+              Crafting Stories<br />
+              That Move
             </h1>
             {/* Dynamic Progress Bar */}
             <div className="flex flex-col gap-2 w-full max-w-md mt-8">
