@@ -67,8 +67,8 @@ export default function CustomCursor() {
                     y: firstDotY,
                     translateX: "-50%",
                     translateY: "-50%",
-                    width: isHovering ? 24 : 16,
-                    height: isHovering ? 24 : 16,
+                    width: isHovering ? 32 : 24,
+                    height: isHovering ? 32 : 24,
                 }}
             />
 
@@ -80,8 +80,8 @@ export default function CustomCursor() {
                     y: secondDotY,
                     translateX: "-50%",
                     translateY: "-50%",
-                    width: 12,
-                    height: 12,
+                    width: 16,
+                    height: 16,
                 }}
             />
 
@@ -93,8 +93,8 @@ export default function CustomCursor() {
                     y: thirdDotY,
                     translateX: "-50%",
                     translateY: "-50%",
-                    width: 8,
-                    height: 8,
+                    width: 10,
+                    height: 10,
                 }}
             />
         </>
