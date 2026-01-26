@@ -107,7 +107,7 @@ const HeroVideo = () => {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black text-white">
       {/* Background Video - YT.Player container */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center">
+      <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
         <div
           id="hero-video-player"
           className="absolute top-1/2 left-1/2 w-[100%] h-[100%] min-w-[120%] min-h-[120%] -translate-x-1/2 -translate-y-1/2"
@@ -115,10 +115,10 @@ const HeroVideo = () => {
       </div>
 
       {/* Overlay Content */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24 bg-black/10">
+      <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
         <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
           <div className="flex flex-col gap-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-orange-500 uppercase">
+            <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
               Bringing ideas to life<br />
               one frame at a time
             </h1>
