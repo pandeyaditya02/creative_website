@@ -5,7 +5,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 z-50 w-full px-8 py-6 flex items-center justify-between text-white mix-blend-difference">
       {/* Logo Area */}
       <div className="flex flex-col leading-none">
-        <span className="text-2xl font-bold tracking-tighter text-orange-500">MONTAGE</span>
+        <span className="text-2xl font-bold tracking-tighter text-orange-500">CREATIVECHAUK</span>
         <span className="text-[10px] tracking-[0.2em] text-gray-400">PRODUCTION</span>
       </div>
 
