@@ -11,7 +11,6 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       <div className="flex items-center gap-12 text-xs font-medium tracking-widest">
-        <div className="w-8 h-8 bg-orange-500 rounded-full"></div> {/* Placeholder for the dot/icon in design */}
         <Link href="#" className="hover:text-orange-500 transition-colors">WORK</Link>
         <Link href="#" className="hover:text-orange-500 transition-colors">SERVICES</Link>
         <Link href="#" className="hover:text-orange-500 transition-colors">ABOUT US</Link>
