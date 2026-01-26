@@ -1,6 +1,22 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString("en-GB", { hour12: false }));
+    };
+
+    updateTime(); // Initial call
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <nav className="fixed top-0 left-0 z-50 w-full px-8 py-6 flex items-center justify-between text-white mix-blend-difference">
       {/* Logo Area */}
@@ -15,8 +31,8 @@ const Navbar = () => {
         <Link href="#" className="hover:text-orange-500 transition-colors">SERVICES</Link>
         <Link href="#" className="hover:text-orange-500 transition-colors">ABOUT US</Link>
         <Link href="#" className="hover:text-orange-500 transition-colors">CONTACTS</Link>
-        <div className="ml-8 text-orange-500 flex items-center gap-2">
-            <span>23:43:21</span> {/* Static time for now, will make dynamic later if needed or just remove */}
+        <div className="ml-8 text-orange-500 flex items-center gap-2 tabular-nums">
+          <span>{time}</span>
         </div>
       </div>
     </nav>
