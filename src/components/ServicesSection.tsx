@@ -38,7 +38,7 @@ const ServicesSection = () => {
         gsap.from(".services-title", {
             y: 30,
             opacity: 0,
-            duration: 1,
+            duration: 1.5,
             scrollTrigger: {
                 trigger: ".services-title",
                 start: "top 85%",
@@ -51,8 +51,8 @@ const ServicesSection = () => {
         gsap.from(cards, {
             y: 50,
             opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
+            duration: 1.2,
+            stagger: 0.3,
             scrollTrigger: {
                 trigger: ".services-grid",
                 start: "top 75%",
@@ -65,8 +65,8 @@ const ServicesSection = () => {
         gsap.from(featureItems, {
             y: 20,
             opacity: 0,
-            duration: 0.6,
-            stagger: 0.1,
+            duration: 1,
+            stagger: 0.2,
             scrollTrigger: {
                 trigger: ".features-grid",
                 start: "top 80%",

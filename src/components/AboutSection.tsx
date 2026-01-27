@@ -17,7 +17,7 @@ const AboutSection = () => {
         gsap.from(titleRef.current, {
             y: 50,
             opacity: 0,
-            duration: 1,
+            duration: 1.5,
             scrollTrigger: {
                 trigger: titleRef.current,
                 start: "top 80%",
@@ -31,8 +31,8 @@ const AboutSection = () => {
             gsap.from(block, {
                 x: -50,
                 opacity: 0,
-                duration: 1,
-                delay: index * 0.2,
+                duration: 1.5,
+                delay: index * 0.3,
                 scrollTrigger: {
                     trigger: block,
                     start: "top 85%",

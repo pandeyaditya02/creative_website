@@ -26,14 +26,14 @@ const HeroVideo = () => {
     tl.from(titleRef.current, {
       y: 50,
       opacity: 0,
-      duration: 1.5,
+      duration: 2,
       ease: "power3.out"
     })
       .from(progressContainerRef.current, {
         opacity: 0,
         y: 20,
-        duration: 1
-      }, "-=1");
+        duration: 1.5
+      }, "-=1.5");
 
     // 2. Parallax & Scale on Scroll
     gsap.to(videoRef.current, {

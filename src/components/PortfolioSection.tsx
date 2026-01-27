@@ -53,7 +53,7 @@ const PortfolioSection = () => {
         gsap.from(".section-header", {
             opacity: 0,
             y: 50,
-            duration: 1,
+            duration: 1.5,
             scrollTrigger: {
                 trigger: ".section-header",
                 start: "top 80%",
@@ -64,8 +64,8 @@ const PortfolioSection = () => {
         gsap.from(".portfolio-item", {
             opacity: 0,
             y: 100,
-            duration: 1,
-            stagger: 0.15,
+            duration: 1.5,
+            stagger: 0.25,
             ease: "power2.out",
             scrollTrigger: {
                 trigger: ".portfolio-grid",

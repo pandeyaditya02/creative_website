@@ -28,7 +28,7 @@ const ContactSection = () => {
         gsap.from(".contact-title", {
             y: 50,
             opacity: 0,
-            duration: 1,
+            duration: 1.5,
             scrollTrigger: {
                 trigger: ".contact-title",
                 start: "top 85%",
@@ -40,8 +40,8 @@ const ContactSection = () => {
         gsap.from(formRef.current, {
             scale: 0.9,
             opacity: 0,
-            duration: 0.8,
-            delay: 0.2,
+            duration: 1.2,
+            delay: 0.3,
             scrollTrigger: {
                 trigger: formRef.current,
                 start: "top 80%",
