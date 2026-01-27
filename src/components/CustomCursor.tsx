@@ -11,9 +11,9 @@ export default function CustomCursor() {
     const mouseY = useMotionValue(0);
 
     // Spring configurations for trailing effect
-    const springConfigFirst = { damping: 25, stiffness: 200, mass: 0.5 };
-    const springConfigSecond = { damping: 20, stiffness: 150, mass: 0.8 };
-    const springConfigThird = { damping: 15, stiffness: 100, mass: 1 };
+    const springConfigFirst = { damping: 30, stiffness: 150, mass: 0.5 };
+    const springConfigSecond = { damping: 25, stiffness: 100, mass: 0.8 };
+    const springConfigThird = { damping: 20, stiffness: 60, mass: 1 };
 
     // Trailing dots springs
     const firstDotX = useSpring(mouseX, springConfigFirst);

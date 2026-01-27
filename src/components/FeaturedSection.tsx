@@ -28,6 +28,7 @@ const FeaturedSection = () => {
                     <motion.h2
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
                         className="text-5xl md:text-7xl font-bold uppercase tracking-tighter shadow-orange-500/50"
                     >
                         Featured
@@ -36,6 +37,7 @@ const FeaturedSection = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
                         className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gray-900 relative shadow-2xl shadow-orange-900/20"
                     >
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -62,6 +64,7 @@ const FeaturedSection = () => {
                                 key={index}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 1.5, delay: index * 0.3, ease: "easeOut" }}
                                 className="flex gap-6 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group"
                             >
                                 <div className="w-32 h-24 rounded-lg overflow-hidden shrink-0">
