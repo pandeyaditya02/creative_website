@@ -1,6 +1,10 @@
 "use client";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
@@ -27,8 +31,75 @@ const features = [
 ];
 
 const ServicesSection = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(() => {
+        // 1. Title Reveal
+        gsap.from(".services-title", {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".services-title",
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // 2. Services Grid Stagger
+        const cards = gsap.utils.toArray<HTMLElement>(".service-card");
+        gsap.from(cards, {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: ".services-grid",
+                start: "top 75%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // 3. Features Row Stagger
+        const featureItems = gsap.utils.toArray<HTMLElement>(".feature-item");
+        gsap.from(featureItems, {
+            y: 20,
+            opacity: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: ".features-grid",
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // 4. Hover Effects (3D Tilt) for Services
+        cards.forEach((card) => {
+            const hoverTl = gsap.timeline({ paused: true });
+            hoverTl.to(card, {
+                scale: 1.02,
+                rotationY: 5,
+                rotationX: -5,
+                boxShadow: "0 20px 40px rgba(249,115,22,0.1)",
+                duration: 0.4,
+                ease: "power2.out"
+            });
+
+            // Add event listeners to play/reverse via GSAP logic if needed, 
+            // but standard JS listeners are fine inside useGSAP too.
+            // However, implementing simple hover via CSS or simpler GSAP usually suffices.
+            // Let's stick to the card's internal logic for complex hover or global?
+            // Actually, doing it here keeps it clean.
+
+            card.addEventListener("mouseenter", () => gsap.to(card, { scale: 1.05, duration: 0.3 }));
+            card.addEventListener("mouseleave", () => gsap.to(card, { scale: 1, duration: 0.3 }));
+        });
+
+    }, { scope: containerRef });
+
     return (
-        <section className="min-h-screen bg-black text-white py-24 px-8 relative overflow-hidden">
+        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-8 relative overflow-hidden">
             {/* Background Gradients */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-900/20 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-900/10 rounded-full blur-[120px]" />
@@ -37,17 +108,34 @@ const ServicesSection = () => {
 
                 {/* Main Services Grid */}
                 <div className="flex flex-col items-center gap-12">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        className="text-5xl md:text-6xl font-bold uppercase tracking-tighter"
-                    >
+                    <h2 className="services-title text-5xl md:text-6xl font-bold uppercase tracking-tighter">
                         Services
-                    </motion.h2>
+                    </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <div className="services-grid grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                         {services.map((service, index) => (
-                            <ServiceCard key={index} service={service} index={index} />
+                            <div
+                                key={index}
+                                className="service-card relative h-[400px] rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 border border-white/5"
+                            >
+                                {/* Background Image */}
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                    style={{ backgroundImage: `url(${service.image})` }}
+                                />
+
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+
+                                {/* Content */}
+                                <div className="absolute bottom-0 left-0 p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-4">
+                                    <h3 className="text-3xl font-bold uppercase mb-2 group-hover:text-orange-500 transition-colors">{service.title}</h3>
+                                    <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                                        {service.description}
+                                    </p>
+                                    <div className="w-12 h-1 bg-orange-500 mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -55,19 +143,16 @@ const ServicesSection = () => {
                 {/* Features Row */}
                 <div className="flex flex-col items-center gap-12">
                     <h3 className="text-3xl font-bold uppercase tracking-tight text-gray-400">Why Choose Us</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
                         {features.map((feature, index) => (
-                            <motion.div
+                            <div
                                 key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm flex flex-col items-center text-center gap-4 hover:bg-white/10 transition-colors"
+                                className="feature-item p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm flex flex-col items-center text-center gap-4 hover:bg-white/10 transition-colors"
                             >
                                 <span className="text-4xl mb-2">{feature.icon}</span>
                                 <h4 className="text-xl font-bold text-orange-500">{feature.title}</h4>
                                 <p className="text-gray-400 text-sm">{feature.desc}</p>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -76,38 +161,5 @@ const ServicesSection = () => {
         </section>
     );
 };
-
-const ServiceCard = ({ service, index }: { service: any, index: number }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.2 }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="relative h-[400px] rounded-2xl overflow-hidden cursor-pointer group"
-        >
-            {/* Background Image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                style={{ backgroundImage: `url(${service.image})` }}
-            />
-
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
-
-            {/* Content */}
-            <div className="absolute bottom-0 left-0 p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-4">
-                <h3 className="text-3xl font-bold uppercase mb-2 group-hover:text-orange-500 transition-colors">{service.title}</h3>
-                <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
-                    {service.description}
-                </p>
-                <div className="w-12 h-1 bg-orange-500 mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
-            </div>
-        </motion.div>
-    )
-}
 
 export default ServicesSection;

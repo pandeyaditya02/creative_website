@@ -1,11 +1,64 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HeroVideo = () => {
   const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const playerRef = useRef<YT.Player | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Refs key to GSAP
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const progressContainerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    // 1. Initial Timeline (Reveal)
+    const tl = gsap.timeline();
+
+    // We can animate the title directly
+    tl.from(titleRef.current, {
+      y: 50,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power3.out"
+    })
+      .from(progressContainerRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 1
+      }, "-=1");
+
+    // 2. Parallax & Scale on Scroll
+    gsap.to(videoRef.current, {
+      scale: 1, // Shrink from 1.35
+      filter: "blur(5px)",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Parallax text (moves slower or faster than scroll)
+    gsap.to(titleRef.current, {
+      y: -100, // Move up
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom center",
+        scrub: true
+      }
+    });
+
+  }, { scope: containerRef });
 
   const videoId = "O8_VkfRkjRg";
 
@@ -105,9 +158,9 @@ const HeroVideo = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black text-white">
+    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white">
       {/* Background Video - YT.Player container */}
-      <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
+      <div ref={videoRef} className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
         <div
           id="hero-video-player"
           className="absolute top-1/2 left-1/2 w-[100%] h-[100%] min-w-[120%] min-h-[120%] -translate-x-1/2 -translate-y-1/2"
@@ -118,12 +171,12 @@ const HeroVideo = () => {
       <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
         <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
           <div className="flex flex-col gap-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white mix-blend-difference drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
+            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white mix-blend-difference drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
               Crafting Stories<br />
               That Move
             </h1>
             {/* Dynamic Progress Bar */}
-            <div className="flex flex-col gap-2 w-full max-w-md mt-8">
+            <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-md mt-8">
               <div className="flex justify-between text-xs font-bold tracking-widest text-orange-500 mb-1">
                 <span>01/01</span>
                 <span>PRODUCTION SHOWREEL</span>

@@ -1,6 +1,10 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const portfolios = [
     {
@@ -42,24 +46,60 @@ const portfolios = [
 ];
 
 const PortfolioSection = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useGSAP(() => {
+        // Reveal Header
+        gsap.from(".section-header", {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".section-header",
+                start: "top 80%",
+            }
+        });
+
+        // Reveal Grid Items Staggered
+        gsap.from(".portfolio-item", {
+            opacity: 0,
+            y: 100,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".portfolio-grid",
+                start: "top 75%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // Hover interactions
+        const items = gsap.utils.toArray<HTMLElement>(".portfolio-item");
+        items.forEach((item) => {
+            const hoverTl = gsap.timeline({ paused: true });
+            hoverTl.to(item, { scale: 1.05, rotation: 1, duration: 0.3, ease: "power1.out" });
+
+            item.addEventListener("mouseenter", () => hoverTl.play());
+            item.addEventListener("mouseleave", () => hoverTl.reverse());
+        });
+
+    }, { scope: containerRef });
+
     return (
-        <section className="min-h-screen bg-black text-white py-24 px-8 relative">
+        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-8 relative">
 
             <div className="max-w-7xl mx-auto flex flex-col gap-16">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center text-center gap-4"
-                >
+                <div className="section-header flex flex-col items-center text-center gap-4">
                     <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">Portfolio / Showreels</h2>
                     <p className="text-gray-400 max-w-lg">
                         A curated selection of our best work, showcasing our versatility and passion for storytelling.
                     </p>
-                </motion.div>
+                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="portfolio-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {portfolios.map((item, index) => (
-                        <PortfolioCard key={index} item={item} index={index} />
+                        <PortfolioCard key={index} item={item} />
                     ))}
                 </div>
             </div>
@@ -67,17 +107,12 @@ const PortfolioSection = () => {
     );
 };
 
-const PortfolioCard = ({ item, index }: { item: any, index: number }) => {
+const PortfolioCard = ({ item }: { item: any }) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.1 }}
-            className="group relative h-[250px] md:h-[300px] rounded-2xl overflow-hidden bg-gray-900 border border-white/10 cursor-pointer"
-        >
+        <div className="portfolio-item group relative h-[250px] md:h-[300px] rounded-2xl overflow-hidden bg-gray-900 border border-white/10 cursor-pointer">
             {/* Image */}
             <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-40"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 opacity-60 group-hover:opacity-40"
                 style={{ backgroundImage: `url(${item.image})` }}
             />
 
@@ -100,7 +135,7 @@ const PortfolioCard = ({ item, index }: { item: any, index: number }) => {
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     )
 }
 

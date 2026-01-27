@@ -1,49 +1,106 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ContactSection = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+
+    useGSAP(() => {
+        // 1. Background Parallax
+        gsap.to(".contact-bg", {
+            y: "20%",
+            scale: 1.1,
+            ease: "none",
+            scrollTrigger: {
+                trigger: containerRef.current,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 2. Title Reveal
+        gsap.from(".contact-title", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: ".contact-title",
+                start: "top 85%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // 3. Form Reveal
+        gsap.from(formRef.current, {
+            scale: 0.9,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.2,
+            scrollTrigger: {
+                trigger: formRef.current,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // 4. Input Focus Animations
+        const inputs = gsap.utils.toArray<HTMLElement>(".contact-input");
+        inputs.forEach((input) => {
+            const focusTl = gsap.to(input, {
+                boxShadow: "0 0 20px rgba(249,115,22,0.5)",
+                borderColor: "rgba(249,115,22,1)",
+                duration: 0.3,
+                paused: true
+            });
+
+            input.addEventListener("focus", () => focusTl.play());
+            input.addEventListener("blur", () => focusTl.reverse());
+        });
+
+    }, { scope: containerRef });
+
     return (
-        <section className="relative min-h-[80vh] bg-black text-white py-24 px-8 overflow-hidden block">
+        <section ref={containerRef} className="relative min-h-[80vh] bg-black text-white py-24 px-8 overflow-hidden block">
             {/* Footer / Map Background */}
-            <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
+            <div className="contact-bg absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 
             <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center gap-16">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    className="text-6xl md:text-8xl font-bold uppercase tracking-tighter text-center"
-                >
+                <h2 className="contact-title text-6xl md:text-8xl font-bold uppercase tracking-tighter text-center">
                     Contact
-                </motion.h2>
+                </h2>
 
-                <motion.form
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                <form
+                    ref={formRef}
                     className="w-full bg-white/5 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col gap-6"
                 >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <input
                             type="text"
                             placeholder="Name"
-                            className="bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                            className="contact-input bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none transition-colors"
                         />
                         <input
                             type="email"
                             placeholder="Email"
-                            className="bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                            className="contact-input bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none transition-colors"
                         />
                     </div>
                     <textarea
                         rows={4}
                         placeholder="Message"
-                        className="bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                        className="contact-input bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none transition-colors resize-none"
                     />
-                    <button className="bg-orange-600 text-white font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-orange-500 transition-colors shadow-lg shadow-orange-900/50">
+                    <button className="bg-orange-600 text-white font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-orange-500 transition-colors shadow-lg shadow-orange-900/50 hover:scale-[1.02] active:scale-95 duration-200">
                         Send Message
                     </button>
-                </motion.form>
+                </form>
 
                 <div className="flex gap-8 text-gray-500 text-sm uppercase tracking-widest">
                     <a href="#" className="hover:text-white transition-colors">Instagram</a>
