@@ -171,13 +171,13 @@ const HeroVideo = () => {
       <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
         <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
           <div className="flex flex-col gap-6">
-            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-white mix-blend-difference drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] uppercase">
+            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-primary drop-shadow-[0_0_25px_rgba(204,255,0,0.6)] uppercase mix-blend-difference">
               Crafting Stories<br />
               That Move
             </h1>
             {/* Dynamic Progress Bar */}
             <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-md mt-8">
-              <div className="flex justify-between text-xs font-bold tracking-widest text-orange-500 mb-1">
+              <div className="flex justify-between text-xs font-bold tracking-widest text-primary mb-1 drop-shadow-[0_0_5px_rgba(204,255,0,0.8)]">
                 <span>01/01</span>
                 <span>PRODUCTION SHOWREEL</span>
               </div>
@@ -186,7 +186,7 @@ const HeroVideo = () => {
                 <div className="absolute inset-0 bg-gray-500/20" />
                 {/* Progress fill - animates with video */}
                 <div
-                  className="absolute top-0 left-0 h-full bg-orange-500 transition-all duration-[250ms] ease-linear"
+                  className="absolute top-0 left-0 h-full bg-primary shadow-[0_0_15px_rgba(204,255,0,0.8)] transition-all duration-[250ms] ease-linear"
                   style={{ width: `${progress}%` }}
                 />
               </div>

@@ -53,8 +53,8 @@ const ContactSection = () => {
         const inputs = gsap.utils.toArray<HTMLElement>(".contact-input");
         inputs.forEach((input) => {
             const focusTl = gsap.to(input, {
-                boxShadow: "0 0 20px rgba(249,115,22,0.5)",
-                borderColor: "rgba(249,115,22,1)",
+                boxShadow: "0 0 20px rgba(204,255,0,0.5)",
+                borderColor: "rgba(204,255,0,1)",
                 duration: 0.3,
                 paused: true
             });
@@ -97,7 +97,7 @@ const ContactSection = () => {
                         placeholder="Message"
                         className="contact-input bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none transition-colors resize-none"
                     />
-                    <button className="bg-orange-600 text-white font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-orange-500 transition-colors shadow-lg shadow-orange-900/50 hover:scale-[1.02] active:scale-95 duration-200">
+                    <button className="bg-primary text-black font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-white transition-colors shadow-lg shadow-primary/50 hover:scale-[1.02] active:scale-95 duration-200">
                         Send Message
                     </button>
                 </form>

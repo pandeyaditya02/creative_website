@@ -60,8 +60,8 @@ const AboutSection = () => {
         <section ref={containerRef} className="relative min-h-screen bg-black text-white py-20 px-8 sm:px-16 overflow-hidden">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-[128px]" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[128px]" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px]" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[128px]" />
             </div>
 
             <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
@@ -76,7 +76,7 @@ const AboutSection = () => {
                     {/* Text Content */}
                     <div ref={textContainerRef} className="flex flex-col gap-8">
                         <div className="about-text-block p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <h3 className="text-xl font-bold mb-4 text-orange-400">SMALL PLAYGROUND</h3>
+                            <h3 className="text-xl font-bold mb-4 text-primary drop-shadow-[0_0_5px_rgba(204,255,0,0.8)]">SMALL PLAYGROUND</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
                                 We started as a small team with a big vision. Our playground was limited, but our ideas were boundless.
                                 We believe in experimenting, failing fast, and learning faster to create visuals that truly stand out.
@@ -84,7 +84,7 @@ const AboutSection = () => {
                         </div>
 
                         <div className="about-text-block p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm self-end md:ml-12">
-                            <h3 className="text-xl font-bold mb-4 text-orange-400">COMPANY TRIGGERED HISTORY</h3>
+                            <h3 className="text-xl font-bold mb-4 text-secondary drop-shadow-[0_0_5px_rgba(255,0,153,0.8)]">COMPANY TRIGGERED HISTORY</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
                                 From a single camera to a full-scale production house, our history is triggered by passion.
                                 Every project we undertake adds a new chapter to our story, pushing the boundaries of what's possible in digital storytelling.
@@ -98,10 +98,10 @@ const AboutSection = () => {
                         className="relative h-[600px] flex justify-center items-center"
                     >
                         {/* Center Line */}
-                        <div className="timeline-line absolute top-0 w-[1px] bg-gradient-to-b from-transparent via-orange-500 to-transparent opacity-50" />
+                        <div className="timeline-line absolute top-0 w-[1px] bg-gradient-to-b from-transparent via-primary to-transparent opacity-50 shadow-[0_0_10px_rgba(204,255,0,0.5)]" />
 
                         {/* Glowing Dots */}
-                        <div className="timeline-dot absolute top-1/3 w-4 h-4 bg-orange-500 rounded-full shadow-[0_0_20px_rgba(249,115,22,0.8)]" />
+                        <div className="timeline-dot absolute top-1/3 w-4 h-4 bg-primary rounded-full shadow-[0_0_20px_rgba(204,255,0,0.8)]" />
                         <div className="timeline-dot absolute bottom-1/3 w-4 h-4 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
 
                         {/* Decorative text around line */}

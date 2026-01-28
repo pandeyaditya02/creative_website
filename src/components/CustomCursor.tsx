@@ -61,7 +61,7 @@ export default function CustomCursor() {
 
             {/* Biggest Dot (Leading) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-white z-50"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-primary mix-blend-screen z-50 shadow-[0_0_10px_rgba(204,255,0,0.8)]"
                 style={{
                     x: firstDotX,
                     y: firstDotY,
@@ -74,7 +74,7 @@ export default function CustomCursor() {
 
             {/* Medium Dot (Middle Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-white z-50 opacity-80"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-secondary mix-blend-screen z-50 opacity-80 shadow-[0_0_10px_rgba(255,0,153,0.8)]"
                 style={{
                     x: secondDotX,
                     y: secondDotY,
@@ -87,7 +87,7 @@ export default function CustomCursor() {
 
             {/* Smallest Dot (Last Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-white z-50 opacity-60"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-primary mix-blend-screen z-50 opacity-60"
                 style={{
                     x: thirdDotX,
                     y: thirdDotY,

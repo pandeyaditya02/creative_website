@@ -10,6 +10,18 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Electric Lime Theme Tokens */
+  --color-primary: #ccff00;
+  /* Electric Lime */
+  --color-primary-hover: #b3e600;
+  /* Darker Lime */
+  --color-secondary: #ff0099;
+  /* Hot Pink */
+  --color-secondary-hover: #e6008a;
+  /* Darker Pink */
+  --color-accent: #00ffff;
+  /* Cyan */
 }
 
 @media (prefers-color-scheme: dark) {
