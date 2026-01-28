@@ -19,21 +19,41 @@ const HeroVideo = () => {
   const progressContainerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // 1. Initial Timeline (Reveal)
-    const tl = gsap.timeline();
+    // 1. Advanced Split Text Animation
+    const titleText = titleRef.current?.innerText || "";
+    const words = titleText.split(' ');
 
-    // We can animate the title directly
-    tl.from(titleRef.current, {
-      y: 50,
+    if (titleRef.current) {
+      // Clear and rebuild with spans for character animation
+      titleRef.current.innerHTML = words.map(word =>
+        `<span class="word" style="display: inline-block; overflow: hidden; perspective: 1000px;">
+          ${word.split('').map(char =>
+          `<span class="char" style="display: inline-block; transform: translateY(120%) rotateX(-90deg); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('')}
+        </span>&nbsp;`
+      ).join('');
+
+      // Animate characters with stagger
+      gsap.to(titleRef.current.querySelectorAll('.char'), {
+        y: 0,
+        rotateX: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: "power4.out",
+        stagger: {
+          amount: 0.8,
+          from: "start"
+        }
+      });
+    }
+
+    // Progress container reveal
+    gsap.from(progressContainerRef.current, {
       opacity: 0,
-      duration: 2,
-      ease: "power3.out"
-    })
-      .from(progressContainerRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 1.5
-      }, "-=1.5");
+      y: 20,
+      duration: 1.5,
+      delay: 0.5
+    });
 
     // 2. Parallax & Scale on Scroll
     gsap.to(videoRef.current, {

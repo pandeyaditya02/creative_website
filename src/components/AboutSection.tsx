@@ -13,17 +13,36 @@ const AboutSection = () => {
     const timelineRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        // 1. Title Animation
-        gsap.from(titleRef.current, {
-            y: 50,
-            opacity: 0,
-            duration: 1.5,
-            scrollTrigger: {
-                trigger: titleRef.current,
-                start: "top 80%",
-                toggleActions: "play none none reverse"
-            }
-        });
+        // 1. Split Text Title Animation
+        const titleText = titleRef.current?.innerText || "";
+        const words = titleText.split(' ');
+
+        if (titleRef.current) {
+            titleRef.current.innerHTML = words.map(word =>
+                `<span class="word" style="display: inline-block; perspective: 1000px;">
+                  ${word.split('').map(char =>
+                    `<span class="char" style="display: inline-block; transform: translateY(100%) rotateX(-90deg); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
+                ).join('')}
+                </span>&nbsp;`
+            ).join('');
+
+            gsap.to(titleRef.current.querySelectorAll('.char'), {
+                y: 0,
+                rotateX: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: "power4.out",
+                stagger: {
+                    amount: 0.6,
+                    from: "start"
+                },
+                scrollTrigger: {
+                    trigger: titleRef.current,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        }
 
         // 2. Text Blocks Reveal
         const textBlocks = gsap.utils.toArray<HTMLElement>(".about-text-block");

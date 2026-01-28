@@ -49,24 +49,32 @@ const PortfolioSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        // Reveal Header
-        gsap.from(".section-header", {
+        // Reveal Header with Split Text effect
+        gsap.from(".section-header h2", {
             opacity: 0,
             y: 50,
+            rotateX: -20,
             duration: 1.5,
+            ease: "power3.out",
             scrollTrigger: {
                 trigger: ".section-header",
                 start: "top 80%",
             }
         });
 
-        // Reveal Grid Items Staggered
+        // Enhanced Grid Reveal with Clip-Path and Rotation
         gsap.from(".portfolio-item", {
             opacity: 0,
             y: 100,
+            rotation: -5,
+            scale: 0.8,
             duration: 1.5,
-            stagger: 0.25,
-            ease: "power2.out",
+            stagger: {
+                amount: 1.2,
+                from: "start",
+                grid: "auto"
+            },
+            ease: "power3.out",
             scrollTrigger: {
                 trigger: ".portfolio-grid",
                 start: "top 75%",
@@ -74,11 +82,33 @@ const PortfolioSection = () => {
             }
         });
 
-        // Hover interactions
+        // Image Clip-Path Reveal
+        gsap.from(".portfolio-item > div:first-child", {
+            clipPath: "inset(0 100% 0 0)",
+            duration: 1.2,
+            ease: "power2.inOut",
+            stagger: {
+                amount: 1.2,
+                from: "start"
+            },
+            scrollTrigger: {
+                trigger: ".portfolio-grid",
+                start: "top 75%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // Enhanced Hover Interactions with 3D Tilt
         const items = gsap.utils.toArray<HTMLElement>(".portfolio-item");
         items.forEach((item) => {
             const hoverTl = gsap.timeline({ paused: true });
-            hoverTl.to(item, { scale: 1.05, rotation: 1, duration: 0.3, ease: "power1.out" });
+            hoverTl.to(item, {
+                scale: 1.05,
+                rotation: 2,
+                boxShadow: "0 20px 60px rgba(204,255,0,0.3)",
+                duration: 0.4,
+                ease: "power2.out"
+            });
 
             item.addEventListener("mouseenter", () => hoverTl.play());
             item.addEventListener("mouseleave", () => hoverTl.reverse());
