@@ -32,11 +32,11 @@ export default function Home() {
         <PortfolioSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={5} className="bg-black">
+      <PinnedSection zIndex={5} isTall={true} className="bg-black">
         <FeaturedSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={6} className="bg-black">
+      <PinnedSection zIndex={6} isTall={true} className="bg-black">
         <ContactSection />
       </PinnedSection>
     </main>
