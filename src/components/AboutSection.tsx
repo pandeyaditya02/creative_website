@@ -38,63 +38,61 @@ const AboutSection = () => {
                 },
                 scrollTrigger: {
                     trigger: titleRef.current,
-                    start: "top 80%",
+                    start: "top 90%",
                     toggleActions: "play none none reverse"
                 }
             });
         }
 
-        // 2. Text Blocks Reveal
-        const textBlocks = gsap.utils.toArray<HTMLElement>(".about-text-block");
-        textBlocks.forEach((block, index) => {
-            gsap.from(block, {
-                x: -50,
-                opacity: 0,
-                duration: 1.5,
-                delay: index * 0.3,
-                scrollTrigger: {
-                    trigger: block,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
-            });
-        });
 
-        // 3. Timeline Animation (Draw line + Scale dots)
-        const tl = gsap.timeline({
+
+        // 2. Synchronized animation for text blocks and timeline
+        const mainTl = gsap.timeline({
             scrollTrigger: {
-                trigger: timelineRef.current,
-                start: "top 70%",
-                end: "bottom 70%",
-                scrub: 1
+                trigger: containerRef.current,
+                start: "top 40%", // Starts later when section is more visible
+                end: "bottom 80%",
+                scrub: 1 // Sync with scroll
             }
         });
 
-        tl.fromTo(".timeline-line", { height: "0%" }, { height: "100%", duration: 2 })
-            .from(".timeline-dot", { scale: 0, opacity: 0, stagger: 0.5 }, "-=1.5");
+        // Text blocks slide in from left
+        const textBlocks = gsap.utils.toArray<HTMLElement>(".about-text-block");
+        textBlocks.forEach((block, index) => {
+            mainTl.from(block, {
+                x: -50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }, index * 0.2);
+        });
+
+        // Timeline animation synced with text blocks
+        mainTl.fromTo(".timeline-line", { height: "0%" }, { height: "100%", duration: 1, ease: "power2.inOut" }, 0)
+            .from(".timeline-dot", { scale: 0, opacity: 0, stagger: 0.3, duration: 0.5, ease: "back.out(1.7)" }, 0.4);
 
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-screen bg-[#2D3E50] text-white py-20 px-8 sm:px-16 overflow-hidden">
+        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-center bg-[#2D3E50] text-white py-20 px-8 sm:px-16 overflow-hidden">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px]" />
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[128px]" />
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
+            <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center">
                 <h2
                     ref={titleRef}
-                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-16 text-center text-[#F67963]"
+                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-center text-[#F67963]"
                 >
                     About Us
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
                     {/* Text Content */}
-                    <div ref={textContainerRef} className="flex flex-col gap-8">
-                        <div className="about-text-block p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <div ref={textContainerRef} className="flex flex-col gap-6">
+                        <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
                             <h3 className="text-xl font-bold mb-4 text-[#F67963]">SMALL PLAYGROUND</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
                                 We started as a small team with a big vision. Our playground was limited, but our ideas were boundless.
@@ -102,7 +100,7 @@ const AboutSection = () => {
                             </p>
                         </div>
 
-                        <div className="about-text-block p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm self-end md:ml-12">
+                        <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm self-end md:ml-8">
                             <h3 className="text-xl font-bold mb-4 text-[#F67963]">COMPANY TRIGGERED HISTORY</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
                                 From a single camera to a full-scale production house, our history is triggered by passion.
@@ -114,7 +112,7 @@ const AboutSection = () => {
                     {/* Visual/Timeline Element */}
                     <div
                         ref={timelineRef}
-                        className="relative h-[600px] flex justify-center items-center"
+                        className="relative h-[350px] flex justify-center items-center"
                     >
                         {/* Center Line */}
                         <div className="timeline-line absolute top-0 w-[1px] bg-gradient-to-b from-transparent via-[#e26954] to-transparent opacity-50" />

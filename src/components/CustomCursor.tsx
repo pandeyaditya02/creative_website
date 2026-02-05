@@ -10,10 +10,10 @@ export default function CustomCursor() {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Spring configurations for trailing effect
-    const springConfigFirst = { damping: 25, stiffness: 200, mass: 0.5 };
-    const springConfigSecond = { damping: 20, stiffness: 150, mass: 0.8 };
-    const springConfigThird = { damping: 15, stiffness: 100, mass: 1 };
+    // Spring configurations - fast lead, progressively slower trails for visible separation
+    const springConfigFirst = { damping: 30, stiffness: 400, mass: 0.3 };
+    const springConfigSecond = { damping: 20, stiffness: 180, mass: 0.6 };
+    const springConfigThird = { damping: 15, stiffness: 100, mass: 0.9 };
 
     // Trailing dots springs
     const firstDotX = useSpring(mouseX, springConfigFirst);
@@ -61,7 +61,7 @@ export default function CustomCursor() {
 
             {/* Biggest Dot (Leading) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-primary mix-blend-screen z-50 shadow-[0_0_10px_rgba(204,255,0,0.8)]"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#e26954] mix-blend-screen z-50"
                 style={{
                     x: firstDotX,
                     y: firstDotY,
@@ -74,7 +74,7 @@ export default function CustomCursor() {
 
             {/* Medium Dot (Middle Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-secondary mix-blend-screen z-50 opacity-80 shadow-[0_0_10px_rgba(255,0,153,0.8)]"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#F67963] mix-blend-screen z-50 opacity-80"
                 style={{
                     x: secondDotX,
                     y: secondDotY,
@@ -87,7 +87,7 @@ export default function CustomCursor() {
 
             {/* Smallest Dot (Last Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-primary mix-blend-screen z-50 opacity-60"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#e26954] mix-blend-screen z-50 opacity-60"
                 style={{
                     x: thirdDotX,
                     y: thirdDotY,
