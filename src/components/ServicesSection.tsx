@@ -108,7 +108,7 @@ const ServicesSection = () => {
 
                 {/* Main Services Grid */}
                 <div className="flex flex-col items-center gap-12">
-                    <h2 className="services-title text-5xl md:text-6xl font-bold uppercase tracking-tighter">
+                    <h2 className="services-title text-5xl md:text-6xl font-bold uppercase tracking-tighter text-[#F67963]">
                         Services
                     </h2>
 

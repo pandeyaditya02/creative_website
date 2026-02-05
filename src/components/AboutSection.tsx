@@ -86,7 +86,7 @@ const AboutSection = () => {
             <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">
                 <h2
                     ref={titleRef}
-                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-16 text-center"
+                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-16 text-center text-[#F67963]"
                 >
                     About Us
                 </h2>

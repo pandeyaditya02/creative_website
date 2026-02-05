@@ -121,7 +121,7 @@ const PortfolioSection = () => {
 
             <div className="max-w-7xl mx-auto flex flex-col gap-16">
                 <div className="section-header flex flex-col items-center text-center gap-4">
-                    <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter">Portfolio / Showreels</h2>
+                    <h2 className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-[#F67963]">Portfolio / Showreels</h2>
                     <p className="text-gray-400 max-w-lg">
                         A curated selection of our best work, showcasing our versatility and passion for storytelling.
                     </p>

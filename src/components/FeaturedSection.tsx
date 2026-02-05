@@ -29,7 +29,7 @@ const FeaturedSection = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-white"
+                        className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-[#F67963]"
                     >
                         Featured
                     </motion.h2>

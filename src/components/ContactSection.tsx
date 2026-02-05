@@ -72,7 +72,7 @@ const ContactSection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#1F2D3D] to-transparent" />
 
             <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center gap-16">
-                <h2 className="contact-title text-6xl md:text-8xl font-bold uppercase tracking-tighter text-center">
+                <h2 className="contact-title text-6xl md:text-8xl font-bold uppercase tracking-tighter text-center text-[#F67963]">
                     Contact
                 </h2>
 

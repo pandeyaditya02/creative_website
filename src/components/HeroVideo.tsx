@@ -20,18 +20,23 @@ const HeroVideo = () => {
 
   useGSAP(() => {
     // 1. Advanced Split Text Animation
-    const titleText = titleRef.current?.innerText || "";
-    const words = titleText.split(' ');
-
     if (titleRef.current) {
+      const originalHTML = titleRef.current.innerHTML;
+      // Split by <br> tags to preserve line breaks
+      const lines = originalHTML.split(/<br\s*\/?>/i);
+
       // Clear and rebuild with spans for character animation
-      titleRef.current.innerHTML = words.map(word =>
-        `<span class="word" style="display: inline-block; overflow: hidden; perspective: 1000px;">
-          ${word.split('').map(char =>
-          `<span class="char" style="display: inline-block; transform: translateY(120%) rotateX(-90deg); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
-        ).join('')}
-        </span>&nbsp;`
-      ).join('');
+      titleRef.current.innerHTML = lines.map((line, lineIndex) => {
+        const words = line.trim().split(/\s+/);
+        const lineHTML = words.map(word =>
+          `<span class="word" style="display: inline-block; overflow: hidden; perspective: 1000px;">
+            ${word.split('').map(char =>
+            `<span class="char" style="display: inline-block; transform: translateY(120%) rotateX(-90deg); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
+          ).join('')}
+          </span>&nbsp;`
+        ).join('');
+        return lineHTML + (lineIndex < lines.length - 1 ? '<br />' : '');
+      }).join('');
 
       // Animate characters with stagger
       gsap.to(titleRef.current.querySelectorAll('.char'), {
@@ -192,7 +197,7 @@ const HeroVideo = () => {
         <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
           <div className="flex flex-col gap-6">
             <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-[#F67963] uppercase">
-              Crafting Stories <br />
+              Crafting Stories<br />
               That Move
             </h1>
             {/* Dynamic Progress Bar */}
