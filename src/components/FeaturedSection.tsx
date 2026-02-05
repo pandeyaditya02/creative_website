@@ -17,7 +17,7 @@ const articles = [
 
 const FeaturedSection = () => {
     return (
-        <section className="min-h-screen bg-black text-white py-24 px-8 relative overflow-hidden">
+        <section className="min-h-screen bg-[#2D3E50] text-white py-24 px-8 relative overflow-hidden">
             {/* Background */}
             <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-red-900/10 rounded-full blur-[128px]" />
 
@@ -29,7 +29,7 @@ const FeaturedSection = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="text-5xl md:text-7xl font-bold uppercase tracking-tighter shadow-primary/50 drop-shadow-[0_0_10px_rgba(204,255,0,0.5)]"
+                        className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-white"
                     >
                         Featured
                     </motion.h2>
@@ -38,10 +38,10 @@ const FeaturedSection = () => {
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gray-900 relative shadow-2xl shadow-primary/20"
+                        className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gray-900 relative shadow-2xl"
                     >
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-[0_0_20px_rgba(204,255,0,0.6)]">
+                            <div className="w-20 h-20 rounded-full bg-[#e26954] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
                                 <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1" />
                             </div>
                         </div>
@@ -50,7 +50,7 @@ const FeaturedSection = () => {
 
                         {/* Video Controls Bar Mockup */}
                         <div className="absolute bottom-8 left-8 right-8 h-2 bg-gray-700 rounded-full overflow-hidden">
-                            <div className="w-1/3 h-full bg-secondary" />
+                            <div className="w-1/3 h-full bg-[#e26954]" />
                         </div>
                     </motion.div>
                 </div>
@@ -71,8 +71,8 @@ const FeaturedSection = () => {
                                     <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div className="flex flex-col justify-center">
-                                    <span className="text-xs text-secondary uppercase tracking-widest mb-2">{article.category}</span>
-                                    <h4 className="text-xl font-bold group-hover:text-primary transition-colors">{article.title}</h4>
+                                    <span className="text-xs text-[#F67963] uppercase tracking-widest mb-2">{article.category}</span>
+                                    <h4 className="text-xl font-bold group-hover:text-[#F67963] transition-colors">{article.title}</h4>
                                 </div>
                             </motion.div>
                         ))}

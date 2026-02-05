@@ -53,8 +53,8 @@ const ContactSection = () => {
         const inputs = gsap.utils.toArray<HTMLElement>(".contact-input");
         inputs.forEach((input) => {
             const focusTl = gsap.to(input, {
-                boxShadow: "0 0 20px rgba(204,255,0,0.5)",
-                borderColor: "rgba(204,255,0,1)",
+                boxShadow: "0 0 20px rgba(226,105,84,0.5)",
+                borderColor: "rgba(246,121,99,1)",
                 duration: 0.3,
                 paused: true
             });
@@ -66,10 +66,10 @@ const ContactSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-[80vh] bg-black text-white py-24 px-8 overflow-hidden block">
+        <section ref={containerRef} className="relative min-h-[80vh] bg-[#2D3E50] text-white py-24 px-8 overflow-hidden block">
             {/* Footer / Map Background */}
             <div className="contact-bg absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1F2D3D] to-transparent" />
 
             <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center gap-16">
                 <h2 className="contact-title text-6xl md:text-8xl font-bold uppercase tracking-tighter text-center">
@@ -97,7 +97,7 @@ const ContactSection = () => {
                         placeholder="Message"
                         className="contact-input bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder:text-gray-500 focus:outline-none transition-colors resize-none"
                     />
-                    <button className="bg-primary text-black font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-white transition-colors shadow-lg shadow-primary/50 hover:scale-[1.02] active:scale-95 duration-200">
+                    <button className="bg-[#e26954] text-white font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-[#F67963] transition-colors hover:scale-[1.02] active:scale-95 duration-200">
                         Send Message
                     </button>
                 </form>

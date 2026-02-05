@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #000000;
+  --background: #2D3E50;
   --foreground: #ededed;
 }
 
@@ -11,22 +11,36 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Electric Lime Theme Tokens */
-  --color-primary: #ccff00;
-  /* Electric Lime */
-  --color-primary-hover: #b3e600;
-  /* Darker Lime */
-  --color-secondary: #ff0099;
-  /* Hot Pink */
-  --color-secondary-hover: #e6008a;
-  /* Darker Pink */
-  --color-accent: #00ffff;
-  /* Cyan */
+  /* Charcoal & Coral Theme Tokens */
+  --color-charcoal: #2D3E50;
+  /* Charcoal - dark blue-gray */
+  --color-charcoal-light: #3A4D5F;
+  /* Lighter Charcoal */
+  --color-charcoal-dark: #1F2D3D;
+  /* Darker Charcoal */
+  --color-coral: #e26954;
+  /* Coral - warm salmon-red */
+  --color-coral-light: #F67963;
+  /* Lighter Coral */
+  --color-coral-dark: #c95845;
+  /* Darker Coral */
+
+  /* Primary/Secondary mappings */
+  --color-primary: #e26954;
+  /* Coral */
+  --color-primary-hover: #F67963;
+  /* Lighter Coral on hover */
+  --color-secondary: #2D3E50;
+  /* Charcoal */
+  --color-secondary-hover: #3A4D5F;
+  /* Lighter Charcoal */
+  --color-accent: #E86B5A;
+  /* Coral */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #2D3E50;
     --foreground: #ededed;
   }
 }

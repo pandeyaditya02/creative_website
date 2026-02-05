@@ -178,7 +178,7 @@ const HeroVideo = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white">
+    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#2D3E50] text-white">
       {/* Background Video - YT.Player container */}
       <div ref={videoRef} className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
         <div
@@ -191,13 +191,13 @@ const HeroVideo = () => {
       <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
         <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
           <div className="flex flex-col gap-6">
-            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-primary drop-shadow-[0_0_25px_rgba(204,255,0,0.6)] uppercase">
-              Crafting Stories<br />
+            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-[#F67963] uppercase">
+              Crafting Stories <br />
               That Move
             </h1>
             {/* Dynamic Progress Bar */}
             <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-md mt-8">
-              <div className="flex justify-between text-xs font-bold tracking-widest text-primary mb-1 drop-shadow-[0_0_5px_rgba(204,255,0,0.8)]">
+              <div className="flex justify-between text-xs font-bold tracking-widest text-[#F67963] mb-1">
                 <span>01/01</span>
                 <span>PRODUCTION SHOWREEL</span>
               </div>
@@ -206,7 +206,7 @@ const HeroVideo = () => {
                 <div className="absolute inset-0 bg-gray-500/20" />
                 {/* Progress fill - animates with video */}
                 <div
-                  className="absolute top-0 left-0 h-full bg-primary shadow-[0_0_15px_rgba(204,255,0,0.8)] transition-all duration-[250ms] ease-linear"
+                  className="absolute top-0 left-0 h-full bg-[#e26954] transition-all duration-[250ms] ease-linear"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -219,7 +219,7 @@ const HeroVideo = () => {
               onClick={toggleSound}
               className="flex flex-col items-center gap-1 group cursor-pointer pointer-events-auto"
             >
-              <span className="text-xs font-bold tracking-wider mb-2">SOUND</span>
+              <span className="text-xs font-bold tracking-wider mb-2 text-[#F67963]">SOUND</span>
               <div className="flex items-center gap-[2px] h-6 relative">
                 {/* Audio visualizer bars */}
                 {[1, 2, 3, 4, 5].map((i) => (

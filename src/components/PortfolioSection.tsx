@@ -105,7 +105,7 @@ const PortfolioSection = () => {
             hoverTl.to(item, {
                 scale: 1.05,
                 rotation: 2,
-                boxShadow: "0 20px 60px rgba(204,255,0,0.3)",
+                boxShadow: "0 20px 60px rgba(226,105,84,0.3)",
                 duration: 0.4,
                 ease: "power2.out"
             });
@@ -117,7 +117,7 @@ const PortfolioSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-8 relative">
+        <section ref={containerRef} className="min-h-screen bg-[#2D3E50] text-white py-24 px-8 relative">
 
             <div className="max-w-7xl mx-auto flex flex-col gap-16">
                 <div className="section-header flex flex-col items-center text-center gap-4">
@@ -148,7 +148,7 @@ const PortfolioCard = ({ item }: { item: any }) => {
 
             {/* Play Button Overlay */}
             <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transform group-hover:scale-125 transition-transform duration-300 shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+                <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transform group-hover:scale-125 transition-transform duration-300">
                     <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[16px] border-l-white border-b-[8px] border-b-transparent ml-1" />
                 </div>
             </div>
@@ -157,8 +157,8 @@ const PortfolioCard = ({ item }: { item: any }) => {
             <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
                 <div className="flex justify-between items-end">
                     <div>
-                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors drop-shadow-[0_0_5px_rgba(204,255,0,0.5)]">{item.title}</h3>
-                        <p className="text-xs text-secondary uppercase tracking-widest">{item.category}</p>
+                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#F67963] transition-colors">{item.title}</h3>
+                        <p className="text-xs text-[#F67963] uppercase tracking-widest">{item.category}</p>
                     </div>
                     <div className="flex items-center gap-1 text-xs text-gray-500">
                         <span>👁 {item.views}</span>

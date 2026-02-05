@@ -81,7 +81,7 @@ const ServicesSection = () => {
                 scale: 1.02,
                 rotationY: 5,
                 rotationX: -5,
-                boxShadow: "0 20px 40px rgba(204,255,0,0.15)",
+                boxShadow: "0 20px 40px rgba(226,105,84,0.15)",
                 duration: 0.4,
                 ease: "power2.out"
             });
@@ -99,7 +99,7 @@ const ServicesSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-8 relative overflow-hidden">
+        <section ref={containerRef} className="min-h-screen bg-[#2D3E50] text-white py-24 px-8 relative overflow-hidden">
             {/* Background Gradients */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
@@ -129,11 +129,11 @@ const ServicesSection = () => {
 
                                 {/* Content */}
                                 <div className="absolute bottom-0 left-0 p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-4">
-                                    <h3 className="text-3xl font-bold uppercase mb-2 group-hover:text-primary transition-colors drop-shadow-[0_0_5px_rgba(204,255,0,0.5)]">{service.title}</h3>
+                                    <h3 className="text-3xl font-bold uppercase mb-2 group-hover:text-[#F67963] transition-colors">{service.title}</h3>
                                     <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
                                         {service.description}
                                     </p>
-                                    <div className="w-12 h-1 bg-secondary mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500 shadow-[0_0_10px_rgba(255,0,153,0.8)]" />
+                                    <div className="w-12 h-1 bg-[#e26954] mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
                                 </div>
                             </div>
                         ))}
@@ -147,10 +147,10 @@ const ServicesSection = () => {
                         {features.map((feature, index) => (
                             <div
                                 key={index}
-                                className="feature-item p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm flex flex-col items-center text-center gap-4 hover:bg-white/10 transition-colors hover:shadow-[0_0_20px_rgba(204,255,0,0.1)]"
+                                className="feature-item p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm flex flex-col items-center text-center gap-4 hover:bg-white/10 transition-colors"
                             >
-                                <span className="text-4xl mb-2 drop-shadow-[0_0_10px_rgba(255,0,153,0.5)]">{feature.icon}</span>
-                                <h4 className="text-xl font-bold text-secondary">{feature.title}</h4>
+                                <span className="text-4xl mb-2">{feature.icon}</span>
+                                <h4 className="text-xl font-bold text-[#F67963]">{feature.title}</h4>
                                 <p className="text-gray-400 text-sm">{feature.desc}</p>
                             </div>
                         ))}
