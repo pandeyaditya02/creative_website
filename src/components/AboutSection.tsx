@@ -93,18 +93,18 @@ const AboutSection = () => {
                     {/* Text Content */}
                     <div ref={textContainerRef} className="flex flex-col gap-6">
                         <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">SMALL PLAYGROUND</h3>
+                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">WHO WE ARE</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
-                                We started as a small team with a big vision. Our playground was limited, but our ideas were boundless.
-                                We believe in experimenting, failing fast, and learning faster to create visuals that truly stand out.
+                                We at Zencove Media use creative, effective media solutions to bring stories to life and elevate brand voices.
+                                Our experience lies in creating high-quality, tailored content that reflects your vision and engages your audience.
                             </p>
                         </div>
 
                         <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm self-end md:ml-8">
-                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">COMPANY TRIGGERED HISTORY</h3>
+                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">OUR SERVICES</h3>
                             <p className="text-gray-300 leading-relaxed text-sm">
-                                From a single camera to a full-scale production house, our history is triggered by passion.
-                                Every project we undertake adds a new chapter to our story, pushing the boundaries of what's possible in digital storytelling.
+                                Explore our suite of services designed to improve your brand and attract attention in today's fast-paced digital landscape.
+                                We specialize in creating impactful content that resonates with your target audience and drives meaningful engagement.
                             </p>
                         </div>
                     </div>
