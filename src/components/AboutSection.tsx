@@ -74,56 +74,71 @@ const AboutSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-center bg-[#2D3E50] text-white py-20 px-8 sm:px-16 overflow-hidden">
-            {/* Background Elements */}
+        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-center bg-black text-white py-24 px-6 sm:px-16 overflow-hidden">
+            {/* Subtle Background Gradients */}
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[128px]" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[128px]" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F67963]/5 rounded-full blur-[200px]" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[150px]" />
             </div>
 
-            <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center">
-                <h2
-                    ref={titleRef}
-                    className="text-5xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-center text-[#F67963]"
-                >
-                    About Us
-                </h2>
+            <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center gap-16">
+                {/* Oversized Title */}
+                <div className="text-center space-y-4">
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Who we are</span>
+                    <h2
+                        ref={titleRef}
+                        className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white"
+                    >
+                        About Us
+                    </h2>
+                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
-                    {/* Text Content */}
-                    <div ref={textContainerRef} className="flex flex-col gap-6">
-                        <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">WHO WE ARE</h3>
-                            <p className="text-gray-300 leading-relaxed text-sm">
-                                We at Zencove Media use creative, effective media solutions to bring stories to life and elevate brand voices.
-                                Our experience lies in creating high-quality, tailored content that reflects your vision and engages your audience.
-                            </p>
-                        </div>
-
-                        <div className="about-text-block p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm self-end md:ml-8">
-                            <h3 className="text-xl font-bold mb-4 text-[#F67963]">OUR SERVICES</h3>
-                            <p className="text-gray-300 leading-relaxed text-sm">
-                                Explore our suite of services designed to improve your brand and attract attention in today's fast-paced digital landscape.
-                                We specialize in creating impactful content that resonates with your target audience and drives meaningful engagement.
-                            </p>
+                {/* Bento Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                    {/* Main Feature Card - Spans 2 columns */}
+                    <div className="about-text-block md:col-span-2 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-sm group hover:border-[#F67963]/30 transition-all duration-500">
+                        <div className="flex flex-col h-full justify-between gap-8">
+                            <div>
+                                <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-[#F67963]/10 rounded-full mb-6">Zencove Media</span>
+                                <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">
+                                    Creative solutions that bring stories to life.
+                                </h3>
+                                <p className="text-[#A1A1A1] leading-relaxed text-base md:text-lg max-w-xl">
+                                    We use creative, effective media solutions to elevate brand voices. Our experience lies in creating high-quality, tailored content that reflects your vision and engages your audience.
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent" />
+                                <span className="text-[10px] uppercase tracking-[0.2em] text-[#A1A1A1]">Est. 2020</span>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Visual/Timeline Element */}
-                    <div
-                        ref={timelineRef}
-                        className="relative h-[350px] flex justify-center items-center"
-                    >
-                        {/* Center Line */}
-                        <div className="timeline-line absolute top-0 w-[1px] bg-gradient-to-b from-transparent via-[#e26954] to-transparent opacity-50" />
+                    {/* Stats Card */}
+                    <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-[#F67963]/20 to-[#F67963]/5 border border-[#F67963]/20 flex flex-col justify-center items-center text-center group hover:scale-[1.02] transition-transform duration-500">
+                        <span className="text-6xl md:text-7xl font-bold text-white mb-2">50+</span>
+                        <span className="text-sm uppercase tracking-[0.2em] text-[#A1A1A1]">Projects Delivered</span>
+                    </div>
 
-                        {/* Glowing Dots */}
-                        <div className="timeline-dot absolute top-1/3 w-4 h-4 bg-[#e26954] rounded-full" />
-                        <div className="timeline-dot absolute bottom-1/3 w-4 h-4 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.8)]" />
+                    {/* Service Card 1 */}
+                    <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
+                        <div className="text-4xl mb-4">🎬</div>
+                        <h4 className="text-xl font-bold text-white mb-3">Video Production</h4>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">High-end filming with state-of-the-art equipment.</p>
+                    </div>
 
-                        {/* Decorative text around line */}
-                        <span className="absolute top-[30%] left-[55%] text-[10px] tracking-widest text-gray-500 rotate-90 origin-left">EST. 2020</span>
-                        <span className="absolute bottom-[30%] right-[55%] text-[10px] tracking-widest text-gray-500 -rotate-90 origin-right">EXPANSION</span>
+                    {/* Service Card 2 */}
+                    <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
+                        <div className="text-4xl mb-4">✨</div>
+                        <h4 className="text-xl font-bold text-white mb-3">Brand Strategy</h4>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Elevate your brand voice in the digital landscape.</p>
+                    </div>
+
+                    {/* Service Card 3 */}
+                    <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
+                        <div className="text-4xl mb-4">🎨</div>
+                        <h4 className="text-xl font-bold text-white mb-3">Creative Direction</h4>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Tailored content that reflects your vision.</p>
                     </div>
                 </div>
             </div>

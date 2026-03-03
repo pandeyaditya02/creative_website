@@ -8,7 +8,7 @@ import PinnedSection from "@/components/PinnedSection";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-[#2D3E50]">
+    <main className="flex min-h-screen flex-col items-center justify-between bg-black">
       {/* 
         Smart Pinned Panels Implementation:
         - Hero: Standard Pin (Top)
@@ -16,27 +16,27 @@ export default function Home() {
         - Stacking Order: Increasing Z-Index ensures Card Stacking effect.
       */}
 
-      <PinnedSection zIndex={1} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={1} className="bg-black">
         <HeroVideo />
       </PinnedSection>
 
-      <PinnedSection zIndex={2} isTall={true} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={2} isTall={true} className="bg-black">
         <AboutSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={3} isTall={true} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={3} isTall={true} className="bg-black">
         <ServicesSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={4} isTall={true} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={4} isTall={true} className="bg-black">
         <PortfolioSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={5} isTall={true} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={5} isTall={true} className="bg-black">
         <FeaturedSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={6} isTall={true} className="bg-[#2D3E50]">
+      <PinnedSection zIndex={6} isTall={true} className="bg-black">
         <ContactSection />
       </PinnedSection>
     </main>

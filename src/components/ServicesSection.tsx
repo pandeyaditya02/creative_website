@@ -99,24 +99,27 @@ const ServicesSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="min-h-screen bg-[#2D3E50] text-white py-24 px-8 relative overflow-hidden">
-            {/* Background Gradients */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[120px]" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
+        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-6 sm:px-8 relative overflow-hidden">
+            {/* Subtle Background Gradients */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F67963]/5 rounded-full blur-[200px]" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[200px]" />
 
             <div className="max-w-7xl mx-auto flex flex-col gap-24 relative z-10">
 
                 {/* Main Services Grid */}
-                <div className="flex flex-col items-center gap-12">
-                    <h2 className="services-title text-5xl md:text-6xl font-bold uppercase tracking-tighter text-[#F67963]">
-                        Services
-                    </h2>
+                <div className="flex flex-col items-center gap-16">
+                    <div className="text-center space-y-4">
+                        <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">What we do</span>
+                        <h2 className="services-title text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white">
+                            Services
+                        </h2>
+                    </div>
 
-                    <div className="services-grid grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <div className="services-grid grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
                         {services.map((service, index) => (
                             <div
                                 key={index}
-                                className="service-card relative h-[400px] rounded-2xl overflow-hidden cursor-pointer group bg-gray-900 border border-white/5"
+                                className="service-card relative h-[450px] rounded-3xl overflow-hidden cursor-pointer group border border-white/10 hover:border-[#F67963]/30 transition-all duration-500"
                             >
                                 {/* Background Image */}
                                 <div
@@ -124,16 +127,17 @@ const ServicesSection = () => {
                                     style={{ backgroundImage: `url(${service.image})` }}
                                 />
 
-                                {/* Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+                                {/* Premium Gradient Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-500" />
 
                                 {/* Content */}
-                                <div className="absolute bottom-0 left-0 p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-4">
-                                    <h3 className="text-3xl font-bold uppercase mb-2 group-hover:text-[#F67963] transition-colors">{service.title}</h3>
-                                    <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                                <div className="absolute bottom-0 left-0 p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-2">
+                                    <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-[#F67963]/10 rounded-full mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">0{index + 1}</span>
+                                    <h3 className="text-3xl md:text-4xl font-bold uppercase mb-3 text-white group-hover:text-[#F67963] transition-colors duration-300">{service.title}</h3>
+                                    <p className="text-[#A1A1A1] text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0 max-w-xs">
                                         {service.description}
                                     </p>
-                                    <div className="w-12 h-1 bg-[#e26954] mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
+                                    <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-6 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
                                 </div>
                             </div>
                         ))}
@@ -142,16 +146,16 @@ const ServicesSection = () => {
 
                 {/* Features Row */}
                 <div className="flex flex-col items-center gap-12">
-                    <h3 className="text-3xl font-bold uppercase tracking-tight text-gray-400">Why Choose Us</h3>
-                    <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Why choose us</span>
+                    <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                         {features.map((feature, index) => (
                             <div
                                 key={index}
-                                className="feature-item p-8 border border-white/10 rounded-xl bg-white/5 backdrop-blur-sm flex flex-col items-center text-center gap-4 hover:bg-white/10 transition-colors"
+                                className="feature-item p-8 border border-white/10 rounded-3xl bg-gradient-to-br from-white/[0.05] to-transparent flex flex-col items-center text-center gap-4 hover:border-[#F67963]/30 hover:bg-white/[0.08] transition-all duration-500 group"
                             >
-                                <span className="text-4xl mb-2">{feature.icon}</span>
-                                <h4 className="text-xl font-bold text-[#F67963]">{feature.title}</h4>
-                                <p className="text-gray-400 text-sm">{feature.desc}</p>
+                                <span className="text-5xl mb-2 group-hover:scale-110 transition-transform duration-300">{feature.icon}</span>
+                                <h4 className="text-xl font-bold text-white">{feature.title}</h4>
+                                <p className="text-[#A1A1A1] text-sm">{feature.desc}</p>
                             </div>
                         ))}
                     </div>

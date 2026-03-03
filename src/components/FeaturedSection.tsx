@@ -17,62 +17,68 @@ const articles = [
 
 const FeaturedSection = () => {
     return (
-        <section className="min-h-screen bg-[#2D3E50] text-white py-24 px-8 relative overflow-hidden">
+        <section className="min-h-screen bg-black text-white py-24 px-6 sm:px-8 relative overflow-hidden">
             {/* Background */}
-            <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-red-900/10 rounded-full blur-[128px]" />
+            <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-[#F67963]/5 rounded-full blur-[200px]" />
 
             <div className="max-w-7xl mx-auto flex flex-col gap-24 relative z-10">
 
                 {/* Featured Video */}
-                <div className="flex flex-col items-center gap-12">
-                    <motion.h2
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="text-5xl md:text-7xl font-bold uppercase tracking-tighter text-[#F67963]"
-                    >
-                        Featured
-                    </motion.h2>
+                <div className="flex flex-col items-center gap-16">
+                    <div className="text-center space-y-4">
+                        <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Watch now</span>
+                        <motion.h2
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white"
+                        >
+                            Featured
+                        </motion.h2>
+                    </div>
 
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gray-900 relative shadow-2xl"
+                        className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black relative shadow-2xl group"
                     >
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-20 h-20 rounded-full bg-[#e26954] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-                                <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[20px] border-l-white border-b-[10px] border-b-transparent ml-1" />
+                        <div className="absolute inset-0 flex items-center justify-center z-10">
+                            <div className="relative">
+                                <div className="absolute inset-0 w-24 h-24 rounded-full bg-[#F67963]/30 animate-ping" />
+                                <div className="w-24 h-24 rounded-full bg-[#F67963] flex items-center justify-center cursor-pointer hover:scale-110 transition-transform duration-300 relative z-10 shadow-[0_0_40px_rgba(246,121,99,0.4)]">
+                                    <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[24px] border-l-white border-b-[12px] border-b-transparent ml-2" />
+                                </div>
                             </div>
                         </div>
-                        {/* Placeholder for video content */}
-                        <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-50" alt="Featured Video" />
+                        {/* Video Thumbnail */}
+                        <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500" alt="Featured Video" />
 
-                        {/* Video Controls Bar Mockup */}
-                        <div className="absolute bottom-8 left-8 right-8 h-2 bg-gray-700 rounded-full overflow-hidden">
-                            <div className="w-1/3 h-full bg-[#e26954]" />
+                        {/* Video Controls Bar */}
+                        <div className="absolute bottom-8 left-8 right-8 h-1 bg-white/20 rounded-full overflow-hidden">
+                            <div className="w-1/3 h-full bg-gradient-to-r from-[#F67963] to-[#e26954] rounded-full" />
                         </div>
                     </motion.div>
                 </div>
 
-                {/* Articles / "Actured" */}
+                {/* Articles */}
                 <div className="flex flex-col items-center gap-12">
-                    <h3 className="text-3xl font-bold uppercase tracking-tight text-gray-400">Latest Updates</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                    <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Latest updates</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                         {articles.map((article, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 1.5, delay: index * 0.3, ease: "easeOut" }}
-                                className="flex gap-6 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group"
+                                className="flex gap-6 p-6 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-[#F67963]/30 transition-all duration-500 cursor-pointer group"
                             >
-                                <div className="w-32 h-24 rounded-lg overflow-hidden shrink-0">
+                                <div className="w-32 h-28 rounded-2xl overflow-hidden shrink-0">
                                     <img src={article.image} alt={article.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 </div>
                                 <div className="flex flex-col justify-center">
-                                    <span className="text-xs text-[#F67963] uppercase tracking-widest mb-2">{article.category}</span>
-                                    <h4 className="text-xl font-bold group-hover:text-[#F67963] transition-colors">{article.title}</h4>
+                                    <span className="text-[10px] text-[#F67963] uppercase tracking-[0.2em] mb-3">{article.category}</span>
+                                    <h4 className="text-xl font-bold text-white group-hover:text-[#F67963] transition-colors duration-300">{article.title}</h4>
                                 </div>
                             </motion.div>
                         ))}
