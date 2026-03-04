@@ -1,52 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #2D3E50;
-  --foreground: #ededed;
+  --background: #000000;
+  --foreground: #FFFFFF;
+  --accent: #FF5C00;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  /* Charcoal & Coral Theme Tokens */
-  --color-charcoal: #2D3E50;
-  /* Charcoal - dark blue-gray */
-  --color-charcoal-light: #3A4D5F;
-  /* Lighter Charcoal */
-  --color-charcoal-dark: #1F2D3D;
-  /* Darker Charcoal */
-  --color-coral: #e26954;
-  /* Coral - warm salmon-red */
-  --color-coral-light: #F67963;
-  /* Lighter Coral */
-  --color-coral-dark: #c95845;
-  /* Darker Coral */
-
-  /* Primary/Secondary mappings */
-  --color-primary: #e26954;
-  /* Coral */
-  --color-primary-hover: #F67963;
-  /* Lighter Coral on hover */
-  --color-secondary: #2D3E50;
-  /* Charcoal */
-  --color-secondary-hover: #3A4D5F;
-  /* Lighter Charcoal */
-  --color-accent: #E86B5A;
-  /* Coral */
+  --color-accent: var(--accent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #2D3E50;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #FFFFFF;
+    --accent: #FF5C00;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Macro-whitespace utility classes based on Montage.ae analysis */
+@layer utilities {
+  .padding-macro {
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+  }
+  
+  .padding-macro-top {
+    padding-top: 20vh;
+  }
+  
+  .padding-macro-bottom {
+    padding-bottom: 20vh;
+  }
 }

@@ -1,44 +1,20 @@
-import HeroVideo from "@/components/HeroVideo";
-import AboutSection from "@/components/AboutSection";
-import ServicesSection from "@/components/ServicesSection";
-import PortfolioSection from "@/components/PortfolioSection";
-import FeaturedSection from "@/components/FeaturedSection";
-import ContactSection from "@/components/ContactSection";
-import PinnedSection from "@/components/PinnedSection";
+import Hero from "@/components/home/Hero";
+import StorySection from "@/components/home/StorySection";
+import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-black">
-      {/* 
-        Smart Pinned Panels Implementation:
-        - Hero: Standard Pin (Top)
-        - About/Services: Tall content, so pin at Bottom (isTall={true})
-        - Stacking Order: Increasing Z-Index ensures Card Stacking effect.
-      */}
+    <main className="min-h-screen bg-black w-full flex flex-col items-center overflow-x-hidden">
+      <Hero />
+      <StorySection />
+      <PortfolioGrid />
 
-      <PinnedSection zIndex={1} className="bg-black">
-        <HeroVideo />
-      </PinnedSection>
-
-      <PinnedSection zIndex={2} isTall={true} className="bg-black">
-        <AboutSection />
-      </PinnedSection>
-
-      <PinnedSection zIndex={3} isTall={true} className="bg-black">
-        <ServicesSection />
-      </PinnedSection>
-
-      <PinnedSection zIndex={4} isTall={true} className="bg-black">
-        <PortfolioSection />
-      </PinnedSection>
-
-      <PinnedSection zIndex={5} isTall={true} className="bg-black">
-        <FeaturedSection />
-      </PinnedSection>
-
-      <PinnedSection zIndex={6} isTall={true} className="bg-black">
-        <ContactSection />
-      </PinnedSection>
+      {/* Temporary Colossal Footer Placeholder */}
+      <footer className="w-full bg-black py-32 px-6 border-t border-white/10 flex flex-col justify-end min-h-[50vh]">
+        <h1 className="text-[12vw] leading-none font-bold uppercase tracking-tighter text-white mt-auto text-center">
+          AGENCY
+        </h1>
+      </footer>
     </main>
   );
 }
