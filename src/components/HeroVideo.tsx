@@ -61,16 +61,20 @@ const HeroVideo = () => {
     });
 
     // 2. Parallax & Scale on Scroll
-    gsap.to(videoRef.current, {
-      scale: 1, // Shrink from 1.35
-      filter: "blur(5px)",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: true
+    gsap.fromTo(videoRef.current,
+      { scale: 1.35, filter: "blur(0px)" },
+      {
+        scale: 1.05,
+        filter: "blur(4px)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+        }
       }
-    });
+    );
 
     // Parallax text (moves slower or faster than scroll)
     gsap.to(titleRef.current, {
@@ -79,7 +83,7 @@ const HeroVideo = () => {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom center",
-        scrub: true
+        scrub: 1,
       }
     });
 
@@ -183,7 +187,7 @@ const HeroVideo = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-[#2D3E50] text-white">
+    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white">
       {/* Background Video - YT.Player container */}
       <div ref={videoRef} className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
         <div
