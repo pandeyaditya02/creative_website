@@ -142,7 +142,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Links */}
-      <div ref={linksRef} className="flex items-center gap-12 text-xs font-medium tracking-widest">
+      <div ref={linksRef} className="flex items-center gap-12 text-[11px] font-semibold tracking-widest">
         {navLinks.map((link) => (
           <Link
             key={link.label}

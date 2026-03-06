@@ -5,6 +5,7 @@ import { motion, useSpring, useMotionValue } from "framer-motion";
 
 export default function CustomCursor() {
     const [isHovering, setIsHovering] = useState(false);
+    const [isOverLink, setIsOverLink] = useState(false);
 
     // Mouse position values
     const mouseX = useMotionValue(0);
@@ -34,14 +35,32 @@ export default function CustomCursor() {
         const handleMouseDown = () => setIsHovering(true);
         const handleMouseUp = () => setIsHovering(false);
 
+        const handleMouseOver = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('a, button, [data-cursor="hover"]')) {
+                setIsOverLink(true);
+            }
+        };
+
+        const handleMouseOut = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('a, button, [data-cursor="hover"]')) {
+                setIsOverLink(false);
+            }
+        };
+
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mouseup", handleMouseUp);
+        window.addEventListener("mouseover", handleMouseOver);
+        window.addEventListener("mouseout", handleMouseOut);
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mousedown", handleMouseDown);
             window.removeEventListener("mouseup", handleMouseUp);
+            window.removeEventListener("mouseover", handleMouseOver);
+            window.removeEventListener("mouseout", handleMouseOut);
         };
     }, [mouseX, mouseY]);
 
@@ -51,25 +70,27 @@ export default function CustomCursor() {
         body {
           cursor: none;
         }
-        /* Ensure cursor is visible on interactive elements if needed, 
-           or keep 'none' to fully replace. 
-           Usually we want full replacement unless specified otherwise. */
         a, button, input, textarea {
            cursor: none;
         }
       `}</style>
 
-            {/* Biggest Dot (Leading) */}
+            {/* Biggest Dot (Leading) — morphs into ring on link hover */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#e26954] mix-blend-screen z-50"
+                className="fixed top-0 left-0 pointer-events-none rounded-full mix-blend-screen z-50"
                 style={{
                     x: firstDotX,
                     y: firstDotY,
                     translateX: "-50%",
                     translateY: "-50%",
-                    width: isHovering ? 32 : 24,
-                    height: isHovering ? 32 : 24,
                 }}
+                animate={{
+                    width: isOverLink ? 48 : isHovering ? 32 : 24,
+                    height: isOverLink ? 48 : isHovering ? 32 : 24,
+                    backgroundColor: isOverLink ? "transparent" : "#e26954",
+                    border: isOverLink ? "2px solid #F67963" : "2px solid transparent",
+                }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
             />
 
             {/* Medium Dot (Middle Trail) */}
