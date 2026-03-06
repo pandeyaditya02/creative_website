@@ -17,7 +17,7 @@ const articles = [
 
 const FeaturedSection = () => {
     return (
-        <section className="min-h-screen bg-black text-white py-24 px-6 sm:px-8 relative overflow-hidden">
+        <section className="min-h-screen bg-black text-white py-16 px-6 sm:px-8 relative overflow-hidden">
             {/* Background */}
             <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-[#F67963]/5 rounded-full blur-[200px]" />
 
