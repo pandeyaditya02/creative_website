@@ -1,13 +1,13 @@
 # ROADMAP.md
 
-> **Current Phase**: Not started
+> **Current Phase**: v1.0 Complete ✅
 > **Milestone**: v1.0 - Design Polish & Audit
 
 ## Must-Haves (from SPEC)
-- [ ] Documented list of design gaps.
-- [ ] Cohesive global styling (margins, typography).
-- [ ] Smooth, bug-free GSAP scrolling effects.
-- [ ] Resolved UI-related technical debt.
+- [x] Documented list of design gaps.
+- [x] Cohesive global styling (margins, typography).
+- [x] Smooth, bug-free GSAP scrolling effects.
+- [x] Resolved UI-related technical debt.
 
 ## Phases
 
@@ -27,6 +27,6 @@
 **Requirements**: REQ-03
 
 ### Phase 4: Quality Assurance & Cleanup
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Fix remaining technical debt affecting the UI, test across different viewport sizes, and finalize the polish.
 **Requirements**: REQ-04
