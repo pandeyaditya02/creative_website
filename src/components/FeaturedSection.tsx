@@ -21,7 +21,7 @@ const FeaturedSection = () => {
             {/* Background */}
             <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-[#F67963]/5 rounded-full blur-[200px]" />
 
-            <div className="max-w-7xl mx-auto flex flex-col gap-24 relative z-10">
+            <div className="max-w-7xl mx-auto flex flex-col gap-16 relative z-10">
 
                 {/* Featured Video */}
                 <div className="flex flex-col items-center gap-16">
@@ -52,7 +52,7 @@ const FeaturedSection = () => {
                             </div>
                         </div>
                         {/* Video Thumbnail */}
-                        <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500" alt="Featured Video" />
+                        <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity duration-500" alt="Featured Video" />
 
                         {/* Video Controls Bar */}
                         <div className="absolute bottom-8 left-8 right-8 h-1 bg-white/20 rounded-full overflow-hidden">
