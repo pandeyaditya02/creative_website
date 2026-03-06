@@ -1,18 +1,14 @@
 ## Current Position
-- **Phase**: 4 (completed)
-- **Task**: All tasks complete
-- **Status**: Verified
+- **Phase**: None
+- **Task**: Milestone archived
+- **Status**: Idle — ready for next milestone
 
-## Last Session Summary
-Phase 4 (Quality Assurance & Cleanup) executed successfully. 2 plans, 4 tasks completed.
+## Last Milestone
+✅ **v1.0 Design Polish & Audit** — Completed 2026-03-07
+- Archive: `.gsd/milestones/v1.0/`
+- Summary: `.gsd/milestones/v1.0/SUMMARY.md`
+- Git tag: `v1.0`
 
-Key changes:
-- `react-player@3.4.0` installed via `npm install`.
-- `npm run build` — exit 0, clean production build.
-- `TODO.md` — all items resolved.
-- `ROADMAP.md`, `SPEC.md`, `JOURNAL.md` — fully finalized.
-
-## Milestone Status
-🎉 **v1.0 Design Polish & Audit — COMPLETE**
-
-All 4 phases successfully planned, executed, and verified.
+## Next Steps
+1. /new-milestone — Start the next milestone
+2. /audit-milestone v1.0 — Review the completed milestone
