@@ -74,24 +74,8 @@ const ServicesSection = () => {
             }
         });
 
-        // 4. Hover Effects (3D Tilt) for Services
+        // 4. Hover Effects for Services (clean, no conflicting timelines)
         cards.forEach((card) => {
-            const hoverTl = gsap.timeline({ paused: true });
-            hoverTl.to(card, {
-                scale: 1.02,
-                rotationY: 5,
-                rotationX: -5,
-                boxShadow: "0 20px 40px rgba(226,105,84,0.15)",
-                duration: 0.4,
-                ease: "power2.out"
-            });
-
-            // Add event listeners to play/reverse via GSAP logic if needed, 
-            // but standard JS listeners are fine inside useGSAP too.
-            // However, implementing simple hover via CSS or simpler GSAP usually suffices.
-            // Let's stick to the card's internal logic for complex hover or global?
-            // Actually, doing it here keeps it clean.
-
             card.addEventListener("mouseenter", () => gsap.to(card, { scale: 1.05, duration: 0.3 }));
             card.addEventListener("mouseleave", () => gsap.to(card, { scale: 1, duration: 0.3 }));
         });
@@ -99,12 +83,12 @@ const ServicesSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-6 sm:px-8 relative overflow-hidden">
+        <section ref={containerRef} className="min-h-screen bg-black text-white py-16 px-6 sm:px-8 relative overflow-hidden">
             {/* Subtle Background Gradients */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F67963]/5 rounded-full blur-[200px]" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[200px]" />
 
-            <div className="max-w-7xl mx-auto flex flex-col gap-24 relative z-10">
+            <div className="max-w-7xl mx-auto flex flex-col gap-16 relative z-10">
 
                 {/* Main Services Grid */}
                 <div className="flex flex-col items-center gap-16">

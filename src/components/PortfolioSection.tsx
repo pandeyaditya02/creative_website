@@ -117,7 +117,7 @@ const PortfolioSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="min-h-screen bg-black text-white py-24 px-6 sm:px-8 relative">
+        <section ref={containerRef} className="min-h-screen bg-black text-white py-16 px-6 sm:px-8 relative">
             {/* Subtle Background */}
             <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#F67963]/5 rounded-full blur-[200px]" />
 
