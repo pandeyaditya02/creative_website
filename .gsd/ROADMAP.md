@@ -128,3 +128,39 @@
 - No horizontal scrolling.
 - Text is heavily legible but smaller and refined.
 - Gradient feels subtle and not boxy.
+
+---
+
+### Phase 12: Stitch MCP Brutalist Redesign (YouTube Player)
+**Status**: ✅ Verified Complete (2026-03-08)
+**Objective**: The user restored the YouTube IFrame API background player. Redesign the UI overlay using **Stitch MCP** to generate the brutalist cinematic layout (bottom-anchored text, heavy sans-serif typography, feathered gradients) and merge it with the existing YouTube logic in `HeroVideo.tsx`.
+**Depends on**: Phase 11
+
+---
+
+### Phase 13: Revert Video Element (YouTube Integration)
+**Status**: ✅ Verified Complete (2026-03-08)
+**Objective**: The user manually reverted HeroVideo.tsx back to utilizing the local `<video>` element alongside the brutalist UI. We must refactor the component to use the YouTube IFrame API (`O8_VkfRkjRg`) while strictly preserving the current brutalist UI, macro-whitespace, and GSAP animations.
+**Depends on**: Phase 11 / Phase 12 (Reverted)
+
+**Tasks**:
+- [ ] Extract YouTube script loader, interval polling, and `toggleSound` logic from reference code.
+- [ ] Replace local `<video>` with `<div id="hero-video-player" />` using specific `-translate` scaling CSS to hide YT branding.
+- [ ] Ensure `pointer-events-none` prevents iframe hijacking.
+- [ ] Do NOT modify the brutalist typography or UI overlays.
+
+**Verification**:
+- Video auto-plays from YouTube.
+- Typography remains bold, brutalist, and bottom-left anchored.
+- Sound toggle functions.
+
+**Tasks**:
+- [ ] Utilize Stitch MCP (`mcp_StitchMCP_generate_screen_from_text`) to generate the brutalist hero UI.
+- [ ] Strip out the old centered UI in `HeroVideo.tsx`.
+- [ ] Merge the new Stitch UI into `HeroVideo.tsx`, carefully preserving the YouTube initialization and `toggleSound` logic.
+- [ ] Wire the progress and mute states into the new UI elements.
+
+**Verification**:
+- Video auto-plays seamlessly via YouTube API.
+- Typography matches the brutalist, extended sans-serif design.
+- Full 100vw/100vh bounding box is respected.
