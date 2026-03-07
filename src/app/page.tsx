@@ -6,6 +6,8 @@ import FeaturedSection from "@/components/FeaturedSection";
 import ContactSection from "@/components/ContactSection";
 import PinnedSection from "@/components/PinnedSection";
 import ClientsMarquee from "@/components/ClientsMarquee";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import GrandCTA from "@/components/GrandCTA";
 
 export default function Home() {
   return (
@@ -27,22 +29,34 @@ export default function Home() {
 
       {/* Services — self-pinning via GSAP ScrollTrigger.pin (not using PinnedSection).
            pinSpacing:true adds scroll height automatically. z-index ensures stacking order. */}
-      <div className="relative" style={{ zIndex: 3 }}>
+      <div className="relative w-full bg-black" style={{ zIndex: 3 }}>
         <ServicesSection />
       </div>
 
-      <PinnedSection zIndex={4} isTall={true} className="bg-black">
+      {/* Portfolio — commented out for now */}
+      {/* <PinnedSection zIndex={4} isTall={true} className="bg-black">
         <PortfolioSection />
-      </PinnedSection>
+      </PinnedSection> */}
 
-      {/* Clients Marquee — not pinned, sits naturally between portfolio and featured */}
-      <ClientsMarquee />
+      {/* Clients Marquee — needs z-index to sit above pinned sections */}
+      <div className="relative w-full bg-black" style={{ zIndex: 5 }}>
+        <ClientsMarquee />
+      </div>
 
-      <PinnedSection zIndex={5} isTall={true} className="bg-black">
+      {/* Featured — commented out for now */}
+      {/* <PinnedSection zIndex={5} isTall={true} className="bg-black">
         <FeaturedSection />
-      </PinnedSection>
+      </PinnedSection> */}
 
-      <PinnedSection zIndex={6} isTall={true} className="bg-black">
+      <div className="relative w-full bg-black" style={{ zIndex: 6 }}>
+        <WhyChooseUs />
+      </div>
+
+      <div className="relative w-full bg-black" style={{ zIndex: 7 }}>
+        <GrandCTA />
+      </div>
+
+      <PinnedSection zIndex={8} isTall={true} className="bg-black">
         <ContactSection />
       </PinnedSection>
     </main>
