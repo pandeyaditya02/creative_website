@@ -25,9 +25,11 @@ export default function Home() {
         <AboutSection />
       </PinnedSection>
 
-      <PinnedSection zIndex={3} isTall={true} className="bg-black">
+      {/* Services — self-pinning via GSAP ScrollTrigger.pin (not using PinnedSection).
+           pinSpacing:true adds scroll height automatically. z-index ensures stacking order. */}
+      <div className="relative" style={{ zIndex: 3 }}>
         <ServicesSection />
-      </PinnedSection>
+      </div>
 
       <PinnedSection zIndex={4} isTall={true} className="bg-black">
         <PortfolioSection />

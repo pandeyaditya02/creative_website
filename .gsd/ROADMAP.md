@@ -31,3 +31,24 @@
 - Scroll through full site on dev server, confirm all content updated
 - Confirm GSAP/Framer animations unaffected
 - Confirm marquee scrolls smoothly
+
+---
+
+### Phase 6: Services Section Refactor
+**Status**: ⬜ Not Started
+**Objective**: Refactor Services section from hover-grid to a vertical cinematic "Scroll-Story" layout. All text permanently visible, GSAP scroll-triggered entrance animations, media parallax.
+**Depends on**: Phase 5
+
+**Tasks**:
+- [ ] Remove PinnedSection wrapper for Services in page.tsx
+- [ ] Rewrite ServicesSection as vertical scroll-story (alternating split-screen)
+- [ ] Implement GSAP text reveal animations (fade+translateY per block)
+- [ ] Add media parallax/slow-scale effects
+- [ ] Integrate "Why choose us" features into new layout
+- [ ] Visual browser verification
+
+**Verification**:
+- All 5 service titles + descriptions permanently visible
+- Scroll animations fire on viewport entry
+- Dark mode aesthetic preserved, high contrast text
+- No hydration errors
