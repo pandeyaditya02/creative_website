@@ -34,44 +34,28 @@ const ServicesSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        // 1. Title Reveal
-        gsap.from(".services-title", {
-            y: 30,
-            opacity: 0,
-            duration: 1.5,
-            scrollTrigger: {
-                trigger: ".services-title",
-                start: "top 85%",
-                toggleActions: "play none none reverse"
-            }
-        });
+        // 1. Title Reveal — mount-based (no ScrollTrigger inside PinnedSection)
+        gsap.fromTo(".services-title",
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1.2, ease: "power2.out" }
+        );
 
-        // 2. Services Grid Stagger
+        // 2. Services Grid Stagger — mount-based
         const cards = gsap.utils.toArray<HTMLElement>(".service-card");
-        gsap.from(cards, {
-            y: 50,
-            opacity: 0,
-            duration: 1.2,
-            stagger: 0.3,
-            scrollTrigger: {
-                trigger: ".services-grid",
-                start: "top 75%",
-                toggleActions: "play none none reverse"
-            }
+        cards.forEach((card, i) => {
+            gsap.fromTo(card,
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.9, delay: 0.2 + i * 0.15, ease: "power2.out" }
+            );
         });
 
-        // 3. Features Row Stagger
+        // 3. Features Row Stagger — mount-based
         const featureItems = gsap.utils.toArray<HTMLElement>(".feature-item");
-        gsap.from(featureItems, {
-            y: 20,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-            scrollTrigger: {
-                trigger: ".features-grid",
-                start: "top 80%",
-                toggleActions: "play none none reverse"
-            }
+        featureItems.forEach((item, i) => {
+            gsap.fromTo(item,
+                { y: 20, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, delay: 0.4 + i * 0.12, ease: "power2.out" }
+            );
         });
 
         // 4. Hover Effects for Services (clean, no conflicting timelines)

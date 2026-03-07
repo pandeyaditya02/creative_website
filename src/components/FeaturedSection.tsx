@@ -29,8 +29,8 @@ const FeaturedSection = () => {
                         <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Watch now</span>
                         <motion.h2
                             initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
                             className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white"
                         >
                             Featured
@@ -39,8 +39,8 @@ const FeaturedSection = () => {
 
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1.2, delay: 0.2, ease: "easeOut" }}
                         className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-black relative shadow-2xl group"
                     >
                         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -69,8 +69,8 @@ const FeaturedSection = () => {
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 1.5, delay: index * 0.3, ease: "easeOut" }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 1.2, delay: 0.4 + index * 0.2, ease: "easeOut" }}
                                 className="flex gap-6 p-6 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 hover:border-[#F67963]/30 transition-all duration-500 cursor-pointer group"
                             >
                                 <div className="w-32 h-28 rounded-2xl overflow-hidden shrink-0">

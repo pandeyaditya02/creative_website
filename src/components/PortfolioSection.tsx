@@ -49,57 +49,31 @@ const PortfolioSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        // Reveal Header with Split Text effect
-        gsap.from(".section-header h2", {
-            opacity: 0,
-            y: 50,
-            rotateX: -20,
-            duration: 1.5,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: ".section-header",
-                start: "top 80%",
-            }
+        // Reveal Header — mount-based (no ScrollTrigger inside PinnedSection)
+        gsap.fromTo(".section-header h2",
+            { opacity: 0, y: 50, rotateX: -20 },
+            { opacity: 1, y: 0, rotateX: 0, duration: 1.2, ease: "power3.out" }
+        );
+
+        // Grid Reveal — mount-based with stagger
+        const items = gsap.utils.toArray<HTMLElement>(".portfolio-item");
+        items.forEach((item, i) => {
+            gsap.fromTo(item,
+                { opacity: 0, y: 60, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.9, delay: 0.15 + i * 0.1, ease: "power3.out" }
+            );
         });
 
-        // Enhanced Grid Reveal with Clip-Path and Rotation
-        gsap.from(".portfolio-item", {
-            opacity: 0,
-            y: 100,
-            rotation: -5,
-            scale: 0.8,
-            duration: 1.5,
-            stagger: {
-                amount: 1.2,
-                from: "start",
-                grid: "auto"
-            },
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: ".portfolio-grid",
-                start: "top 75%",
-                toggleActions: "play none none reverse"
-            }
-        });
-
-        // Image Clip-Path Reveal
-        gsap.from(".portfolio-item > div:first-child", {
-            clipPath: "inset(0 100% 0 0)",
-            duration: 1.2,
-            ease: "power2.inOut",
-            stagger: {
-                amount: 1.2,
-                from: "start"
-            },
-            scrollTrigger: {
-                trigger: ".portfolio-grid",
-                start: "top 75%",
-                toggleActions: "play none none reverse"
-            }
+        // Image Clip-Path Reveal — mount-based
+        const imageDivs = gsap.utils.toArray<HTMLElement>(".portfolio-item > div:first-child");
+        imageDivs.forEach((div, i) => {
+            gsap.fromTo(div,
+                { clipPath: "inset(0 100% 0 0)" },
+                { clipPath: "inset(0 0% 0 0)", duration: 1, delay: 0.2 + i * 0.1, ease: "power2.inOut" }
+            );
         });
 
         // Enhanced Hover Interactions with 3D Tilt
-        const items = gsap.utils.toArray<HTMLElement>(".portfolio-item");
         items.forEach((item) => {
             const hoverTl = gsap.timeline({ paused: true });
             hoverTl.to(item, {

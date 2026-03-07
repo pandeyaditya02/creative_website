@@ -24,30 +24,17 @@ const ContactSection = () => {
             }
         });
 
-        // 2. Title Reveal
-        gsap.from(".contact-title", {
-            y: 50,
-            opacity: 0,
-            duration: 1.5,
-            scrollTrigger: {
-                trigger: ".contact-title",
-                start: "top 85%",
-                toggleActions: "play none none reverse"
-            }
-        });
+        // 2. Title Reveal — mount-based (no ScrollTrigger inside PinnedSection)
+        gsap.fromTo(".contact-title",
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, duration: 1.2, ease: "power2.out" }
+        );
 
-        // 3. Form Reveal
-        gsap.from(formRef.current, {
-            scale: 0.9,
-            opacity: 0,
-            duration: 1.2,
-            delay: 0.3,
-            scrollTrigger: {
-                trigger: formRef.current,
-                start: "top 80%",
-                toggleActions: "play none none reverse"
-            }
-        });
+        // 3. Form Reveal — mount-based
+        gsap.fromTo(formRef.current,
+            { scale: 0.9, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 1, delay: 0.3, ease: "power2.out" }
+        );
 
         // 4. Input Focus Animations
         const inputs = gsap.utils.toArray<HTMLElement>(".contact-input");
