@@ -5,6 +5,7 @@ import PortfolioSection from "@/components/PortfolioSection";
 import FeaturedSection from "@/components/FeaturedSection";
 import ContactSection from "@/components/ContactSection";
 import PinnedSection from "@/components/PinnedSection";
+import ClientsMarquee from "@/components/ClientsMarquee";
 
 export default function Home() {
   return (
@@ -31,6 +32,9 @@ export default function Home() {
       <PinnedSection zIndex={4} isTall={true} className="bg-black">
         <PortfolioSection />
       </PinnedSection>
+
+      {/* Clients Marquee — not pinned, sits naturally between portfolio and featured */}
+      <ClientsMarquee />
 
       <PinnedSection zIndex={5} isTall={true} className="bg-black">
         <FeaturedSection />

@@ -46,30 +46,21 @@ const AboutSection = () => {
 
 
 
-        // 2. Synchronized animation for text blocks and timeline
-        const mainTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top 40%", // Starts later when section is more visible
-                end: "bottom 80%",
-                scrub: 1 // Sync with scroll
-            }
-        });
-
-        // Text blocks slide in from left
+        // 2. Text blocks reveal — simple delayed animation on mount (no ScrollTrigger,
+        //    because PinnedSection pinning prevents nested ScrollTriggers from firing)
         const textBlocks = gsap.utils.toArray<HTMLElement>(".about-text-block");
         textBlocks.forEach((block, index) => {
-            mainTl.from(block, {
-                x: -50,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power2.out"
-            }, index * 0.2);
+            gsap.fromTo(block,
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: 0.3 + index * 0.12,
+                    ease: "power2.out",
+                }
+            );
         });
-
-        // Timeline animation synced with text blocks
-        mainTl.fromTo(".timeline-line", { height: "0%" }, { height: "100%", duration: 1, ease: "power2.inOut" }, 0)
-            .from(".timeline-dot", { scale: 0, opacity: 0, stagger: 0.3, duration: 0.5, ease: "back.out(1.7)" }, 0.4);
 
     }, { scope: containerRef });
 
@@ -99,12 +90,12 @@ const AboutSection = () => {
                     <div className="about-text-block md:col-span-2 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-sm group hover:border-[#F67963]/30 transition-all duration-500">
                         <div className="flex flex-col h-full justify-between gap-8">
                             <div>
-                                <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-[#F67963]/10 rounded-full mb-6">Zencove Media</span>
+                                <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-[#F67963]/10 rounded-full mb-6">Creative Chauk</span>
                                 <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">
-                                    Creative solutions that bring stories to life.
+                                    Stories told with purpose.<br />Results that make an impact.
                                 </h3>
                                 <p className="text-[#A1A1A1] leading-relaxed text-base md:text-lg max-w-xl">
-                                    We use creative, effective media solutions to elevate brand voices. Our experience lies in creating high-quality, tailored content that reflects your vision and engages your audience.
+                                    We use creative, effective media solutions to bring stories to life and elevate brand voices — delivering high-quality, tailored content that reflects your vision and engages your audience. From media planning to production and digital content, every project is built to align with your brand&apos;s objectives and make a tangible impact.
                                 </p>
                             </div>
                             <div className="flex items-center gap-4">
@@ -117,28 +108,28 @@ const AboutSection = () => {
                     {/* Stats Card */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-[#F67963]/20 to-[#F67963]/5 border border-[#F67963]/20 flex flex-col justify-center items-center text-center group hover:scale-[1.02] transition-transform duration-500">
                         <span className="text-6xl md:text-7xl font-bold text-white mb-2">50+</span>
-                        <span className="text-sm uppercase tracking-[0.2em] text-[#A1A1A1]">Projects Delivered</span>
+                        <span className="text-sm uppercase tracking-[0.2em] text-[#A1A1A1]">Brand Partnerships</span>
                     </div>
 
                     {/* Service Card 1 */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
                         <div className="text-4xl mb-4">🎬</div>
                         <h4 className="text-xl font-bold text-white mb-3">Video Production</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">High-end filming with state-of-the-art equipment.</p>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">From ideation to execution — high-end production and distribution tailored to your brand.</p>
                     </div>
 
                     {/* Service Card 2 */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
-                        <div className="text-4xl mb-4">✨</div>
-                        <h4 className="text-xl font-bold text-white mb-3">Brand Strategy</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Elevate your brand voice in the digital landscape.</p>
+                        <div className="text-4xl mb-4">📲</div>
+                        <h4 className="text-xl font-bold text-white mb-3">Digital Content</h4>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Social media content and digital campaigns with visuals that communicate complex ideas clearly.</p>
                     </div>
 
                     {/* Service Card 3 */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
-                        <div className="text-4xl mb-4">🎨</div>
-                        <h4 className="text-xl font-bold text-white mb-3">Creative Direction</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Tailored content that reflects your vision.</p>
+                        <div className="text-4xl mb-4">🤝</div>
+                        <h4 className="text-xl font-bold text-white mb-3">Media Consultation</h4>
+                        <p className="text-[#A1A1A1] text-sm leading-relaxed">End-to-end consultation ensuring your projects run smoothly and yield measurable results.</p>
                     </div>
                 </div>
             </div>

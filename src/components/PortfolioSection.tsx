@@ -126,7 +126,7 @@ const PortfolioSection = () => {
                     <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Our work</span>
                     <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white">Portfolio</h2>
                     <p className="text-[#A1A1A1] max-w-lg text-sm md:text-base">
-                        A curated selection of our best work, showcasing our versatility and passion for storytelling.
+                        A curated selection of campaigns, films, and digital narratives crafted for some of the most iconic brands in India and beyond.
                     </p>
                 </div>
 

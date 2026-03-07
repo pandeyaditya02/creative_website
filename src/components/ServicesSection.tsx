@@ -9,25 +9,25 @@ gsap.registerPlugin(ScrollTrigger);
 const services = [
     {
         title: "Pre-Production",
-        description: "Concept development, scriptwriting, and storyboarding to lay a solid foundation.",
+        description: "Concept development, scriptwriting, and storyboarding — the foundation of every story we tell. We begin by understanding your brand's vision, audience, and objectives.",
         image: "https://images.unsplash.com/photo-1598899134739-9609c96191b0?q=80&w=600&auto=format&fit=crop"
     },
     {
         title: "Production",
-        description: "High-end filming with state-of-the-art equipment and experienced crews.",
+        description: "High-end filming with state-of-the-art equipment and seasoned crews. Our productions are customized to meet the particular requirements and objectives of your brand.",
         image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=600&auto=format&fit=crop"
     },
     {
         title: "Post-Production",
-        description: "Editing, VFX, color grading, and sound design to bring the vision to life.",
+        description: "Editing, VFX, color grading, and sound design — delivering digital content with visuals that stand out and communicate complex ideas clearly across every platform.",
         image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44e?q=80&w=600&auto=format&fit=crop"
     }
 ];
 
 const features = [
-    { icon: "🎥", title: "Cinema", desc: "Feature-film quality production values." },
-    { icon: "⚡", title: "Fast Turnaround", desc: "Efficient workflows without compromising quality." },
-    { icon: "🎨", title: "Visual Arts", desc: "Creative direction that pushes boundaries." }
+    { icon: "🎥", title: "Open Collaboration", desc: "Your vision is at the heart of everything we do — we work alongside you at every stage." },
+    { icon: "⚡", title: "Measurable Results", desc: "From ideation to execution, every project is built to yield results that align with your objectives." },
+    { icon: "🎨", title: "Deep Engagement", desc: "Creative, effective media solutions designed to drive deep engagement from your intended audience." }
 ];
 
 const ServicesSection = () => {

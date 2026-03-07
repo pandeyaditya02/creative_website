@@ -78,6 +78,10 @@ const ContactSection = () => {
                     <h2 className="contact-title text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white">
                         Contact
                     </h2>
+                    <p className="text-[#A1A1A1] text-sm md:text-base max-w-md leading-relaxed">
+                        Ready to start a project? Let&apos;s work together to reach your media goals and{" "}
+                        <span className="text-[#F67963] font-semibold">bring your vision to life.</span>
+                    </p>
                 </div>
 
                 {/* Form */}
@@ -116,7 +120,7 @@ const ContactSection = () => {
 
                 {/* Copyright */}
                 <div className="text-[#A1A1A1]/50 text-[10px] md:text-xs mt-4 text-center">
-                    © 2026 Zencove Media. All rights reserved.
+                    © 2026 Creative Chauk. All rights reserved.
                 </div>
             </div>
         </section>

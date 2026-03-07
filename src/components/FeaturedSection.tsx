@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 
 const articles = [
     {
-        title: "Behind the Scenes",
-        category: "Production",
+        title: "Crafting the Hamdard Campaign",
+        category: "Brand Film",
         image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=600&auto=format&fit=crop"
     },
     {
-        title: "The Art of Color",
-        category: "Post-Production",
+        title: "The Harley Davidson Story",
+        category: "Automotive",
         image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop"
     }
 ];
