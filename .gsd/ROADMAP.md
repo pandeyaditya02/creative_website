@@ -87,3 +87,26 @@
 - No bleed-through/transparency during Services scroll
 - Slides occupy normal horizontal space
 - DOM pinning cleanly transitions without jumping
+
+---
+
+### Phase 9: Site Animation & Interaction Polish
+**Status**: ⬜ Not Started
+**Objective**: Refine hover states, custom cursors, and animation timings across all components to ensure a premium, unified interactive feel.
+**Depends on**: Phase 8
+
+---
+
+### Phase 10: Native Hero Video Integration
+**Status**: ✅ Verified Complete (2026-03-08)
+**Objective**: Replace the YouTube-driven Hero background video with a native HTML5 video player sourced from Google Drive.
+**Depends on**: Phase 8
+
+**Tasks**:
+- [x] Download the video from Google Drive to `public/hero-video.mp4` (DONE via manual user override).
+- [x] Refactor `HeroVideo.tsx` to use native `<video>` tag instead of YouTube IFrame API.
+- [x] Wire up progress bar to native `timeupdate` and mute button to `video.muted`.
+
+**Verification**:
+- Video auto-plays natively without YouTube branding or scripting overhead.
+- Mute visualizer and progress bar synchronize accurately.
