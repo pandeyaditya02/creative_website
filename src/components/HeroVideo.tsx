@@ -108,9 +108,9 @@ const HeroVideo = () => {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-black text-white">
+    <div ref={containerRef} className="relative w-screen h-screen overflow-hidden bg-black text-white">
       {/* Background Video - Native HTML5 Player */}
-      <div ref={videoContainerRef} className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
+      <div ref={videoContainerRef} className="absolute inset-0 w-full h-full z-0 pointer-events-none scale-[1.35] origin-center brightness-[0.7] contrast-[1.1]">
         <video
           ref={videoRef}
           src="/hero-video.mp4"
@@ -119,65 +119,69 @@ const HeroVideo = () => {
           muted={muted}
           playsInline
           onTimeUpdate={handleTimeUpdate}
-          className="absolute top-1/2 left-1/2 w-[100%] h-[100%] min-w-[120%] min-h-[120%] -translate-x-1/2 -translate-y-1/2 object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
       </div>
 
-      {/* Overlay Content */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-16 pb-24">
-        <div className="w-full max-w-[90%] mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-8 items-end">
-          <div className="flex flex-col gap-6">
-            <h1 ref={titleRef} className="text-5xl md:text-7xl font-bold leading-[0.9] tracking-tighter text-[#F67963] uppercase">
-              Crafting Stories<br />
-              That Move
-            </h1>
-            {/* Dynamic Progress Bar */}
-            <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-md mt-8">
-              <div className="flex justify-between text-xs font-bold tracking-widest text-[#F67963] mb-1">
-                <span>01/01</span>
-                <span>PRODUCTION SHOWREEL</span>
-              </div>
-              <div className="w-full h-12 border border-gray-600 relative overflow-hidden">
-                {/* Background layer */}
-                <div className="absolute inset-0 bg-gray-500/20" />
-                {/* Progress fill - animates with video */}
-                <div
-                  className="absolute top-0 left-0 h-full bg-[#e26954] transition-all duration-75 ease-linear"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          </div>
+      {/* Cinematic Gradient Overlay */}
+      <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-black via-black/40 to-transparent z-10 pointer-events-none" />
 
-          <div className="flex justify-end items-end pb-4">
-            {/* Sound Toggle */}
-            <button
-              onClick={toggleSound}
-              className="flex flex-col items-center gap-1 group cursor-pointer pointer-events-auto"
-            >
-              <span className="text-xs font-bold tracking-wider mb-2 text-[#F67963]">SOUND</span>
-              <div className="flex items-center gap-[2px] h-6 relative">
-                {/* Audio visualizer bars */}
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div
-                    key={i}
-                    className={`w-1 bg-white transition-all duration-300 ${muted ? "h-1" : "animate-pulse"}`}
-                    style={{
-                      height: muted ? "4px" : `${[40, 70, 100, 60, 30][i - 1]}%`,
-                      animationDelay: `${i * 0.1}s`,
-                    }}
-                  />
-                ))}
-                {muted && (
-                  <div className="w-8 h-[2px] bg-white rotate-[-45deg] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-                )}
-              </div>
-              <span className="text-[10px] text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                {muted ? "UNMUTE" : "MUTE"}
-              </span>
-            </button>
+      {/* Text Content - Anchored Bottom Left */}
+      <div className="absolute bottom-12 left-8 md:bottom-24 md:left-24 z-20 flex flex-col gap-4">
+        {/* Tier 1: Overline */}
+        <div className="text-[10px] uppercase tracking-[0.4em] text-[#F67963] font-medium">
+          SHOWREEL 2026
+        </div>
+
+        {/* Tier 2: Brutalist Headline */}
+        <h1 ref={titleRef} className="text-4xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-tighter uppercase leading-[0.9]">
+          CRAFTING STORIES<br />
+          THAT MOVE
+        </h1>
+
+        {/* Dynamic Progress Bar */}
+        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-sm mt-4">
+          <div className="w-full h-[2px] bg-white/20 relative overflow-hidden">
+            {/* Progress fill */}
+            <div
+              className="absolute top-0 left-0 h-full bg-[#F67963] transition-all duration-75 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
+
+        {/* Tier 3: Subtext */}
+        <p className="text-sm md:text-base text-white/70 max-w-sm leading-relaxed mt-2">
+          Cinematic production and creative media dedicated to elevating brand voices.
+        </p>
+      </div>
+
+      {/* Sound Toggle - Anchored Bottom Right */}
+      <div className="absolute bottom-12 right-8 md:bottom-24 md:right-24 z-20 flex justify-end items-end opacity-70 hover:opacity-100 transition-opacity">
+        <button
+          onClick={toggleSound}
+          className="flex items-center gap-3 group cursor-pointer pointer-events-auto"
+        >
+          <span className="text-[10px] font-bold tracking-[0.2em] text-[#F67963] uppercase">
+            {muted ? "Sound Off" : "Sound On"}
+          </span>
+          <div className="flex items-center gap-[2px] h-4 relative">
+            {/* Audio visualizer bars */}
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className={`w-[2px] bg-white transition-all duration-300 ${muted ? "h-[2px]" : "animate-pulse"}`}
+                style={{
+                  height: muted ? "2px" : `${[60, 100, 40, 80][i - 1]}%`,
+                  animationDelay: `${i * 0.1}s`,
+                }}
+              />
+            ))}
+            {muted && (
+              <div className="w-6 h-[1.5px] bg-white rotate-[-45deg] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+            )}
+          </div>
+        </button>
       </div>
     </div>
   );

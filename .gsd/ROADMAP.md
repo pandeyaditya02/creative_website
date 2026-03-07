@@ -110,3 +110,21 @@
 **Verification**:
 - Video auto-plays natively without YouTube branding or scripting overhead.
 - Mute visualizer and progress bar synchronize accurately.
+
+---
+
+### Phase 11: Ultra-Premium Hero Section Redesign
+**Status**: ✅ Verified Complete (2026-03-08)
+**Objective**: Redesign the Hero Section for an ultra-premium, cinematic layout. Ensure perfect 100vh/100vw video alignment, enforce a 3-tier typographic restraint anchored bottom-left, and apply high-end UI polish (feathered gradient overlays, sleek toggles).
+**Depends on**: Phase 10
+
+**Tasks**:
+- [ ] Apply full-bleed `100vw` / `100vh` canvas with `object-fit: cover` video.
+- [ ] Implement 3-tier typography (widely-tracked overline, elegant headline, legible subtext).
+- [ ] Apply feathered `bg-gradient-to-t` overlay for contrast.
+- [ ] Add minimalist Play/Pause/Sound micro-interaction toggle.
+
+**Verification**:
+- No horizontal scrolling.
+- Text is heavily legible but smaller and refined.
+- Gradient feels subtle and not boxy.
