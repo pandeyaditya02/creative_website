@@ -22,24 +22,33 @@ Update the animation logic in "WHY CHOOSE US" (and related components) so that e
   <files>src/components/WhyChooseUs.tsx</files>
   <action>
     Update the GSAP ScrollTrigger configuration for the ".wcu-point" items.
-    - Change `toggleActions: "play none none none"` to `"play reverse play reverse"` so the items hide when scrolling back up.
+    - Change `toggleActions: "play none none none"` to `"play reverse play reverse"`.
     - Ensure easing and sequence remain smooth without snapping.
-    - Do NOT alter any HTML, Tailwind classes, or colors.
   </action>
   <verify>grep -n "toggleActions" src/components/WhyChooseUs.tsx</verify>
-  <done>toggleActions updated to support bi-directional scroll without layout shifts.</done>
+  <done>toggleActions updated to "play reverse play reverse".</done>
 </task>
 
 <task type="auto">
   <name>Refactor StatsCounter Animations</name>
   <files>src/components/StatsCounter.tsx</files>
   <action>
-    Update the GSAP ScrollTrigger configuration for the section reveal and count-up effect.
-    - Change `toggleActions: "play none none reverse"` to `"play reverse play reverse"` so the section fades out and resets when scrolling up.
-    - Ensure count-up animation resets seamlessly.
+    Update the GSAP ScrollTrigger configurations (reveal and count-up).
+    - Change `toggleActions: "play none none reverse"` to `"play reverse play reverse"`.
   </action>
   <verify>grep -n "toggleActions" src/components/StatsCounter.tsx</verify>
-  <done>StatsCounter animations revert safely on reverse scroll.</done>
+  <done>toggleActions updated to "play reverse play reverse".</done>
+</task>
+
+<task type="auto">
+  <name>Refactor GrandCTA & AboutSection Animations</name>
+  <files>src/components/GrandCTA.tsx, src/components/AboutSection.tsx</files>
+  <action>
+    Update the GSAP ScrollTrigger configurations in GrandCTA.tsx and AboutSection.tsx.
+    - Change any instances of `toggleActions: "play none none none"` or `"play none none reverse"` to `"play reverse play reverse"`.
+  </action>
+  <verify>grep -n "toggleActions" src/components/GrandCTA.tsx</verify>
+  <done>All components successfully updated to bi-directional configurations.</done>
 </task>
 
 ## Success Criteria
