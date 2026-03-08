@@ -31,9 +31,9 @@
 
 ---
 
-### Phase 3: Dynamic Custom Cursor & Magnetic UI
+### Phase 3: Dynamic Custom Cursor, Magnetic UI & Services Update
 **Status**: ⬜ Not Started
-**Objective**: Implement a globally tracked, GSAP-driven custom cursor. Hide default browser cursors. Create a `MagneticHover` wrapper component that applies physics-based mouse-pull logic to buttons (like Contact/CTA) and updates the cursor state (e.g., expanding or changing color on hover).
+**Objective**: Implement a globally tracked, GSAP-driven custom cursor. Hide default browser cursors. Create a `MagneticHover` wrapper component that applies physics-based mouse-pull logic to buttons. Additionally, update the Services Section content to introduce an "Events" segment at the 3rd position and shift "Graphical Integration" to the 6th.
 
 ---
 
