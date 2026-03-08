@@ -43,7 +43,7 @@ const GrandCTA = () => {
                 scrollTrigger: {
                     trigger: ".cta-subtext",
                     start: "top 85%",
-                    toggleActions: "play none none none"
+                    toggleActions: "play reverse play reverse"
                 }
             }
         );
@@ -60,7 +60,7 @@ const GrandCTA = () => {
                 scrollTrigger: {
                     trigger: ".cta-button",
                     start: "top 90%",
-                    toggleActions: "play none none none"
+                    toggleActions: "play reverse play reverse"
                 }
             }
         );

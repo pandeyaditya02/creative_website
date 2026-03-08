@@ -35,7 +35,7 @@ export default function StatsCounter() {
                 scrollTrigger: {
                     trigger: container,
                     start: "top 80%", // Trigger when top of container hits 80% down viewport
-                    toggleActions: "play none none reverse",
+                    toggleActions: "play reverse play reverse",
                 },
             }
         );
@@ -55,7 +55,7 @@ export default function StatsCounter() {
                     scrollTrigger: {
                         trigger: container,
                         start: "top 80%",
-                        toggleActions: "play none none reverse",
+                        toggleActions: "play reverse play reverse",
                     },
                     onUpdate: () => {
                         // Update the text content, rounding to the nearest integer

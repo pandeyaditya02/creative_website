@@ -185,8 +185,8 @@
 
 ---
 
-### Phase 15: Bi-Directional Scroll Animations
-**Status**: ⬜ Not Started
+### Phase 15: Bi-Directional Animation Refactor
+**Status**: ✅ Complete
 **Objective**: Refactor scroll animations (e.g., in `WhyChooseUs`) to fire in both directions so elements animate in on scroll down and reverse out on scroll up.
 **Depends on**: Phase 14
 

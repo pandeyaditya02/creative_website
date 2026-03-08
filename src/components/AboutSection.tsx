@@ -39,7 +39,7 @@ const AboutSection = () => {
                 scrollTrigger: {
                     trigger: titleRef.current,
                     start: "top 90%",
-                    toggleActions: "play none none reverse"
+                    toggleActions: "play reverse play reverse"
                 }
             });
         }
