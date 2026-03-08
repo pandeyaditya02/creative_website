@@ -196,8 +196,7 @@ const HeroVideo = () => {
         />
       </div>
 
-      {/* Cinematic Gradient Overlay */}
-      <div className="absolute inset-x-0 bottom-0 h-[60vh] bg-gradient-to-t from-black via-black/40 to-transparent z-10 pointer-events-none" />
+      {/* Cinematic Gradient Overlay removed */}
 
       {/* Text Content - Anchored Bottom Left */}
       <div className="absolute bottom-12 left-8 md:bottom-24 md:left-24 z-20 flex flex-col gap-4">

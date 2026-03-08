@@ -8,6 +8,7 @@ import PinnedSection from "@/components/PinnedSection";
 import ClientsMarquee from "@/components/ClientsMarquee";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import GrandCTA from "@/components/GrandCTA";
+import StatsCounter from "@/components/StatsCounter";
 
 export default function Home() {
   return (
@@ -56,7 +57,11 @@ export default function Home() {
         <GrandCTA />
       </div>
 
-      <PinnedSection zIndex={8} isTall={true} className="bg-black">
+      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 8 }}>
+        <StatsCounter />
+      </div>
+
+      <PinnedSection zIndex={9} isTall={true} className="bg-black">
         <ContactSection />
       </PinnedSection>
     </main>
