@@ -164,3 +164,21 @@
 - Video auto-plays seamlessly via YouTube API.
 - Typography matches the brutalist, extended sans-serif design.
 - Full 100vw/100vh bounding box is respected.
+
+---
+
+### Phase 14: Cinematic Stats Counter Section
+**Status**: ⬜ Not Started
+**Objective**: Build a "Company Statistics" section with a 3-column grid for large numbers and small labels, adapted to the ultra-premium, dark-mode cinematic aesthetic. Use GSAP for scroll reveal and count-up animation.
+**Depends on**: Phase 13
+
+**Tasks**:
+- [ ] Implement StatsCounter component with deep dark background and massive macro-whitespace.
+- [ ] Layout a 3-column grid (18 YEARS EXPERIENCE, 60+ CLIENTELE, 150+ PROJECTS DELIVERED).
+- [ ] Use GSAP/Framer Motion in a Client Component to animate numbers counting up from 0 on scroll.
+- [ ] Wire component into page.tsx.
+
+**Verification**:
+- Section fades in and translates upward on enter.
+- Numbers rapidly count up to target over ~2 seconds with ease-out.
+- High contrast, brutalist typography is maintained.
