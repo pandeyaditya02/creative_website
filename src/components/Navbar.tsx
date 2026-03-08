@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -132,13 +133,15 @@ const Navbar = () => {
       className="fixed top-0 left-0 z-50 w-full px-8 py-6 flex items-center justify-between text-white mix-blend-difference"
     >
       {/* Logo Area */}
-      <div ref={logoRef} className="flex flex-col leading-none group cursor-pointer">
-        <span className="text-2xl font-bold tracking-tighter text-[#F67963] transition-transform duration-300 group-hover:translate-x-1">
-          CREATIVECHAUK
-        </span>
-        <span className="text-[10px] tracking-[0.2em] text-gray-400 transition-all duration-300 group-hover:tracking-[0.3em]">
-          PRODUCTION
-        </span>
+      <div ref={logoRef} className="flex leading-none group cursor-pointer">
+        <Image
+          src="/LOGO SAMP 01.png"
+          alt="Creative Chauk Production"
+          width={160}
+          height={50}
+          className="transition-transform duration-300 group-hover:scale-105"
+          priority
+        />
       </div>
 
       {/* Navigation Links */}
