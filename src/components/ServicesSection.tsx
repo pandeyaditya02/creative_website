@@ -20,10 +20,10 @@ const services = [
         image: "/avproductions1.png"
     },
     {
-        title: "Graphical Integration",
-        description: "Bring your visuals to life with advanced graphical integration. Enhance your videos, presentations, and digital content with visuals that stand out and communicate complex ideas clearly.",
-        highlights: ["Eye-catching motion graphics", "Dynamic visual effects", "Custom animations & AI Videos"],
-        image: "/graphical.png"
+        title: "Events",
+        description: "A complete Creative + Technical Partner for Events, turning ideas into unforgettable experiences.",
+        highlights: ["Content design for IP's & Events", "Production execution", "Post Production"],
+        image: "/events.jpg"
     },
     {
         title: "Media Consultation",
@@ -36,6 +36,12 @@ const services = [
         description: "Increase the visibility of your business with all-inclusive digital marketing solutions. We develop and execute plans that boost your presence, encourage conversions, and drive deep audience engagement.",
         highlights: ["Social media management & SEO", "PPC advertising & email marketing", "Deep engagement from your audience"],
         image: "/digital.png"
+    },
+    {
+        title: "Graphical Integration",
+        description: "Bring your visuals to life with advanced graphical integration. Enhance your videos, presentations, and digital content with visuals that stand out and communicate complex ideas clearly.",
+        highlights: ["Eye-catching motion graphics", "Dynamic visual effects", "Custom animations & AI Videos"],
+        image: "/graphical.png"
     }
 ];
 
@@ -67,7 +73,7 @@ const ServicesSection = () => {
             gsap.set(slideImages[i], { opacity: 0, scale: 1.1 });
         }
 
-        // Build transitions: 0→1, 1→2, 2→3, 3→4
+        // Build transitions: 0→1, 1→2, 2→3, 3→4, 4→5
         for (let i = 0; i < slides.length - 1; i++) {
             // Each transition has a small hold at start, then transition, then hold at end
             const holdLabel = `hold-${i}`;
@@ -131,7 +137,7 @@ const ServicesSection = () => {
             trigger: wrapperRef.current,
             pin: true,
             start: "top top",
-            end: "+=400%", // 4 transitions worth of scroll distance
+            end: "+=500%", // 5 transitions worth of scroll distance
             scrub: 1,
             animation: tl,
             onUpdate: (self) => {
