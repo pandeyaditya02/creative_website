@@ -19,30 +19,5 @@
 
 ---
 
-### Phase 1: Lenis Smooth Scrolling Integration
-**Status**: ✅ Complete
-**Objective**: Install and configure `@studio-freight/lenis` layout provider specifically adapted for use with Next.js App Router and GSAP `ScrollTrigger` sync. Verify that it resolves native scroll jitter without breaking existing `PinnedSection` or `ServicesSection` functionality.
+<!-- Next phases will be added here -->
 
----
-
-### Phase 2: Cinematic Pre-loader
-**Status**: ✅ Complete
-**Objective**: Build a premium 0-100% dark-mode numeric loader overlay. Ensure it fires immediately on hydration, loads critical hero video assets, and unmasks via GSAP animation (e.g., sliding up and fading out) to reveal the Hero Section flawlessly.
-
----
-
-### Phase 3: Dynamic Custom Cursor, Magnetic UI & Services Update
-**Status**: ⬜ Not Started
-**Objective**: Implement a globally tracked, GSAP-driven custom cursor. Hide default browser cursors. Create a `MagneticHover` wrapper component that applies physics-based mouse-pull logic to buttons. Additionally, update the Services Section content to introduce an "Events" segment at the 3rd position and shift "Graphical Integration" to the 6th.
-
----
-
-### Phase 4: Advanced Media Reveals (Clip-Paths)
-**Status**: ⬜ Not Started
-**Objective**: Refactor image/video reveal animations in Portfolio and Services sections. Transition from simple opacity/translate fades to complex GSAP `clip-path` unmasking (e.g., wiping in from inset polygons) for a highly structural, award-winning agency feel.
-
----
-
-### Phase 5: Cinematic Polish & Nice-to-Haves
-**Status**: ⬜ Not Started
-**Objective**: Evaluate scope for seamless page transitions (`framer-motion` AnimatePresence or native GSAP page transitions) and text scramble effects. Polish easing curves globally for consistency.
