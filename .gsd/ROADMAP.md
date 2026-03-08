@@ -20,7 +20,7 @@
 ---
 
 ### Phase 1: Lenis Smooth Scrolling Integration
-**Status**: ⬜ Not Started
+**Status**: ✅ Complete
 **Objective**: Install and configure `@studio-freight/lenis` layout provider specifically adapted for use with Next.js App Router and GSAP `ScrollTrigger` sync. Verify that it resolves native scroll jitter without breaking existing `PinnedSection` or `ServicesSection` functionality.
 
 ---
