@@ -1,21 +1,19 @@
 # ROADMAP.md
 
-> **Current Milestone**: v2.0 Cinematic Motion & Premium UI Overhaul
-> **Goal**: Elevate the perceived value and aesthetic of the website to an ultra-premium, award-winning agency tier. We will achieve this by implementing advanced, physics-based GSAP choreography, fluid micro-interactions, and seamless motion across all existing components, ensuring the site feels like a high-end cinematic experience rather than a standard web template.
+> **Current Milestone**: v3.0 Service Timeline Expansion
+> **Goal**: Update the "OUR SERVICES" sticky-scroll section to expand the service timeline from 5 to 6 items, refining content, counters, and scroll dynamics while preserving the established premium aesthetic.
 
 ## Must-Haves
-- [ ] Lenis Smooth Scrolling: Integrate @studio-freight/lenis with GSAP ScrollTrigger for buttery-smooth, inertia-based scrolling.
-- [ ] Dynamic Custom Cursor: GSAP-driven cursor dot that reacts to environment (magnetic snap to buttons, expands over videos).
-- [ ] Magnetic UI Elements: GSAP physics on primary buttons/nav links to subtly pull toward user cursor on hover.
-- [ ] Cinematic Pre-loader: Branded, dark-mode 0-100% counter loading sequence that hides hydration and ensures video assets load.
-- [ ] Advanced Media Reveals: Apply GSAP clip-path animations to portfolio/services images to elegantly unmask/wipe into view on scroll.
-
-## Nice-To-Haves
-- GSAP exit animations for seamless page transitions
-- High-end text scramble/decode effects on hover
-- WebGL/Three.js Liquid/Noise distortion on portfolio thumbnails
+- [ ] **Content Expansion**: Inject "Events" (pos 03) and shift "Graphical Integration" (pos 06) in the services data array.
+- [ ] **Dynamic Counters**: Update UI to reflect "X / 06" total steps.
+- [ ] **Scroll Dynamics**: Adjust sticky container height/ScrollTrigger end values for 6 slides.
+- [ ] **Aesthetic Integrity**: Maintain charcoal/coral color system and bi-directional GSAP animations.
 
 ## Phases
+
+### Phase 1: Expand Services Timeline
+**Status**: ⬜ Not Started
+**Objective**: Refactor the `ServicesSection` component data and animations to support 6 slides with correct pacing and counters.
 
 ---
 
