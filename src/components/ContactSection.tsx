@@ -4,111 +4,229 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 
 const ContactSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const formRef = useRef<HTMLFormElement>(null);
 
     useGSAP(() => {
-        // 1. Background Parallax
-        gsap.to(".contact-bg", {
-            y: "20%",
-            scale: 1.1,
-            ease: "none",
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true
+        // 1. Headline Mask-Up Reveal
+        gsap.fromTo(".title-line",
+            { y: "110%", opacity: 0 }, // slightly fade while translating for a premium feel
+            {
+                y: "0%",
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 75%",
+                    toggleActions: "play reverse play reverse"
+                }
             }
-        });
-
-        // 2. Title Reveal — mount-based (no ScrollTrigger inside PinnedSection)
-        gsap.fromTo(".contact-title",
-            { y: 50, opacity: 0 },
-            { y: 0, opacity: 1, duration: 1.2, ease: "power2.out" }
         );
 
-        // 3. Form Reveal — mount-based
-        gsap.fromTo(formRef.current,
-            { scale: 0.9, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 1, delay: 0.3, ease: "power2.out" }
+        // 2. Contact Info Block Reveal
+        gsap.fromTo(".contact-info-block",
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 65%",
+                    toggleActions: "play reverse play reverse"
+                }
+            }
         );
 
-        // 4. Input Focus Animations
-        const inputs = gsap.utils.toArray<HTMLElement>(".contact-input");
-        inputs.forEach((input) => {
-            const focusTl = gsap.to(input, {
-                boxShadow: "0 0 20px rgba(226,105,84,0.5)",
-                borderColor: "rgba(246,121,99,1)",
-                duration: 0.3,
-                paused: true
+        // 3. Form Fields Stagger Reveal
+        gsap.fromTo(".contact-input-field",
+            { y: 40, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top 65%",
+                    toggleActions: "play reverse play reverse"
+                }
+            }
+        );
+
+        // 4. Magnetic Button Hover
+        const btn = document.querySelector(".magnetic-btn") as HTMLElement;
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            gsap.to(btn, {
+                x: x * 0.4,
+                y: y * 0.4,
+                duration: 0.4,
+                ease: "power2.out"
             });
+        };
+        const handleMouseLeave = () => {
+            gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1.2, 0.4)" });
+        };
 
-            input.addEventListener("focus", () => focusTl.play());
-            input.addEventListener("blur", () => focusTl.reverse());
-        });
+        if (btn) {
+            btn.addEventListener("mousemove", handleMouseMove);
+            btn.addEventListener("mouseleave", handleMouseLeave);
+        }
+
+        return () => {
+            if (btn) {
+                btn.removeEventListener("mousemove", handleMouseMove);
+                btn.removeEventListener("mouseleave", handleMouseLeave);
+            }
+        };
 
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-[100svh] bg-black text-white py-16 px-4 md:px-8 overflow-hidden flex flex-col justify-center">
-            {/* Subtle Background */}
-            <div className="contact-bg absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/70" />
+        <section ref={containerRef} className="relative min-h-[100svh] bg-[#0a0a0a] text-white py-24 md:py-32 lg:py-40 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center">
 
-            <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center gap-12 w-full">
-                {/* Title */}
-                <div className="text-center space-y-4 mt-8">
-                    <span className="text-xs uppercase tracking-[0.3em] text-[#A1A1A1]">Get in touch</span>
-                    <h2 className="contact-title text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter text-white">
-                        Contact
-                    </h2>
-                    <p className="text-[#A1A1A1] text-sm md:text-base max-w-md leading-relaxed">
-                        Ready to start a project? Let&apos;s work together to reach your media goals and{" "}
-                        <span className="text-[#F67963] font-semibold">bring your vision to life.</span>
-                    </p>
-                </div>
+            {/* Subtle Gradient Glow Background */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                <div className="w-[800px] h-[800px] rounded-full bg-[radial-gradient(circle,rgba(246,121,99,0.1)_0%,transparent_60%)] translate-x-1/4 translate-y-1/4" />
+            </div>
 
-                {/* Form */}
-                <form
-                    ref={formRef}
-                    className="w-full bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col gap-6"
-                >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <input
-                            type="text"
-                            placeholder="Name"
-                            className="contact-input bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5 text-white placeholder:text-[#A1A1A1] focus:outline-none focus:border-[#F67963]/50 transition-all duration-300 text-sm md:text-base"
-                        />
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            className="contact-input bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5 text-white placeholder:text-[#A1A1A1] focus:outline-none focus:border-[#F67963]/50 transition-all duration-300 text-sm md:text-base"
-                        />
+            <div className="max-w-[1600px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-16 relative z-10">
+
+                {/* Left Column: Typography & Info */}
+                <div className="flex flex-col justify-between h-full">
+                    <div>
+                        <div className="overflow-hidden mb-[-2vw] lg:mb-[-1.5vw]">
+                            <h2 className="title-line text-[18vw] lg:text-[11vw] font-bold uppercase tracking-tighter text-white leading-[0.8] m-0 p-0 transform origin-bottom">
+                                LET&apos;S
+                            </h2>
+                        </div>
+                        <div className="overflow-hidden">
+                            <h2 className="title-line text-[18vw] lg:text-[11vw] font-bold uppercase tracking-tighter text-[#F67963] leading-[0.8] m-0 p-0 transform origin-bottom">
+                                TALK.
+                            </h2>
+                        </div>
                     </div>
-                    <textarea
-                        rows={5}
-                        placeholder="Your message..."
-                        className="contact-input bg-black/50 border border-white/10 rounded-2xl p-4 md:p-5 text-white placeholder:text-[#A1A1A1] focus:outline-none focus:border-[#F67963]/50 transition-all duration-300 resize-none text-sm md:text-base"
-                    />
-                    <button className="bg-[#F67963] text-black font-bold uppercase tracking-widest py-4 md:py-5 rounded-2xl hover:bg-white transition-colors hover:scale-[1.02] active:scale-95 duration-300 text-sm md:text-base">
-                        Send Message
-                    </button>
-                </form>
 
-                {/* Social Links */}
-                <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-                    <a href="#" className="text-[#A1A1A1] text-xs uppercase tracking-[0.2em] hover:text-white transition-colors duration-300">Instagram</a>
-                    <a href="#" className="text-[#A1A1A1] text-xs uppercase tracking-[0.2em] hover:text-white transition-colors duration-300">Twitter</a>
-                    <a href="#" className="text-[#A1A1A1] text-xs uppercase tracking-[0.2em] hover:text-white transition-colors duration-300">LinkedIn</a>
+                    <div className="mt-16 lg:mt-32 space-y-10 lg:space-y-12">
+                        <div className="contact-info-block">
+                            <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Drop us a line</p>
+                            <a href="mailto:hello@creativechauk.com" className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300">
+                                hello@creativechauk.com
+                            </a>
+                        </div>
+                        <div className="contact-info-block flex flex-col sm:flex-row gap-6 sm:gap-16">
+                            <div>
+                                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
+                                <div className="flex flex-col gap-2">
+                                    <a href="#" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Instagram</a>
+                                    <a href="#" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">LinkedIn</a>
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3 opacity-0 sm:opacity-100 hidden sm:block">Space</p>
+                                <div className="flex flex-col gap-2">
+                                    <a href="#" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Twitter</a>
+                                    <a href="#" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Vimeo</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Copyright */}
-                <div className="text-[#A1A1A1]/50 text-[10px] md:text-xs mt-4 text-center">
-                    © 2026 Creative Chauk. All rights reserved.
+                {/* Right Column: Inquiry Form */}
+                <div className="flex flex-col justify-center lg:pl-16 xl:pl-24">
+                    <form className="flex flex-col gap-10 md:gap-14 w-full">
+
+                        <div className="contact-input-field w-full relative">
+                            <input
+                                type="text"
+                                placeholder="Your Name"
+                                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
+                            />
+                        </div>
+
+                        <div className="contact-input-field w-full relative">
+                            <input
+                                type="email"
+                                placeholder="Email Address"
+                                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-8">
+                            <div className="contact-input-field w-full relative">
+                                <select
+                                    defaultValue=""
+                                    className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer"
+                                >
+                                    <option value="" disabled>Project Type</option>
+                                    <option value="av" className="bg-[#111] text-white">AV Production</option>
+                                    <option value="digital" className="bg-[#111] text-white">Digital Content</option>
+                                    <option value="branded" className="bg-[#111] text-white">Branded Content</option>
+                                    <option value="consultation" className="bg-[#111] text-white">Consultation</option>
+                                </select>
+                                {/* Custom Dropdown Arrow */}
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-white/50 pb-4">
+                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div className="contact-input-field w-full relative">
+                                <select
+                                    defaultValue=""
+                                    className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer"
+                                >
+                                    <option value="" disabled>Budget Range</option>
+                                    <option value="<5L" className="bg-[#111] text-white">&lt; ₹5L</option>
+                                    <option value="5-15L" className="bg-[#111] text-white">₹5L - ₹15L</option>
+                                    <option value=">15L" className="bg-[#111] text-white">&gt; ₹15L</option>
+                                    <option value="tbd" className="bg-[#111] text-white">To Be Decided</option>
+                                </select>
+                                <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-white/50 pb-4">
+                                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="contact-input-field w-full relative">
+                            <textarea
+                                placeholder="Tell us about your project..."
+                                rows={2}
+                                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light resize-none"
+                            ></textarea>
+                        </div>
+
+                        <div className="contact-input-field flex sm:justify-end mt-4">
+                            <button
+                                type="button"
+                                className="magnetic-btn w-36 h-36 md:w-44 md:h-44 bg-[#F67963] text-black rounded-full font-bold uppercase tracking-widest flex items-center justify-center hover:bg-white transition-colors duration-500 will-change-transform shadow-[0_0_30px_rgba(246,121,99,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
+                            >
+                                <span className="pointer-events-none text-sm md:text-base">Submit</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+
+            {/* Copyright */}
+            <div className="absolute bottom-6 left-6 md:left-12 lg:left-24 text-[#A1A1A1]/40 text-xs tracking-wider">
+                © 2026 Creative Chauk.
             </div>
         </section>
     );
