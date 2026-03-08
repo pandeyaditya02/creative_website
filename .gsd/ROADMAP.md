@@ -182,3 +182,20 @@
 - Section fades in and translates upward on enter.
 - Numbers rapidly count up to target over ~2 seconds with ease-out.
 - High contrast, brutalist typography is maintained.
+
+---
+
+### Phase 15: Bi-Directional Scroll Animations
+**Status**: ⬜ Not Started
+**Objective**: Refactor scroll animations (e.g., in `WhyChooseUs`) to fire in both directions so elements animate in on scroll down and reverse out on scroll up.
+**Depends on**: Phase 14
+
+**Tasks**:
+- [ ] Identify all scroll-triggered reveal animations.
+- [ ] Update GSAP `toggleActions` to `"play reverse play reverse"` (or similar) to ensure resetting when scrolling back up.
+- [ ] Ensure smooth easing and duration for reverse animations.
+- [ ] Do NOT modify HTML structure or Tailwind classes.
+
+**Verification**:
+- Verify components animate back to `opacity: 0` / translated states when scrolling up past their triggers.
+- Verify re-scrolling down triggers the entrance animation again smoothly.
