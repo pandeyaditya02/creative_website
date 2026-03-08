@@ -4,15 +4,15 @@ import Image from "next/image";
 
 const logos = [
     { src: "/brand-logos/Amazon logo.png", alt: "Amazon" },
-    { src: "/brand-logos/Bausch__Lomb_Logo.png", alt: "Bausch & Lomb" },
-    { src: "/brand-logos/ccl.png", alt: "CCL" },
+    { src: "/brand-logos/Bausch__Lomb_Logo.png", alt: "Bausch + Lomb" },
+    { src: "/brand-logos/ccl.png", alt: "Celebrity Cricket League" },
     { src: "/brand-logos/dolby digital.png", alt: "Dolby Digital" },
     { src: "/brand-logos/Elite magazine.jpeg", alt: "Elite Magazine" },
     { src: "/brand-logos/hamdard.webp", alt: "Hamdard" },
     { src: "/brand-logos/kohler.png", alt: "Kohler" },
     { src: "/brand-logos/mahindra-new-logo-02.jpg.jpeg", alt: "Mahindra" },
     { src: "/brand-logos/outlook.avif", alt: "Outlook" },
-    { src: "/brand-logos/wcl.avif", alt: "WCL" },
+    { src: "/brand-logos/wcl.avif", alt: "World Champions League" },
 ];
 
 const ClienteleMarquee = () => {
