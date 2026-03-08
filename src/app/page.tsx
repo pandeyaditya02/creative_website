@@ -24,13 +24,17 @@ export default function Home() {
         <HeroVideo />
       </PinnedSection>
 
-      <PinnedSection zIndex={2} isTall={true} className="bg-black">
+      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 2 }}>
+        <StatsCounter />
+      </div>
+
+      <PinnedSection zIndex={3} isTall={true} className="bg-black">
         <AboutSection />
       </PinnedSection>
 
       {/* Services — self-pinning via GSAP ScrollTrigger.pin (not using PinnedSection).
            pinSpacing:true adds scroll height automatically. z-index ensures stacking order. */}
-      <div className="relative w-full bg-black" style={{ zIndex: 3 }}>
+      <div className="relative w-full bg-black" style={{ zIndex: 4 }}>
         <ServicesSection />
       </div>
 
@@ -57,11 +61,7 @@ export default function Home() {
         <GrandCTA />
       </div>
 
-      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 8 }}>
-        <StatsCounter />
-      </div>
-
-      <PinnedSection zIndex={9} isTall={true} className="bg-black">
+      <PinnedSection zIndex={8} isTall={true} className="bg-black">
         <ContactSection />
       </PinnedSection>
     </main>
