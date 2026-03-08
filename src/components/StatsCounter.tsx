@@ -75,6 +75,15 @@ export default function StatsCounter() {
             ref={containerRef}
             className="w-full bg-[#0a0a0a] py-32 md:py-48 px-6 md:px-12 lg:px-24 text-white overflow-hidden flex flex-col justify-center items-center"
         >
+            <div className="flex flex-col items-center gap-4 mb-24 lg:mb-32">
+                <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                    Company Statistics
+                </span>
+                <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-tight text-white text-center">
+                    Why Trust Us
+                </h2>
+                <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
+            </div>
             <div className="max-w-[1400px] w-full grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 text-center">
                 {statsData.map((stat, index) => (
                     <div key={index} className="flex flex-col items-center justify-center">
