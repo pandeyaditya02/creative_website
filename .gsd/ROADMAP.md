@@ -199,3 +199,24 @@
 **Verification**:
 - Verify components animate back to `opacity: 0` / translated states when scrolling up past their triggers.
 - Verify re-scrolling down triggers the entrance animation again smoothly.
+
+---
+
+### Phase 16: Cinematic Contact Us Redesign
+**Status**: ⬜ Not Started
+**Objective**: Redesign the "Contact Us" section into an ultra-premium inquiry portal. Use Stitch MCP for a split-layout design (massive typography on left, elegant pill/bottom-border input form on right) and GSAP/Framer Motion for staggered scroll reveals and micro-interactions.
+**Depends on**: Phase 15
+
+**Tasks**:
+- [ ] Use Stitch MCP to generate the visual split-layout contract.
+- [ ] Refactor `ContactSection.tsx` applying massive macro-whitespace, tight-tracked large typography, and elegant form inputs.
+- [ ] Implement staggered line-by-line reveal for the headline (masking up).
+- [ ] Implement staggered fade and translation for form fields.
+- [ ] Add magnetic hover to the submit button and focus transitions to inputs.
+- [ ] Ensure animations are contained in Client Components.
+
+**Verification**:
+- Verify split layout matches the high-end aesthetic.
+- Form inputs exhibit smooth focus states.
+- Headline and form fields stagger in predictably on scroll.
+- Magnetic hover functions without breaking layouts.
