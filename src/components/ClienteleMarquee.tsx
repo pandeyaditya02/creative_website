@@ -17,7 +17,7 @@ const logos = [
 
 const ClienteleMarquee = () => {
     return (
-        <section className="relative bg-black py-24 overflow-hidden border-y border-white/[0.05]">
+        <section className="relative bg-black py-12 lg:py-16 overflow-hidden border-y border-white/[0.05]">
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#F67963]/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -34,13 +34,13 @@ const ClienteleMarquee = () => {
                                 key={`logo-1-${index}`}
                                 className="relative flex-shrink-0 grayscale opacity-50 transition-all duration-700 ease-in-out hover:grayscale-0 hover:opacity-100 hover:scale-110 group"
                             >
-                                <div className="relative h-12 w-32 lg:h-16 lg:w-40 flex items-center justify-center">
+                                <div className="relative h-20 w-48 lg:h-32 lg:w-80 flex items-center justify-center">
                                     <Image
                                         src={logo.src}
                                         alt={logo.alt}
                                         fill
                                         className="object-contain"
-                                        sizes="(max-width: 768px) 128px, 160px"
+                                        sizes="(max-width: 768px) 200px, 320px"
                                     />
                                 </div>
                                 {/* Subtle tooltip/label on hover */}
@@ -58,13 +58,13 @@ const ClienteleMarquee = () => {
                                 key={`logo-2-${index}`}
                                 className="relative flex-shrink-0 grayscale opacity-50 transition-all duration-700 ease-in-out hover:grayscale-0 hover:opacity-100 hover:scale-110 group"
                             >
-                                <div className="relative h-12 w-32 lg:h-16 lg:w-40 flex items-center justify-center">
+                                <div className="relative h-20 w-48 lg:h-32 lg:w-80 flex items-center justify-center">
                                     <Image
                                         src={logo.src}
                                         alt={logo.alt}
                                         fill
                                         className="object-contain"
-                                        sizes="(max-width: 768px) 128px, 160px"
+                                        sizes="(max-width: 768px) 200px, 320px"
                                     />
                                 </div>
                                 <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-[#F67963] opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
