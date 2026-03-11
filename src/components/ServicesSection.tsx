@@ -229,14 +229,14 @@ const ServicesSection = () => {
                                     </h3>
 
                                     {/* Description */}
-                                    <p className="text-[#B0B0B0] text-base lg:text-lg leading-relaxed max-w-md">
+                                    <p className="text-[#B0B0B0] text-lg lg:text-xl leading-[1.6] max-w-md">
                                         {service.description}
                                     </p>
 
                                     {/* Highlights */}
                                     <ul className="flex flex-col gap-2.5 mt-1">
                                         {service.highlights.map((h, i) => (
-                                            <li key={i} className="flex items-center gap-3 text-sm text-[#A1A1A1]">
+                                            <li key={i} className="flex items-center gap-3 text-base text-[#A1A1A1]">
                                                 <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0" />
                                                 {h}
                                             </li>

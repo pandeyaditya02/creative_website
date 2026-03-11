@@ -118,7 +118,7 @@ const WhyChooseUs = () => {
                                         </h3>
 
                                         {/* Description */}
-                                        <p className="text-[#B0B0B0] text-base lg:text-lg leading-relaxed max-w-md">
+                                        <p className="text-[#B0B0B0] text-lg lg:text-xl leading-relaxed max-w-md">
                                             {point.description}
                                         </p>
 

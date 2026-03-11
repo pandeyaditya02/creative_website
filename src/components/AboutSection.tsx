@@ -94,7 +94,7 @@ const AboutSection = () => {
                                 <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">
                                     Stories told with purpose.<br />Results that make an impact.
                                 </h3>
-                                <p className="text-[#A1A1A1] leading-relaxed text-base md:text-lg max-w-xl">
+                                <p className="text-[#A1A1A1] leading-relaxed text-lg md:text-xl max-w-xl">
                                     We use creative, effective media solutions to bring stories to life and elevate brand voices — delivering high-quality, tailored content that reflects your vision and engages your audience. From media planning to production and digital content, every project is built to align with your brand&apos;s objectives and make a tangible impact.
                                 </p>
                             </div>
@@ -115,21 +115,21 @@ const AboutSection = () => {
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
                         <div className="text-4xl mb-4">🎬</div>
                         <h4 className="text-xl font-bold text-white mb-3">Video Production</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">From ideation to execution — high-end production and distribution tailored to your brand.</p>
+                        <p className="text-[#A1A1A1] text-base leading-relaxed">From ideation to execution — high-end production and distribution tailored to your brand.</p>
                     </div>
 
                     {/* Service Card 2 */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
                         <div className="text-4xl mb-4">📲</div>
                         <h4 className="text-xl font-bold text-white mb-3">Digital Content</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">Social media content and digital campaigns with visuals that communicate complex ideas clearly.</p>
+                        <p className="text-[#A1A1A1] text-base leading-relaxed">Social media content and digital campaigns with visuals that communicate complex ideas clearly.</p>
                     </div>
 
                     {/* Service Card 3 */}
                     <div className="about-text-block p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/10 group hover:border-[#F67963]/30 transition-all duration-500">
                         <div className="text-4xl mb-4">🤝</div>
                         <h4 className="text-xl font-bold text-white mb-3">Media Consultation</h4>
-                        <p className="text-[#A1A1A1] text-sm leading-relaxed">End-to-end consultation ensuring your projects run smoothly and yield measurable results.</p>
+                        <p className="text-[#A1A1A1] text-base leading-relaxed">End-to-end consultation ensuring your projects run smoothly and yield measurable results.</p>
                     </div>
                 </div>
             </div>
