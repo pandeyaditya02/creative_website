@@ -122,8 +122,8 @@ const ContactSection = () => {
                     <div className="mt-16 lg:mt-32 space-y-10 lg:space-y-12">
                         <div className="contact-info-block">
                             <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Drop us a line</p>
-                            <a href="mailto:hello@creativechauk.com" className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300">
-                                hello@creativechauk.com
+                            <a href="mailto:info@creativechauk.com" className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300">
+                                info@creativechauk.com
                             </a>
                         </div>
                         <div className="contact-info-block flex flex-col sm:flex-row gap-6 sm:gap-16">

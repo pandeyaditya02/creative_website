@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
 }
 
 const statsData = [
-    { value: 18, label: "YEARS EXPERIENCE", suffix: "" },
+    { value: 18, label: "YEARS EXPERIENCE", suffix: "+" },
     { value: 60, label: "CLIENTELE", suffix: "+" },
     { value: 150, label: "PROJECTS DELIVERED", suffix: "+" },
 ];
