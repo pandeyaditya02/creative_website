@@ -1,91 +1,115 @@
-# Milestone Template
+# Milestone Entry Template
 
-Template for `.gsd/milestones/{name}/MILESTONE.md` — milestone definition and tracking.
-
----
-
-## File Template
+Add this entry to `.planning/MILESTONES.md` when completing a milestone:
 
 ```markdown
+## v[X.Y] [Name] (Shipped: YYYY-MM-DD)
+
+**Delivered:** [One sentence describing what shipped]
+
+**Phases completed:** [X-Y] ([Z] plans total)
+
+**Key accomplishments:**
+- [Major achievement 1]
+- [Major achievement 2]
+- [Major achievement 3]
+- [Major achievement 4]
+
+**Stats:**
+- [X] files created/modified
+- [Y] lines of code (primary language)
+- [Z] phases, [N] plans, [M] tasks
+- [D] days from start to ship (or milestone to milestone)
+
+**Git range:** `feat(XX-XX)` → `feat(YY-YY)`
+
+**What's next:** [Brief description of next milestone goals, or "Project complete"]
+
 ---
-name: {milestone-name}
-version: {semantic version, e.g., v1.0}
-status: planning | active | complete | archived
-created: [ISO timestamp]
-target_date: [optional target]
----
-
-# Milestone: {name}
-
-## Vision
-
-{What this milestone achieves — one paragraph}
-
-## Must-Haves
-
-Non-negotiable deliverables for this milestone:
-
-- [ ] {Must-have 1}
-- [ ] {Must-have 2}
-- [ ] {Must-have 3}
-
-## Nice-to-Haves
-
-If time permits:
-
-- [ ] {Nice-to-have 1}
-- [ ] {Nice-to-have 2}
-
-## Phases
-
-| Phase | Name | Status | Objective |
-|-------|------|--------|-----------|
-| 1 | {name} | ⬜ Not Started | {objective} |
-| 2 | {name} | ⬜ Not Started | {objective} |
-| 3 | {name} | ⬜ Not Started | {objective} |
-
-## Success Criteria
-
-How we know milestone is complete:
-
-- [ ] {Measurable criterion 1}
-- [ ] {Measurable criterion 2}
-
-## Architecture Decisions
-
-Key technical decisions for this milestone:
-
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| {decision} | {choice} | {why} |
-
-## Risks
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| {risk} | Low/Med/High | Low/Med/High | {action} |
-
-## Progress Log
-
-| Date | Event | Notes |
-|------|-------|-------|
-| {date} | Milestone started | — |
 ```
 
+<structure>
+If MILESTONES.md doesn't exist, create it with header:
+
+```markdown
+# Project Milestones: [Project Name]
+
+[Entries in reverse chronological order - newest first]
+```
+</structure>
+
+<guidelines>
+**When to create milestones:**
+- Initial v1.0 MVP shipped
+- Major version releases (v2.0, v3.0)
+- Significant feature milestones (v1.1, v1.2)
+- Before archiving planning (capture what was shipped)
+
+**Don't create milestones for:**
+- Individual phase completions (normal workflow)
+- Work in progress (wait until shipped)
+- Minor bug fixes that don't constitute a release
+
+**Stats to include:**
+- Count modified files: `git diff --stat feat(XX-XX)..feat(YY-YY) | tail -1`
+- Count LOC: `find . -name "*.swift" -o -name "*.ts" | xargs wc -l` (or relevant extension)
+- Phase/plan/task counts from ROADMAP
+- Timeline from first phase commit to last phase commit
+
+**Git range format:**
+- First commit of milestone → last commit of milestone
+- Example: `feat(01-01)` → `feat(04-01)` for phases 1-4
+</guidelines>
+
+<example>
+```markdown
+# Project Milestones: WeatherBar
+
+## v1.1 Security & Polish (Shipped: 2025-12-10)
+
+**Delivered:** Security hardening with Keychain integration and comprehensive error handling
+
+**Phases completed:** 5-6 (3 plans total)
+
+**Key accomplishments:**
+- Migrated API key storage from plaintext to macOS Keychain
+- Implemented comprehensive error handling for network failures
+- Added Sentry crash reporting integration
+- Fixed memory leak in auto-refresh timer
+
+**Stats:**
+- 23 files modified
+- 650 lines of Swift added
+- 2 phases, 3 plans, 12 tasks
+- 8 days from v1.0 to v1.1
+
+**Git range:** `feat(05-01)` → `feat(06-02)`
+
+**What's next:** v2.0 SwiftUI redesign with widget support
+
 ---
 
-## Lifecycle
+## v1.0 MVP (Shipped: 2025-11-25)
 
-1. **Creation:** `/new-milestone` creates this file
-2. **Active:** Updated as phases complete
-3. **Complete:** `/complete-milestone` moves to archive
-4. **Archived:** Read-only reference
+**Delivered:** Menu bar weather app with current conditions and 3-day forecast
 
----
+**Phases completed:** 1-4 (7 plans total)
 
-## Guidelines
+**Key accomplishments:**
+- Menu bar app with popover UI (AppKit)
+- OpenWeather API integration with auto-refresh
+- Current weather display with conditions icon
+- 3-day forecast list with high/low temperatures
+- Code signed and notarized for distribution
 
-- One active milestone at a time
-- 3-5 phases per milestone
-- Must-haves should be testable
-- Success criteria should be measurable
+**Stats:**
+- 47 files created
+- 2,450 lines of Swift
+- 4 phases, 7 plans, 28 tasks
+- 12 days from start to ship
+
+**Git range:** `feat(01-01)` → `feat(04-01)`
+
+**What's next:** Security audit and hardening for v1.1
+```
+</example>

@@ -76,10 +76,10 @@ export default function StatsCounter() {
             className="w-full bg-[#0a0a0a] py-32 md:py-48 px-6 md:px-12 lg:px-24 text-white overflow-hidden flex flex-col justify-center items-center"
         >
             <div className="flex flex-col items-center gap-4 mb-24 lg:mb-32">
-                <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                <span className="text-sm md:text-base uppercase tracking-[0.35em] text-[#F67963] font-medium">
                     Company Statistics
                 </span>
-                <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-tight text-white text-center">
+                <h2 className="text-5xl lg:text-6xl xl:text-7xl font-bold uppercase tracking-tight text-white text-center">
                     Why Trust Us
                 </h2>
                 <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
@@ -92,18 +92,18 @@ export default function StatsCounter() {
                                 ref={(el) => {
                                     numbersRef.current[index] = el;
                                 }}
-                                className="text-7xl md:text-8xl lg:text-[9rem] xl:text-[11rem] font-black tracking-tighter text-white leading-none"
+                                className="text-8xl md:text-9xl lg:text-[11rem] xl:text-[14rem] font-black tracking-tighter text-white leading-none"
                                 style={{ fontVariationSettings: '"wght" 900' }}
                             >
                                 0
                             </span>
                             {stat.suffix && (
-                                <span className="text-4xl md:text-6xl lg:text-[5rem] xl:text-[6rem] font-bold text-coral ml-1 leading-none">
+                                <span className="text-5xl md:text-7xl lg:text-[7rem] xl:text-[9rem] font-bold text-coral ml-1 leading-none">
                                     {stat.suffix}
                                 </span>
                             )}
                         </div>
-                        <p className="text-sm md:text-base lg:text-lg tracking-[0.3em] lg:tracking-[0.4em] font-medium text-slate-400 uppercase">
+                        <p className="text-base md:text-xl lg:text-2xl tracking-[0.3em] lg:tracking-[0.4em] font-medium text-slate-400 uppercase">
                             {stat.label}
                         </p>
                     </div>

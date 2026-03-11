@@ -1,160 +1,78 @@
 ---
-description: Deep technical research for a phase
-argument-hint: "<phase-number> [--level 1|2|3]"
+description: research-phase
 ---
+<purpose>
+Research how to implement a phase. Spawns gsd-phase-researcher with phase context.
 
-# /research-phase Workflow
-
-<objective>
-Conduct technical research to inform planning decisions for a phase.
-</objective>
-
-<discovery_levels>
-## Discovery Levels
-
-| Level | Time | Use When |
-|-------|------|----------|
-| 0 | 0 min | Already know, just doing it |
-| 1 | 2-5 min | Single library, confirming syntax |
-| 2 | 15-30 min | Choosing between options, new integration |
-| 3 | 1+ hour | Architectural decision, novel problem |
-
-**Default:** Level 2 unless specified.
-</discovery_levels>
+Standalone research command. For most workflows, use `/gsd:plan-phase` which integrates research automatically.
+</purpose>
 
 <process>
 
-## 1. Load Phase Context
+## Step 0: Resolve Model Profile
 
-Read:
-- Phase objective from ROADMAP.md
-- Relevant ARCHITECTURE.md sections
-- STACK.md for current technologies
+@~/.claude/get-shit-done/references/model-profile-resolution.md
 
----
+Resolve model for:
+- `gsd-phase-researcher`
 
-## 2. Identify Research Questions
+## Step 1: Normalize and Validate Phase
 
-What needs to be understood before planning?
+@~/.claude/get-shit-done/references/phase-argument-parsing.md
 
-```markdown
-## Research Questions
-
-1. {Technical question 1}
-2. {Technical question 2}
-3. {Integration question}
+```bash
+PHASE_INFO=$(node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap get-phase "${PHASE}")
 ```
 
----
+If `found` is false: Error and exit.
 
-## 3. Conduct Research
+## Step 2: Check Existing Research
 
-Based on discovery level:
-
-**Level 1:** Quick verification
-- Check official docs
-- Confirm API/syntax
-
-**Level 2:** Comparison research
-- Compare 2-3 options
-- Evaluate trade-offs
-- Make recommendation
-
-**Level 3:** Deep dive
-- Prototype if needed
-- Research edge cases
-- Document unknowns
-
----
-
-## 4. Generate RESEARCH.md
-
-Create `.gsd/phases/{N}/RESEARCH.md`:
-
-```markdown
----
-phase: {N}
-level: {1|2|3}
-researched_at: {date}
----
-
-# Phase {N} Research
-
-## Questions Investigated
-1. {question}
-2. {question}
-
-## Findings
-
-### {Topic 1}
-{What was learned}
-
-**Sources:**
-- {URL}
-
-**Recommendation:** {what to do}
-
-### {Topic 2}
-...
-
-## Decisions Made
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| {decision} | {choice} | {why} |
-
-## Patterns to Follow
-- {pattern 1}
-- {pattern 2}
-
-## Anti-Patterns to Avoid
-- {anti-pattern}: {why}
-
-## Dependencies Identified
-| Package | Version | Purpose |
-|---------|---------|---------|
-| {pkg} | {ver} | {why} |
-
-## Risks
-- {risk}: {mitigation}
-
-## Ready for Planning
-- [x] Questions answered
-- [x] Approach selected
-- [x] Dependencies identified
+```bash
+ls .planning/phases/${PHASE}-*/RESEARCH.md 2>/dev/null
 ```
 
----
+If exists: Offer update/view/skip options.
 
-## 5. Commit Research
+## Step 3: Gather Phase Context
 
-```powershell
-git add .gsd/phases/{N}/RESEARCH.md
-git commit -m "docs(phase-{N}): research complete"
+```bash
+INIT=$(node "$HOME/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE}")
+if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
+# Extract: phase_dir, padded_phase, phase_number, state_path, requirements_path, context_path
 ```
 
----
-
-## 6. Offer Next Steps
+## Step 4: Spawn Researcher
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- GSD ► RESEARCH COMPLETE ✓
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task(
+  prompt="<objective>
+Research implementation approach for Phase {phase}: {name}
+</objective>
 
-Phase {N}: {name}
-Level: {level}
+<files_to_read>
+- {context_path} (USER DECISIONS from /gsd:discuss-phase)
+- {requirements_path} (Project requirements)
+- {state_path} (Project decisions and history)
+</files_to_read>
 
-Key findings:
-• {finding 1}
-• {finding 2}
+<additional_context>
+Phase description: {description}
+</additional_context>
 
-───────────────────────────────────────────────────────
-
-▶ NEXT
-
-/plan {N} — Create plans informed by research
-
-───────────────────────────────────────────────────────
+<output>
+Write to: .planning/phases/${PHASE}-{slug}/${PHASE}-RESEARCH.md
+</output>",
+  subagent_type="gsd-phase-researcher",
+  model="{researcher_model}"
+)
 ```
+
+## Step 5: Handle Return
+
+- `## RESEARCH COMPLETE` — Display summary, offer: Plan/Dig deeper/Review/Done
+- `## CHECKPOINT REACHED` — Present to user, spawn continuation
+- `## RESEARCH INCONCLUSIVE` — Show attempts, offer: Add context/Try different mode/Manual
 
 </process>
+

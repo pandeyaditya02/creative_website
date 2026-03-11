@@ -1,6 +1,6 @@
 # Debug Template
 
-Template for `.gsd/debug/[slug].md` — active debug session tracking.
+Template for `.planning/debug/[slug].md` — active debug session tracking.
 
 ---
 
@@ -8,7 +8,7 @@ Template for `.gsd/debug/[slug].md` — active debug session tracking.
 
 ```markdown
 ---
-status: gathering | investigating | fixing | verifying | resolved
+status: gathering | investigating | fixing | verifying | awaiting_human_verify | resolved
 trigger: "[verbatim user input]"
 created: [ISO timestamp]
 updated: [ISO timestamp]
@@ -32,7 +32,7 @@ reproduction: [how to trigger]
 started: [when it broke / always broken]
 
 ## Eliminated
-<!-- APPEND only - prevents re-investigating after context reset -->
+<!-- APPEND only - prevents re-investigating after /clear -->
 
 - hypothesis: [theory that was wrong]
   evidence: [what disproved it]
@@ -57,7 +57,7 @@ files_changed: []
 
 ---
 
-## Section Rules
+<section_rules>
 
 **Frontmatter (status, trigger, timestamps):**
 - `status`: OVERWRITE - reflects current phase
@@ -67,52 +67,80 @@ files_changed: []
 
 **Current Focus:**
 - OVERWRITE entirely on each update
-- Always reflects what AI is doing RIGHT NOW
-- If AI reads this after session reset, it knows exactly where to resume
+- Always reflects what Claude is doing RIGHT NOW
+- If Claude reads this after /clear, it knows exactly where to resume
 - Fields: hypothesis, test, expecting, next_action
 
 **Symptoms:**
 - Written during initial gathering phase
 - IMMUTABLE after gathering complete
 - Reference point for what we're trying to fix
+- Fields: expected, actual, errors, reproduction, started
 
 **Eliminated:**
 - APPEND only - never remove entries
 - Prevents re-investigating dead ends after context reset
-- Critical for efficiency across session boundaries
+- Each entry: hypothesis, evidence that disproved it, timestamp
+- Critical for efficiency across /clear boundaries
 
 **Evidence:**
 - APPEND only - never remove entries
 - Facts discovered during investigation
+- Each entry: timestamp, what checked, what found, implication
 - Builds the case for root cause
 
 **Resolution:**
 - OVERWRITE as understanding evolves
+- May update multiple times as fixes are tried
 - Final state shows confirmed root cause and verified fix
+- Fields: root_cause, fix, verification, files_changed
 
----
+</section_rules>
 
-## Lifecycle
+<lifecycle>
 
-**Creation:** When /debug is called
+**Creation:** Immediately when /gsd:debug is called
 - Create file with trigger from user input
 - Set status to "gathering"
-- next_action = "gather symptoms"
+- Current Focus: next_action = "gather symptoms"
+- Symptoms: empty, to be filled
+
+**During symptom gathering:**
+- Update Symptoms section as user answers questions
+- Update Current Focus with each question
+- When complete: status → "investigating"
 
 **During investigation:**
 - OVERWRITE Current Focus with each hypothesis
 - APPEND to Evidence with each finding
 - APPEND to Eliminated when hypothesis disproved
+- Update timestamp in frontmatter
+
+**During fixing:**
+- status → "fixing"
+- Update Resolution.root_cause when confirmed
+- Update Resolution.fix when applied
+- Update Resolution.files_changed
+
+**During verification:**
+- status → "verifying"
+- Update Resolution.verification with results
+- If verification fails: status → "investigating", try again
+
+**After self-verification passes:**
+- status -> "awaiting_human_verify"
+- Request explicit user confirmation in a checkpoint
+- Do NOT move file to resolved yet
 
 **On resolution:**
 - status → "resolved"
-- Move file to .gsd/debug/resolved/
+- Move file to .planning/debug/resolved/ (only after user confirms fix)
 
----
+</lifecycle>
 
-## Resume Behavior
+<resume_behavior>
 
-When AI reads this file after session reset:
+When Claude reads this file after /clear:
 
 1. Parse frontmatter → know status
 2. Read Current Focus → know exactly what was happening
@@ -120,4 +148,17 @@ When AI reads this file after session reset:
 4. Read Evidence → know what's been learned
 5. Continue from next_action
 
-The file IS the debugging brain.
+The file IS the debugging brain. Claude should be able to resume perfectly from any interruption point.
+
+</resume_behavior>
+
+<size_constraint>
+
+Keep debug files focused:
+- Evidence entries: 1-2 lines each, just the facts
+- Eliminated: brief - hypothesis + why it failed
+- No narrative prose - structured data only
+
+If evidence grows very large (10+ entries), consider whether you're going in circles. Check Eliminated to ensure you're not re-treading.
+
+</size_constraint>

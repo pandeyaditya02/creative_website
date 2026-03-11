@@ -1,10 +1,10 @@
 # Discovery Template
 
-Template for `.gsd/phases/{N}/DISCOVERY.md` — shallow research for library/option decisions.
+Template for `.planning/phases/XX-name/DISCOVERY.md` - shallow research for library/option decisions.
 
-**Purpose:** Answer "which library/option should we use" questions during planning.
+**Purpose:** Answer "which library/option should we use" questions during mandatory discovery in plan-phase.
 
-For deep ecosystem research, use `/research-phase` which produces RESEARCH.md.
+For deep ecosystem research ("how do experts build this"), use `/gsd:research-phase` which produces RESEARCH.md.
 
 ---
 
@@ -12,10 +12,18 @@ For deep ecosystem research, use `/research-phase` which produces RESEARCH.md.
 
 ```markdown
 ---
-phase: {N}
+phase: XX-name
 type: discovery
 topic: [discovery-topic]
 ---
+
+<session_initialization>
+Before beginning discovery, verify today's date:
+!`date +%Y-%m-%d`
+
+Use this date when searching for "current" or "latest" information.
+Example: If today is 2025-11-22, search for "2025" not "2024".
+</session_initialization>
 
 <discovery_objective>
 Discover [topic] to inform [phase name] implementation.
@@ -41,38 +49,38 @@ Output: DISCOVERY.md with recommendation
 <discovery_protocol>
 
 **Source Priority:**
-1. **Official Docs** — Authoritative, current
-2. **Web Search** — For comparisons, trends (verify findings)
-3. **GitHub** — For real usage patterns
+1. **Context7 MCP** - For library/framework documentation (current, authoritative)
+2. **Official Docs** - For platform-specific or non-indexed libraries
+3. **WebSearch** - For comparisons, trends, community patterns (verify all findings)
 
 **Quality Checklist:**
-- [ ] All claims have authoritative sources
-- [ ] Negative claims verified with official docs
-- [ ] Alternative approaches considered
-- [ ] Recent updates checked for breaking changes
+Before completing discovery, verify:
+- [ ] All claims have authoritative sources (Context7 or official docs)
+- [ ] Negative claims ("X is not possible") verified with official documentation
+- [ ] API syntax/configuration from Context7 or official docs (never WebSearch alone)
+- [ ] WebSearch findings cross-checked with authoritative sources
+- [ ] Recent updates/changelogs checked for breaking changes
+- [ ] Alternative approaches considered (not just first solution found)
 
 **Confidence Levels:**
-- HIGH: Official docs confirm
-- MEDIUM: Multiple sources confirm
-- LOW: Single source or training knowledge only
+- HIGH: Context7 or official docs confirm
+- MEDIUM: WebSearch + Context7/official docs confirm
+- LOW: WebSearch only or training knowledge only (mark for validation)
 
 </discovery_protocol>
-```
 
----
 
-## Output Structure
-
-Create `.gsd/phases/{N}/DISCOVERY.md`:
+<output_structure>
+Create `.planning/phases/XX-name/DISCOVERY.md`:
 
 ```markdown
 # [Topic] Discovery
 
 ## Summary
-[2-3 paragraph executive summary]
+[2-3 paragraph executive summary - what was researched, what was found, what's recommended]
 
 ## Primary Recommendation
-[What to do and why — specific and actionable]
+[What to do and why - be specific and actionable]
 
 ## Alternatives Considered
 [What else was evaluated and why not chosen]
@@ -80,43 +88,59 @@ Create `.gsd/phases/{N}/DISCOVERY.md`:
 ## Key Findings
 
 ### [Category 1]
-- [Finding with source URL]
+- [Finding with source URL and relevance to our case]
 
 ### [Category 2]
-- [Finding with relevance]
+- [Finding with source URL and relevance]
 
 ## Code Examples
-[Relevant patterns if applicable]
+[Relevant implementation patterns, if applicable]
 
 ## Metadata
 
+<metadata>
 <confidence level="high|medium|low">
-[Why this confidence level]
+[Why this confidence level - based on source quality and verification]
 </confidence>
 
 <sources>
-- [Primary sources used]
+- [Primary authoritative sources used]
 </sources>
 
 <open_questions>
-[What needs validation during implementation]
+[What couldn't be determined or needs validation during implementation]
 </open_questions>
+
+<validation_checkpoints>
+[If confidence is LOW or MEDIUM, list specific things to verify during implementation]
+</validation_checkpoints>
+</metadata>
 ```
+</output_structure>
 
----
+<success_criteria>
+- All scope questions answered with authoritative sources
+- Quality checklist items completed
+- Clear primary recommendation
+- Low-confidence findings marked with validation checkpoints
+- Ready to inform PLAN.md creation
+</success_criteria>
 
-## When to Use
-
-**Use discovery when:**
+<guidelines>
+**When to use discovery:**
 - Technology choice unclear (library A vs B)
 - Best practices needed for unfamiliar integration
 - API/library investigation required
+- Single decision pending
 
-**Don't use when:**
+**When NOT to use:**
 - Established patterns (CRUD, auth with known library)
-- Questions answerable from project context
+- Implementation details (defer to execution)
+- Questions answerable from existing project context
 
-**Use RESEARCH.md instead when:**
-- Niche/complex domains (3D, games, audio)
+**When to use RESEARCH.md instead:**
+- Niche/complex domains (3D, games, audio, shaders)
 - Need ecosystem knowledge, not just library choice
 - "How do experts build this" questions
+- Use `/gsd:research-phase` for these
+</guidelines>
