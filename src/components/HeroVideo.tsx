@@ -206,10 +206,12 @@ const HeroVideo = () => {
         </div>
 
         {/* Tier 2: Brutalist Headline */}
+        {/*
         <h1 ref={titleRef} className="text-4xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-tighter uppercase leading-[0.9]">
           CRAFTING STORIES<br />
           THAT MOVE
         </h1>
+        */}
 
         {/* Dynamic Progress Bar */}
         <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-sm mt-4">
