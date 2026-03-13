@@ -37,7 +37,7 @@ const ClienteleMarquee = () => {
                   - We use a simpler structure: one long flex container
                   - Animation moves it partially
                 */}
-                <div className="flex w-max whitespace-nowrap animate-marquee-mobile lg:animate-marquee">
+                <div className="flex w-max whitespace-nowrap animate-marquee pause-on-hover">
                     {allLogos.map((logo, index) => (
                         <div
                             key={`${logo.alt}-${index}`}

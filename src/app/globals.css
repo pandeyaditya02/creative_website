@@ -78,19 +78,20 @@ body {
   }
   
   .animate-marquee {
-    animation: marquee 7s linear infinite;
+    animation: marquee 15s linear infinite;
     will-change: transform;
     transform: translateZ(0);
   }
   
   .animate-marquee-mobile {
-    animation: marquee 10s linear infinite;
+    animation: marquee 15s linear infinite;
     will-change: transform;
     transform: translateZ(0);
   }
   
   @media (min-width: 1024px) {
-    .pause-on-hover:hover .animate-marquee {
+    .pause-on-hover:hover .animate-marquee,
+    .pause-on-hover:hover .animate-marquee-mobile {
       animation-play-state: paused;
     }
   }
