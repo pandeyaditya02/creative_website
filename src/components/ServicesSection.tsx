@@ -150,7 +150,7 @@ const ServicesSection = () => {
     }, { scope: wrapperRef });
 
     return (
-        <div ref={wrapperRef} className="services-wrapper relative w-full bg-black overflow-hidden">
+        <div id="services" ref={wrapperRef} className="services-wrapper relative w-full bg-black overflow-hidden">
             
             {/* ─── MOBILE: Simple Vertical Scroll ─── */}
             <div className="md:hidden flex flex-col">

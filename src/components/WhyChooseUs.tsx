@@ -69,7 +69,7 @@ const WhyChooseUs = () => {
     }, { scope: sectionRef });
 
     return (
-        <section ref={sectionRef} className="relative bg-black text-white py-32 lg:py-44 overflow-hidden">
+        <section id="why-choose-us" ref={sectionRef} className="relative bg-black text-white py-32 lg:py-44 overflow-hidden">
             {/* Section Title */}
             <div className="flex flex-col items-center gap-4 mb-24 lg:mb-36">
                 <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">

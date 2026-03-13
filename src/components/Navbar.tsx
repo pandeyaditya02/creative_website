@@ -17,10 +17,10 @@ const prefersReducedMotion = () => {
 };
 
 const navLinks = [
-  { href: "#work", label: "WORK" },
-  { href: "#services", label: "SERVICES" },
+  { href: "#work-stats", label: "WORK" },
   { href: "#about", label: "ABOUT US" },
-  { href: "#contact", label: "CONTACTS" },
+  { href: "#services", label: "SERVICES" },
+  { href: "#contact", label: "CONTACT Us" },
 ];
 
 const Navbar = () => {
@@ -35,6 +35,26 @@ const Navbar = () => {
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const menuTimelineRef = useRef<gsap.core.Timeline | null>(null);
+
+  // Custom Scroll Handler to prevent URL changes
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      const offset = 80; // Account for navbar height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      
+      // Close mobile menu if open
+      setIsMenuOpen(false);
+    }
+  };
 
   // Update mobile view state
   useEffect(() => {
@@ -294,6 +314,7 @@ const Navbar = () => {
             <Link
               key={link.label}
               href={link.href}
+              onClick={(e) => scrollToSection(e, link.href)}
               className={`nav-link relative py-2 px-1 transition-colors min-h-[44px] flex items-center ${activeSection === link.href ? 'text-[#F67963]' : 'hover:text-[#F67963]'}`}
             >
               {link.label}
@@ -385,7 +406,7 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   href={link.href}
-                  onClick={closeMenu}
+                  onClick={(e) => scrollToSection(e, link.href)}
                   className={`nav-link-mobile group flex items-center justify-between 
                              py-4 px-3 text-lg font-semibold rounded-lg transition-colors
                              ${activeSection === link.href ? 'text-[#F67963] bg-white/5' : 'text-white hover:text-[#F67963] active:bg-white/5'}`}

@@ -67,7 +67,7 @@ const AboutSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-start bg-black text-white py-24 md:py-32 px-6 sm:px-16 overflow-hidden">
+        <section id="about" ref={containerRef} className="relative min-h-screen flex flex-col justify-start bg-black text-white py-24 md:py-32 px-6 sm:px-16 overflow-hidden">
             {/* Subtle Background Gradients */}
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[60ch] h-[60ch] bg-[#F67963]/5 rounded-full blur-[120px]" />

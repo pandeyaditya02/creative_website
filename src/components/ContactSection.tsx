@@ -95,7 +95,7 @@ const ContactSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-[100svh] bg-[#0a0a0a] text-white py-24 md:py-32 lg:py-40 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center">
+        <section id="contact" ref={containerRef} className="relative min-h-[100svh] bg-[#0a0a0a] text-white py-24 md:py-32 lg:py-44 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center">
 
             {/* Subtle Gradient Glow Background */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">

@@ -97,6 +97,7 @@ export default function StatsCounter() {
 
     return (
         <section
+            id="work-stats"
             ref={containerRef}
             className="w-full bg-[#0a0a0a] py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 text-white overflow-hidden"
             aria-labelledby="stats-heading"
