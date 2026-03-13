@@ -19,7 +19,6 @@ const HeroVideo = () => {
   
   const playerRef = useRef<YT.Player | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const visibilityIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Refs for GSAP
   const containerRef = useRef<HTMLDivElement>(null);
@@ -132,7 +131,11 @@ const HeroVideo = () => {
   const toggleSound = () => {
     setMuted((prev) => {
       if (playerRef.current) {
-        prev ? playerRef.current.unMute() : playerRef.current.mute();
+        if (prev) {
+          playerRef.current.unMute();
+        } else {
+          playerRef.current.mute();
+        }
       }
       return !prev;
     });
@@ -236,7 +239,7 @@ const HeroVideo = () => {
       if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
       if ((window as any).onYouTubeIframeAPIReady) delete (window as any).onYouTubeIframeAPIReady;
     };
-  }, [isMobileView]);
+  }, [isMobileView, onPlayerReady]);
 
   return (
     <div 

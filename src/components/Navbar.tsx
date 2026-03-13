@@ -31,7 +31,6 @@ const navLinks = [
 const Navbar = () => {
   const [time, setTime] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   
   const navRef = useRef<HTMLElement>(null);
@@ -201,7 +200,6 @@ const Navbar = () => {
       end: "max",
       onUpdate: (self) => {
         const scrollY = window.scrollY;
-        setIsScrolled(scrollY > 50);
         
         if (scrollY < 100) {
           showAnim.play();
@@ -210,7 +208,6 @@ const Navbar = () => {
         } else {
           showAnim.reverse();
         }
-        lastScrollY = scrollY;
       },
     });
 

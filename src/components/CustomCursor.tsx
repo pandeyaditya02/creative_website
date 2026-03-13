@@ -77,7 +77,7 @@ export default function CustomCursor() {
 
             {/* Biggest Dot (Leading) — morphs into ring on link hover */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full mix-blend-screen z-50"
+                className="fixed top-0 left-0 pointer-events-none rounded-full mix-blend-screen z-[9999]"
                 style={{
                     x: firstDotX,
                     y: firstDotY,
@@ -95,7 +95,7 @@ export default function CustomCursor() {
 
             {/* Medium Dot (Middle Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#F67963] mix-blend-screen z-50 opacity-80"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#F67963] mix-blend-screen z-[9999] opacity-80"
                 style={{
                     x: secondDotX,
                     y: secondDotY,
@@ -108,7 +108,7 @@ export default function CustomCursor() {
 
             {/* Smallest Dot (Last Trail) */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#e26954] mix-blend-screen z-50 opacity-60"
+                className="fixed top-0 left-0 pointer-events-none rounded-full bg-[#e26954] mix-blend-screen z-[9999] opacity-60"
                 style={{
                     x: thirdDotX,
                     y: thirdDotY,

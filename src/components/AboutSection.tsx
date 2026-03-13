@@ -9,8 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 const AboutSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
-    const textContainerRef = useRef<HTMLDivElement>(null);
-    const timelineRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
         // 1. Split Text Title Animation
