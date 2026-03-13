@@ -9,11 +9,6 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Helper: Detect mobile devices
-const isMobile = () => {
-  if (typeof window === "undefined") return false;
-  return window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-};
 
 // ✅ NEW: Respect user's reduced motion preference
 const prefersReducedMotion = () => {
@@ -43,20 +38,10 @@ const Navbar = () => {
 
   // Update mobile view state
   useEffect(() => {
-    const checkMobile = () => setIsMobileView(isMobile());
-    checkMobile();
-    
-    let resizeTimeout: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(checkMobile, 150);
-    };
-    
+    const handleResize = () => setIsMobileView(window.innerWidth < 768);
+    handleResize();
     window.addEventListener("resize", handleResize);
-    return () => {
-      clearTimeout(resizeTimeout);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Live time update
@@ -70,18 +55,23 @@ const Navbar = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Close mobile menu when clicking a link
+  // Active Section Tracking
+  const [activeSection, setActiveSection] = useState("");
   useEffect(() => {
-    if (!isMobileView) return;
-    
-    const handleLinkClick = () => setIsMenuOpen(false);
-    const links = document.querySelectorAll("#mobile-menu a");
-    links.forEach(link => link.addEventListener("click", handleLinkClick));
-    
-    return () => {
-      links.forEach(link => link.removeEventListener("click", handleLinkClick));
+    const handleScroll = () => {
+      let current = "";
+      for (const link of navLinks) {
+        const el = document.getElementById(link.href.substring(1));
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 100) current = link.href;
+        }
+      }
+      setActiveSection(current);
     };
-  }, [isMobileView]);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // ✅ FIX: Handle mobile menu animation separately with useEffect
   useEffect(() => {
@@ -214,13 +204,14 @@ const Navbar = () => {
     // Desktop-only: Magnetic hover effect (skip if reduced motion)
     if (!mobile && !reduceMotion) {
       const links = document.querySelectorAll(".nav-link");
+      const handlers: { el: HTMLElement; enter: any; leave: any; move: any }[] = [];
+
       links.forEach((link) => {
-        const linkEl = link as HTMLElement;
-        let timeout: NodeJS.Timeout;
+        const el = link as HTMLElement;
+        const underline = el.querySelector(".link-underline");
 
         const onEnter = () => {
-          clearTimeout(timeout);
-          gsap.to(linkEl.querySelector(".link-underline"), {
+          gsap.to(underline, {
             scaleX: 1,
             transformOrigin: "left center",
             duration: 0.3,
@@ -229,36 +220,42 @@ const Navbar = () => {
         };
 
         const onLeave = () => {
-          timeout = setTimeout(() => {
-            gsap.to(linkEl.querySelector(".link-underline"), {
-              scaleX: 0,
-              transformOrigin: "right center",
-              duration: 0.3,
-              ease: "power2.out",
-            });
-            gsap.to(linkEl, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
-          }, 50);
+          gsap.to(underline, {
+            scaleX: 0,
+            transformOrigin: "right center",
+            duration: 0.3,
+            ease: "power2.out",
+          });
+          gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
         };
 
         const onMove = (e: MouseEvent) => {
-          const rect = linkEl.getBoundingClientRect();
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-          gsap.to(linkEl, { x: x * 0.2, y: y * 0.2, duration: 0.2, ease: "power1.out" });
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) * 0.2;
+          const y = (e.clientY - rect.top - rect.height / 2) * 0.2;
+          gsap.to(el, { x, y, duration: 0.2, ease: "power1.out" });
         };
 
-        linkEl.addEventListener("mouseenter", onEnter);
-        linkEl.addEventListener("mouseleave", onLeave);
-        linkEl.addEventListener("mousemove", onMove);
+        el.addEventListener("mouseenter", onEnter);
+        el.addEventListener("mouseleave", onLeave);
+        el.addEventListener("mousemove", onMove);
+        handlers.push({ el, enter: onEnter, leave: onLeave, move: onMove });
       });
+
+      return () => {
+        handlers.forEach(h => {
+          h.el.removeEventListener("mouseenter", h.enter);
+          h.el.removeEventListener("mouseleave", h.leave);
+          h.el.removeEventListener("mousemove", h.move);
+        });
+        ScrollTrigger.getAll().forEach(st => st.kill());
+      };
     }
 
-    // Cleanup
     return () => {
       ScrollTrigger.getAll().forEach(st => st.kill());
     };
-
-  }, { scope: navRef });
+  }, { scope: navRef, dependencies: [isMobileView] });
 
   // ✅ FIX: Toggle mobile menu with proper state update
   const toggleMenu = () => {
@@ -297,10 +294,10 @@ const Navbar = () => {
             <Link
               key={link.label}
               href={link.href}
-              className="nav-link relative py-2 px-1 hover:text-[#F67963] transition-colors min-h-[44px] flex items-center"
+              className={`nav-link relative py-2 px-1 transition-colors min-h-[44px] flex items-center ${activeSection === link.href ? 'text-[#F67963]' : 'hover:text-[#F67963]'}`}
             >
               {link.label}
-              <span className="link-underline absolute bottom-0 left-0 w-full h-[2px] bg-[#F67963] scale-x-0 origin-left" />
+              <span className={`link-underline absolute bottom-0 left-0 w-full h-[2px] bg-[#F67963] origin-left transition-transform duration-300 ${activeSection === link.href ? 'scale-x-100' : 'scale-x-0'}`} />
             </Link>
           ))}
           
@@ -388,15 +385,15 @@ const Navbar = () => {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="nav-link-mobile group flex items-center justify-between 
-                             py-4 px-3 text-lg font-semibold text-white 
-                             hover:text-[#F67963] transition-colors rounded-lg
-                             active:bg-white/5"
+                  onClick={closeMenu}
+                  className={`nav-link-mobile group flex items-center justify-between 
+                             py-4 px-3 text-lg font-semibold rounded-lg transition-colors
+                             ${activeSection === link.href ? 'text-[#F67963] bg-white/5' : 'text-white hover:text-[#F67963] active:bg-white/5'}`}
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   {link.label}
-                  <span className="link-arrow opacity-0 group-hover:opacity-100 
-                                   group-hover:translate-x-1 transition-all duration-200"
+                  <span className={`link-arrow opacity-0 group-hover:opacity-100 
+                                   group-hover:translate-x-1 transition-all duration-200 ${activeSection === link.href ? 'opacity-100 translate-x-1' : ''}`}
                   >
                     →
                   </span>
