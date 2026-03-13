@@ -58,7 +58,7 @@ export default function Preloader() {
     return (
         <div
             ref={containerRef}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0d0d0d] text-[#ffede6]"
+            className="fixed inset-0 z-[110] flex flex-col items-center justify-center bg-[#0d0d0d] text-[#ffede6]"
         >
             <div className="overflow-hidden">
                 <div ref={textRef} className="text-8xl md:text-[12rem] font-bold tracking-tighter tabular-nums leading-none">

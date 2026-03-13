@@ -291,7 +291,7 @@ const Navbar = () => {
     <>
       <nav
   ref={navRef}
-  className="fixed top-0 left-0 z-50 w-full flex items-center justify-between text-white transition-all duration-300 bg-transparent mix-blend-difference px-4 md:px-8 py-4 md:py-6"
+  className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between text-white transition-all duration-300 bg-transparent mix-blend-difference px-4 md:px-8 py-4 md:py-6"
 >
         {/* Logo */}
         <div ref={logoRef} className="flex items-center group cursor-pointer">
