@@ -211,7 +211,10 @@ const ServicesSection = () => {
                 <div className="w-[30%] lg:w-[40%] xl:w-[35%] h-full flex flex-col justify-center px-6 md:px-10 lg:px-16 relative bg-black">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#F67963]/5 rounded-full blur-[180px] pointer-events-none" />
                     <div className="relative z-10 flex flex-col gap-8">
-                        <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">What we do</span>
+                        <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                            What we do
+                        </span>
                         <h2 className="text-5xl lg:text-7xl xl:text-8xl font-bold uppercase tracking-tighter text-white leading-[0.9]">Our<br />Services</h2>
                         <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent" />
                         <div className="flex flex-col gap-3 mt-4">
