@@ -176,60 +176,78 @@ const ServicesSection = () => {
     return (
         <div ref={wrapperRef} className="services-wrapper relative w-full bg-black overflow-hidden">
             
-            {/* ─── MOBILE: Simple Vertical Scroll ─── */}
-            <div className="md:hidden flex flex-col">
-                {/* Sticky Header */}
-                <div className="sticky top-0 z-30 bg-gradient-to-b from-black via-black/95 to-transparent px-6 py-8 border-b border-white/5">
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium block mb-3">
-                        What we do
+            {/* ─── MOBILE: Brutalist Vertical Scroll ─── */}
+            <div className="md:hidden bg-black text-white px-8 py-12 flex flex-col gap-16">
+                {/* Header */}
+                <header>
+                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-[#F67963] block mb-6">
+                        What We Do
                     </span>
-                    <h2 className="text-4xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
-                        Our<br />Services
-                    </h2>
-                    <div className="w-10 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mb-6" />
-                    
-                    <div className="flex items-baseline gap-2 mb-3">
-                        <span ref={counterRef} className="text-3xl font-bold text-white tabular-nums">01</span>
-                        <span className="text-base text-white/30 font-light">/ {String(TOTAL_SLIDES).padStart(2, "0")}</span>
+                    <div className="relative">
+                        <h2 className="font-black text-6xl uppercase leading-[0.85] tracking-tighter text-white">
+                            Our<br />Services
+                        </h2>
+                        <div className="h-[2px] w-24 mt-8 bg-gradient-to-r from-[#F67963] to-transparent" />
                     </div>
-                    <div className="w-full max-w-[180px] h-[2px] bg-white/10 rounded-full overflow-hidden">
-                        <div ref={progressBarRef} className="h-full bg-[#F67963] rounded-full origin-left" style={{ transform: "scaleX(0)" }} />
-                    </div>
-                </div>
+                </header>
 
-                {/* Scrollable Service Cards */}
-                <div className="flex flex-col">
+                {/* Service Cards */}
+                <div className="flex flex-col gap-24">
                     {services.map((service, index) => (
                         <div
                             key={index}
                             ref={(el) => { slideRefs.current[index] = el; }}
-                            className="min-h-screen w-full px-6 py-12 flex flex-col justify-center border-b border-white/5"
+                            className="flex flex-col gap-10"
                         >
-                            <div className="flex flex-col gap-5 mb-8">
-                                <span className="inline-block w-fit px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
-                                    {String(index + 1).padStart(2, "0")} — Service
-                                </span>
-                                <h3 className="text-3xl font-bold text-white leading-[1.2] tracking-tight">{service.title}</h3>
-                                <p className="text-[#B0B0B0] text-base leading-[1.6]">{service.description}</p>
-                                <ul className="flex flex-col gap-3 mt-2">
-                                    {service.highlights.map((h, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-sm text-[#A1A1A1] leading-snug">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0 mt-1.5" />
-                                            <span>{h}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-4" />
-                            </div>
-                            <div className="w-full">
-                                <div className="relative rounded-xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
-                                    <img
-                                        src={service.image}
-                                        alt={service.title}
-                                        className="w-full h-full object-cover"
-                                        loading={index === 0 ? "eager" : "lazy"}
+                            <p className="text-white/60 leading-relaxed text-lg font-light">
+                                {service.description}
+                            </p>
+
+                            <ul className="space-y-5">
+                                {service.highlights.map((h, i) => (
+                                    <li key={i} className="flex items-start gap-4">
+                                        <span className="w-2 h-2 rounded-full bg-[#F67963] mt-2 flex-shrink-0"></span>
+                                        <span className="text-white/80 font-medium">{h}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <div className="h-[2px] w-32 bg-gradient-to-r from-[#F67963] to-transparent opacity-50" />
+
+                            {/* Counter & Progress Bar */}
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-baseline gap-2">
+                                    <span className="text-4xl font-black text-white tracking-tighter">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+                                    <span className="text-xl text-white/30">/ {String(TOTAL_SLIDES).padStart(2, "0")}</span>
+                                </div>
+                                <div className="w-full h-[1px] bg-white/10 relative">
+                                    <div 
+                                        className="absolute left-0 top-0 h-full bg-[#F67963] shadow-[0_0_8px_rgba(246,121,99,0.5)] transition-all duration-300" 
+                                        style={{ width: `${((index + 1) / TOTAL_SLIDES) * 100}%` }}
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                                </div>
+                            </div>
+
+                            {/* Image with Play Overlay */}
+                            <div className="relative rounded-2xl overflow-hidden shadow-2xl group active:scale-[0.98] transition-transform duration-300">
+                                <img
+                                    src={service.image}
+                                    alt={service.title}
+                                    className="w-full aspect-video object-cover transition-transform duration-700 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                                        <svg className="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-4 left-6">
+                                    <span className="text-[10px] uppercase tracking-widest font-bold text-white/50 block mb-1">Service {String(index + 1).padStart(2, "0")}</span>
+                                    <h4 className="text-xl font-bold text-white">{service.title}</h4>
                                 </div>
                             </div>
                         </div>

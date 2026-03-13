@@ -25,41 +25,40 @@ const AboutSection = () => {
             titleRef.current.innerHTML = words.map(word =>
                 `<span class="word" style="display: inline-block; white-space: nowrap;">
                   ${word.split('').map(char =>
-                    `<span class="char" style="display: inline-block; transform: translateY(100%) rotateX(-90deg); opacity: 0;">${char}</span>`
+                    `<span class="char" style="display: inline-block; transform: translateY(20px); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
                 ).join('')}
                 </span>`
             ).join('&nbsp;');
 
-            gsap.to(".char", {
+            gsap.to(titleRef.current.querySelectorAll(".char"), {
                 y: 0,
-                rotateX: 0,
                 opacity: 1,
-                duration: 1.2,
-                ease: "power4.out",
+                duration: 0.4,
+                ease: "power2.out",
                 stagger: {
-                    amount: 0.6,
+                    amount: 0.3,
                     from: "start"
                 },
                 scrollTrigger: {
                     trigger: titleRef.current,
-                    start: "top 90%",
-                    toggleActions: "play reverse play reverse"
+                    start: "top 99%",
+                    toggleActions: "play none none reverse"
                 }
             });
         }
 
         // 2. Text blocks reveal with staggered ScrollTrigger
         gsap.fromTo(".about-text-block", 
-            { opacity: 0, y: 30 },
+            { opacity: 0, y: 10 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 0.8,
-                stagger: 0.15,
-                ease: "power2.out",
+                duration: 0.3,
+                stagger: 0.05,
+                ease: "none",
                 scrollTrigger: {
                     trigger: ".grid",
-                    start: "top 85%",
+                    start: "top bottom",
                     toggleActions: "play none none reverse"
                 }
             }
@@ -68,14 +67,14 @@ const AboutSection = () => {
     }, { scope: containerRef });
 
     return (
-        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-center bg-black text-white py-16 px-6 sm:px-16 overflow-hidden">
+        <section ref={containerRef} className="relative min-h-screen flex flex-col justify-start bg-black text-white py-24 md:py-32 px-6 sm:px-16 overflow-hidden">
             {/* Subtle Background Gradients */}
             <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[60ch] h-[60ch] bg-[#F67963]/5 rounded-full blur-[120px]" />
                 <div className="absolute bottom-0 left-0 w-[40ch] h-[40ch] bg-white/5 rounded-full blur-[100px]" />
             </div>
 
-            <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center gap-16">
+            <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center gap-10 md:gap-16">
                 {/* Oversized Title */}
                 <div className="text-center space-y-4">
                     <span className="text-xs uppercase tracking-[0.3em] text-white/50">Who we are</span>

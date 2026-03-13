@@ -23,7 +23,6 @@ const HeroVideo = () => {
   // Refs for GSAP
   const containerRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const progressContainerRef = useRef<HTMLDivElement>(null);
 
   // Update mobile view state on resize
@@ -46,44 +45,6 @@ const HeroVideo = () => {
 
   useGSAP(() => {
     const mobile = isMobileView;
-
-    // 1. Text Animation - Mobile Fallback
-    if (titleRef.current) {
-      if (mobile) {
-        // Mobile: Simple fade-in instead of heavy split-text
-        gsap.from(titleRef.current, {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: "power2.out"
-        });
-      } else {
-        // Desktop: Advanced split-text animation
-        const originalHTML = titleRef.current.innerHTML;
-        const lines = originalHTML.split(/<br\s*\/?>/i);
-
-        titleRef.current.innerHTML = lines.map((line, lineIndex) => {
-          const words = line.trim().split(/\s+/);
-          const lineHTML = words.map(word =>
-            `<span class="word" style="display: inline-block; overflow: hidden; perspective: 1000px;">
-              ${word.split('').map(char =>
-              `<span class="char" style="display: inline-block; transform: translateY(120%) rotateX(-90deg); opacity: 0;">${char === ' ' ? '&nbsp;' : char}</span>`
-            ).join('')}
-            </span>&nbsp;`
-          ).join('');
-          return lineHTML + (lineIndex < lines.length - 1 ? '<br />' : '');
-        }).join('');
-
-        gsap.to(titleRef.current.querySelectorAll('.char'), {
-          y: 0,
-          rotateX: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power4.out",
-          stagger: { amount: 0.8, from: "start" }
-        });
-      }
-    }
 
     // Progress container reveal
     gsap.from(progressContainerRef.current, {
@@ -110,20 +71,6 @@ const HeroVideo = () => {
         }
       );
     }
-
-    // Parallax text - Disabled on mobile to avoid scroll conflicts
-    if (titleRef.current && !mobile) {
-      gsap.to(titleRef.current, {
-        y: -100,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom center",
-          scrub: 1,
-        }
-      });
-    }
-
   }, { scope: containerRef, dependencies: [isMobileView] });
 
   const videoId = "4FXlxfgxGaQ";
@@ -277,15 +224,6 @@ const HeroVideo = () => {
         <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-[#F67963] font-medium">
           SHOWREEL 2026
         </div>
-
-        {/* Tier 2: Headline */}
-        <h1 
-          ref={titleRef} 
-          className="text-4xl md:text-6xl lg:text-7xl font-sans font-black text-white tracking-tighter uppercase leading-[0.85]"
-        >
-          Crafting Stories<br />
-          That Move
-        </h1>
 
         {/* Dynamic Progress Bar */}
         <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-4">
