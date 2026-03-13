@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -51,18 +51,46 @@ const ServicesSection = () => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
     const counterRef = useRef<HTMLSpanElement>(null);
+    const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+    // Mobile: Update counter based on which slide is in view
+    useEffect(() => {
+        if (window.innerWidth >= 768) return; // Desktop uses GSAP
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const index = slideRefs.current.indexOf(entry.target as HTMLDivElement);
+                    if (entry.isIntersecting && index !== -1 && counterRef.current && progressBarRef.current) {
+                        const progress = (index + 1) / TOTAL_SLIDES;
+                        counterRef.current.textContent = String(index + 1).padStart(2, "0");
+                        progressBarRef.current.style.transform = `scaleX(${progress})`;
+                    }
+                });
+            },
+            { threshold: 0.5 } // Trigger when 50% of slide is visible
+        );
+
+        slideRefs.current.forEach((slide) => {
+            if (slide) observer.observe(slide);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Desktop: GSAP pinned scroll animation
     useGSAP(() => {
-        const slides = gsap.utils.toArray<HTMLElement>(".service-slide");
+        if (window.innerWidth < 768) return; // Skip on mobile
+
+        const slides = gsap.utils.toArray<HTMLElement>(".service-slide-desktop");
         const slideTexts = gsap.utils.toArray<HTMLElement>(".service-slide-text");
         const slideImages = gsap.utils.toArray<HTMLElement>(".service-slide-image");
 
         if (slides.length === 0) return;
 
-        // Master timeline — scrubbed by ScrollTrigger
         const tl = gsap.timeline();
 
-        // Set initial states: first slide visible, rest hidden
+        // Initial states
         gsap.set(slides[0], { opacity: 1, zIndex: 5 });
         gsap.set(slideTexts[0], { opacity: 1, y: 0 });
         gsap.set(slideImages[0], { opacity: 1, scale: 1 });
@@ -73,20 +101,10 @@ const ServicesSection = () => {
             gsap.set(slideImages[i], { opacity: 0, scale: 1.1 });
         }
 
-        // Build transitions: 0→1, 1→2, 2→3, 3→4, 4→5
+        // Build transitions
         for (let i = 0; i < slides.length - 1; i++) {
-            // Each transition has a small hold at start, then transition, then hold at end
-            const holdLabel = `hold-${i}`;
             const transLabel = `trans-${i}`;
 
-            // Hold current slide (small pause for reading)
-            tl.addLabel(holdLabel);
-            tl.to({}, { duration: 0.3 }); // hold duration
-
-            // Transition
-            tl.addLabel(transLabel);
-
-            // Fade out current slide
             tl.to(slideTexts[i], {
                 opacity: 0,
                 y: -40,
@@ -107,7 +125,6 @@ const ServicesSection = () => {
                 duration: 0.5,
             }, transLabel);
 
-            // Fade in next slide
             tl.to(slides[i + 1], {
                 opacity: 1,
                 zIndex: 5,
@@ -129,23 +146,18 @@ const ServicesSection = () => {
             }, transLabel + "+=0.2");
         }
 
-        // Final hold for last slide
-        tl.to({}, { duration: 0.3 });
-
-        // Create the ScrollTrigger that pins and scrubs the timeline
+        // ScrollTrigger for desktop
         ScrollTrigger.create({
             trigger: wrapperRef.current,
             pin: true,
             start: "top top",
-            end: "+=500%", // 5 transitions worth of scroll distance
+            end: "+=500%",
             scrub: 1,
             animation: tl,
             onUpdate: (self) => {
-                // Update progress bar
                 if (progressBarRef.current) {
                     progressBarRef.current.style.transform = `scaleX(${self.progress})`;
                 }
-                // Update counter
                 if (counterRef.current) {
                     const currentSlide = Math.min(
                         Math.floor(self.progress * TOTAL_SLIDES) + 1,
@@ -156,113 +168,134 @@ const ServicesSection = () => {
             }
         });
 
+        return () => {
+            ScrollTrigger.getAll().forEach((st) => st.kill());
+        };
     }, { scope: wrapperRef });
 
     return (
-        <div ref={wrapperRef} className="services-wrapper relative h-screen w-full flex bg-black overflow-hidden">
-            {/* ─── LEFT PANEL: Sticky Anchor ─── */}
-            <div className="w-[35%] lg:w-[40%] h-full flex flex-col justify-center px-8 lg:px-16 relative">
-                {/* Background glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#F67963]/5 rounded-full blur-[180px] pointer-events-none" />
-
-                <div className="relative z-10 flex flex-col gap-8">
-                    {/* Eyebrow */}
-                    <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+        <div ref={wrapperRef} className="services-wrapper relative w-full bg-black overflow-hidden">
+            
+            {/* ─── MOBILE: Simple Vertical Scroll ─── */}
+            <div className="md:hidden flex flex-col">
+                {/* Sticky Header */}
+                <div className="sticky top-0 z-30 bg-gradient-to-b from-black via-black/95 to-transparent px-6 py-8 border-b border-white/5">
+                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium block mb-3">
                         What we do
                     </span>
-
-                    {/* Main Heading */}
-                    <h2 className="text-5xl lg:text-7xl xl:text-8xl font-bold uppercase tracking-tighter text-white leading-[0.9]">
+                    <h2 className="text-4xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
                         Our<br />Services
                     </h2>
-
-                    {/* Divider */}
-                    <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent" />
-
-                    {/* Progress Indicator */}
-                    <div className="flex flex-col gap-3 mt-4">
-                        <div className="flex items-baseline gap-2">
-                            <span
-                                ref={counterRef}
-                                className="text-4xl lg:text-5xl font-bold text-white tabular-nums"
-                            >
-                                01
-                            </span>
-                            <span className="text-lg text-white/30 font-light">
-                                / {String(TOTAL_SLIDES).padStart(2, "0")}
-                            </span>
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="w-full max-w-[200px] h-[2px] bg-white/10 rounded-full overflow-hidden">
-                            <div
-                                ref={progressBarRef}
-                                className="h-full bg-[#F67963] rounded-full origin-left"
-                                style={{ transform: "scaleX(0)" }}
-                            />
-                        </div>
+                    <div className="w-10 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mb-6" />
+                    
+                    <div className="flex items-baseline gap-2 mb-3">
+                        <span ref={counterRef} className="text-3xl font-bold text-white tabular-nums">01</span>
+                        <span className="text-base text-white/30 font-light">/ {String(TOTAL_SLIDES).padStart(2, "0")}</span>
+                    </div>
+                    <div className="w-full max-w-[180px] h-[2px] bg-white/10 rounded-full overflow-hidden">
+                        <div ref={progressBarRef} className="h-full bg-[#F67963] rounded-full origin-left" style={{ transform: "scaleX(0)" }} />
                     </div>
                 </div>
-            </div>
 
-            {/* ─── RIGHT PANEL: Service Slides ─── */}
-            <div className="w-[65%] lg:w-[60%] h-full relative flex items-center pr-8 lg:pr-16">
-                {services.map((service, index) => {
-                    const number = String(index + 1).padStart(2, "0");
-                    return (
+                {/* Scrollable Service Cards */}
+                <div className="flex flex-col">
+                    {services.map((service, index) => (
                         <div
                             key={index}
-                            className="service-slide absolute inset-0 flex items-center pr-8 lg:pr-8"
-                            style={{ opacity: index === 0 ? 1 : 0, zIndex: index === 0 ? 5 : 1 }}
+                            ref={(el) => { slideRefs.current[index] = el; }}
+                            className="min-h-screen w-full px-6 py-12 flex flex-col justify-center border-b border-white/5"
                         >
-                            <div className="w-full h-full flex flex-col justify-center lg:flex-row gap-8 lg:gap-12 lg:items-center">
-                                {/* Text Content */}
-                                <div className="service-slide-text flex-1 flex flex-col gap-5">
-                                    {/* Service badge */}
-                                    <span className="inline-block w-fit px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
-                                        {number} — Service
-                                    </span>
-
-                                    {/* Title */}
-                                    <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">
-                                        {service.title}
-                                    </h3>
-
-                                    {/* Description */}
-                                    <p className="text-[#B0B0B0] text-lg lg:text-xl leading-[1.6] max-w-md">
-                                        {service.description}
-                                    </p>
-
-                                    {/* Highlights */}
-                                    <ul className="flex flex-col gap-2.5 mt-1">
-                                        {service.highlights.map((h, i) => (
-                                            <li key={i} className="flex items-center gap-3 text-base text-[#A1A1A1]">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0" />
-                                                {h}
-                                            </li>
-                                        ))}
-                                    </ul>
-
-                                    {/* Accent line */}
-                                    <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
-                                </div>
-
-                                {/* Image */}
-                                <div className="service-slide-image flex-1 max-w-sm lg:max-w-md">
-                                    <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
-                                        <img
-                                            src={service.image}
-                                            alt={service.title}
-                                            className="w-full h-full object-cover"
-                                            loading={index === 0 ? "eager" : "lazy"}
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                                    </div>
+                            <div className="flex flex-col gap-5 mb-8">
+                                <span className="inline-block w-fit px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
+                                    {String(index + 1).padStart(2, "0")} — Service
+                                </span>
+                                <h3 className="text-3xl font-bold text-white leading-[1.2] tracking-tight">{service.title}</h3>
+                                <p className="text-[#B0B0B0] text-base leading-[1.6]">{service.description}</p>
+                                <ul className="flex flex-col gap-3 mt-2">
+                                    {service.highlights.map((h, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-sm text-[#A1A1A1] leading-snug">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0 mt-1.5" />
+                                            <span>{h}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-4" />
+                            </div>
+                            <div className="w-full">
+                                <div className="relative rounded-xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
+                                    <img
+                                        src={service.image}
+                                        alt={service.title}
+                                        className="w-full h-full object-cover"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                                 </div>
                             </div>
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
+            </div>
+
+            {/* ─── DESKTOP: Pinned Horizontal Scroll ─── */}
+            <div className="hidden md:flex h-screen w-full flex-row">
+                {/* Left Panel - Fixed */}
+                <div className="w-[35%] lg:w-[40%] h-full flex flex-col justify-center px-8 lg:px-16 relative bg-black">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#F67963]/5 rounded-full blur-[180px] pointer-events-none" />
+                    <div className="relative z-10 flex flex-col gap-8">
+                        <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">What we do</span>
+                        <h2 className="text-5xl lg:text-7xl xl:text-8xl font-bold uppercase tracking-tighter text-white leading-[0.9]">Our<br />Services</h2>
+                        <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent" />
+                        <div className="flex flex-col gap-3 mt-4">
+                            <div className="flex items-baseline gap-2">
+                                <span ref={counterRef} className="text-4xl lg:text-5xl font-bold text-white tabular-nums">01</span>
+                                <span className="text-lg text-white/30 font-light">/ {String(TOTAL_SLIDES).padStart(2, "0")}</span>
+                            </div>
+                            <div className="w-full max-w-[200px] h-[2px] bg-white/10 rounded-full overflow-hidden">
+                                <div ref={progressBarRef} className="h-full bg-[#F67963] rounded-full origin-left" style={{ transform: "scaleX(0)" }} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Panel - Slides */}
+                <div className="w-[65%] lg:w-[60%] h-full relative">
+                    {services.map((service, index) => {
+                        const number = String(index + 1).padStart(2, "0");
+                        return (
+                            <div
+                                key={index}
+                                className="service-slide-desktop absolute inset-0 flex items-center pr-8 lg:pr-16"
+                                style={{ opacity: index === 0 ? 1 : 0, zIndex: index === 0 ? 5 : 1 }}
+                            >
+                                <div className="w-full h-full flex flex-col justify-center lg:flex-row gap-8 lg:gap-12 items-center">
+                                    <div className="service-slide-text flex-1 flex flex-col gap-5">
+                                        <span className="inline-block w-fit px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
+                                            {number} — Service
+                                        </span>
+                                        <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">{service.title}</h3>
+                                        <p className="text-[#B0B0B0] text-lg lg:text-xl leading-[1.6] max-w-md">{service.description}</p>
+                                        <ul className="flex flex-col gap-2.5 mt-1">
+                                            {service.highlights.map((h, i) => (
+                                                <li key={i} className="flex items-center gap-3 text-base text-[#A1A1A1]">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0" />
+                                                    {h}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
+                                    </div>
+                                    <div className="service-slide-image flex-1 max-w-sm lg:max-w-md">
+                                        <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
+                                            <img src={service.image} alt={service.title} className="w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
