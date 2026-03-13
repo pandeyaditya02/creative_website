@@ -90,6 +90,22 @@ body {
     }
   }
 
+  /* Sharp coral blink for small dots */
+  @keyframes blink-coral {
+    0%, 49% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50%, 100% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+  }
+
+  .blink-coral {
+    animation: blink-coral 0.9s steps(2, end) infinite;
+  }
+
   /* Pause Logic: Targets the element itself if it has both classes, or a child */
   .pause-on-hover:hover,
   .pause-on-hover:hover .animate-marquee {

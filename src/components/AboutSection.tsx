@@ -77,7 +77,10 @@ const AboutSection = () => {
             <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center gap-10 md:gap-16">
                 {/* Oversized Title */}
                 <div className="text-center space-y-4">
-                    <span className="text-xs uppercase tracking-[0.3em] text-white/50">Who we are</span>
+                    <span className="inline-flex items-center justify-center gap-2 text-xs uppercase tracking-[0.3em] text-white/50">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                        Who we are
+                    </span>
                     <h2
                         ref={titleRef}
                         aria-label="About Us"

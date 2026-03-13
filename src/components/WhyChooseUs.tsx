@@ -72,7 +72,8 @@ const WhyChooseUs = () => {
         <section id="why-choose-us" ref={sectionRef} className="relative bg-black text-white py-32 lg:py-44 overflow-hidden">
             {/* Section Title */}
             <div className="flex flex-col items-center gap-4 mb-24 lg:mb-36">
-                <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
                     Why choose us
                 </span>
                 <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold uppercase tracking-tight text-white text-center">

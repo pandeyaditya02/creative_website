@@ -104,7 +104,8 @@ export default function StatsCounter() {
         >
             {/* Header */}
             <div className="flex flex-col items-center gap-4 mb-16 md:mb-20 lg:mb-24">
-                <span className="text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#F67963] font-medium">
+                <span className="inline-flex items-center gap-2 text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#F67963] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
                     Company Statistics
                 </span>
                 

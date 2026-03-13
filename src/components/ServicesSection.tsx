@@ -156,7 +156,8 @@ const ServicesSection = () => {
             <div className="md:hidden flex flex-col">
                 {/* Sticky Header */}
                 <div className="sticky top-0 z-30 bg-gradient-to-b from-black via-black/95 to-transparent px-6 py-8 border-b border-white/5 text-center">
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium block mb-3">
+                    <span className="inline-flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium block mb-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
                         What we do
                     </span>
                     <h2 className="text-4xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
