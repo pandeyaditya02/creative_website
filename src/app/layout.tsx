@@ -1,3 +1,4 @@
+// NO "use client" at top - keep as Server Component ✅
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -5,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
+import ViewportFix from "@/components/ViewportFix"; // ← Import the client component
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +34,9 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* ← ViewportFix runs client-side but doesn't break server metadata */}
+        <ViewportFix />
+        
         <SmoothScroll>
           <Preloader />
           <CustomCursor />

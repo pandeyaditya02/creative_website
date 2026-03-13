@@ -17,59 +17,85 @@ const logos = [
 
 const ClienteleMarquee = () => {
     return (
-        <section className="relative bg-black py-12 lg:py-16 overflow-hidden border-y border-white/[0.05]">
-            {/* Ambient Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#F67963]/5 rounded-full blur-[120px] pointer-events-none" />
+        <section 
+            className="relative bg-black py-12 lg:py-16 overflow-hidden border-y border-white/[0.05]"
+            aria-label="Our valued clientele"
+        >
+            {/* Ambient Background Glow - Responsive */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[600px] h-[200px] lg:h-[300px] bg-[#F67963]/5 rounded-full blur-[100px] lg:blur-[120px] pointer-events-none" />
 
-            <div className="relative z-10 pause-on-hover">
-                {/* Horizontal Fade Edges */}
-                <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            <div className="relative z-10">
+                {/* Horizontal Fade Edges - Responsive Width */}
+                <div className="absolute left-0 top-0 h-full w-16 lg:w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 h-full w-16 lg:w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
-                <div className="flex animate-marquee whitespace-nowrap">
-                    {/* First set of logos */}
-                    <div className="flex items-center gap-16 px-8">
+                {/* Marquee Track - Slower on mobile (30s) vs desktop (20s) */}
+                <div className="flex whitespace-nowrap animate-marquee-mobile lg:animate-marquee">
+                    {/* First set of logos - Interactive (Desktop Only) */}
+                    <div className="flex items-center gap-8 lg:gap-16 px-4 lg:px-8">
                         {logos.map((logo, index) => (
                             <div
                                 key={`logo-1-${index}`}
-                                className="relative flex-shrink-0 grayscale opacity-50 transition-all duration-700 ease-in-out hover:grayscale-0 hover:opacity-100 hover:scale-110 group"
+                                className="group relative flex-shrink-0 
+                                         grayscale opacity-50 
+                                         transition-all duration-700 ease-in-out
+                                         hover:grayscale-0 hover:opacity-100
+                                         cursor-default select-none"
+                                role="img"
+                                aria-label={logo.alt}
                             >
-                                <div className="relative h-20 w-48 lg:h-32 lg:w-80 flex items-center justify-center">
+                                {/* Logo Container - Responsive Sizing */}
+                                <div className="relative h-12 w-28 lg:h-32 lg:w-80 flex items-center justify-center
+                                              transition-transform duration-700 ease-in-out
+                                              lg:group-hover:scale-110">
                                     <Image
                                         src={logo.src}
                                         alt={logo.alt}
                                         fill
                                         className="object-contain"
-                                        sizes="(max-width: 768px) 200px, 320px"
+                                        sizes="(max-width: 768px) 112px, 320px"
+                                        loading="lazy"
+                                        draggable={false}
                                     />
                                 </div>
-                                {/* Subtle tooltip/label on hover */}
-                                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-[#F67963] opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
+                                
+                                {/* Tooltip - Desktop Only (hidden on mobile to avoid sticky hover) */}
+                                <span className="hidden lg:block absolute -bottom-6 left-1/2 -translate-x-1/2 
+                                               text-[10px] uppercase tracking-widest text-[#F67963] 
+                                               opacity-0 lg:group-hover:opacity-100 
+                                               transition-opacity duration-500 
+                                               whitespace-nowrap pointer-events-none">
                                     {logo.alt}
                                 </span>
                             </div>
                         ))}
                     </div>
 
-                    {/* Duplicate set for seamless looping */}
-                    <div className="flex items-center gap-16 px-8">
+                    {/* Duplicate set for seamless looping - NON-INTERACTIVE */}
+                    <div 
+                        className="flex items-center gap-8 lg:gap-16 px-4 lg:px-8 pointer-events-none" 
+                        aria-hidden="true"
+                    >
                         {logos.map((logo, index) => (
                             <div
                                 key={`logo-2-${index}`}
-                                className="relative flex-shrink-0 grayscale opacity-50 transition-all duration-700 ease-in-out hover:grayscale-0 hover:opacity-100 hover:scale-110 group"
+                                className="relative flex-shrink-0 
+                                         grayscale opacity-50 
+                                         cursor-default select-none"
                             >
-                                <div className="relative h-20 w-48 lg:h-32 lg:w-80 flex items-center justify-center">
+                                {/* Logo Container - Responsive Sizing */}
+                                <div className="relative h-12 w-28 lg:h-32 lg:w-80 flex items-center justify-center">
                                     <Image
                                         src={logo.src}
                                         alt={logo.alt}
                                         fill
                                         className="object-contain"
-                                        sizes="(max-width: 768px) 200px, 320px"
+                                        sizes="(max-width: 768px) 112px, 320px"
+                                        loading="lazy"
+                                        draggable={false}
                                     />
                                 </div>
-                                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-[#F67963] opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
-                                    {logo.alt}
-                                </span>
+                                {/* No tooltip on duplicate set */}
                             </div>
                         ))}
                     </div>

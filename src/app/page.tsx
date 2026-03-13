@@ -11,48 +11,85 @@ import StatsCounter from "@/components/StatsCounter";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-black">
+    // 1. min-h-dvh: Handles mobile browser address bar height changes
+    // 2. overflow-x-hidden: Prevents horizontal scroll from animations/marquees
+    // 3. Removed justify-between: Prevents unwanted gaps on long mobile content
+    <main className="flex flex-col w-full min-h-dvh bg-black overflow-x-hidden mobile-safe-area">
       {/* 
-        Smart Pinned Panels Implementation:
-        - Hero: Standard Pin (Top)
-        - About/Services: Tall content, so pin at Bottom (isTall={true})
-        - Stacking Order: Increasing Z-Index ensures Card Stacking effect.
+        HERO SECTION 
+        - Short content: Safe to keep pinned on all devices
+        - disableOnMobile={false}: Preserve the pinning effect
       */}
-
-      <PinnedSection zIndex={1} className="bg-black">
+      <PinnedSection 
+        zIndex={1} 
+        className="bg-black" 
+        disableOnMobile={false}
+        mobileBreakpoint={768}
+      >
         <HeroVideo />
       </PinnedSection>
 
-      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 2 }}>
+      {/* STATS COUNTER - Natural flow section */}
+      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 20 }}>
         <StatsCounter />
       </div>
 
-      <div className="relative w-full bg-black" style={{ zIndex: 3 }}>
+      {/* CLIENTELE MARQUEE - Natural flow section */}
+      <div className="relative w-full bg-black" style={{ zIndex: 30 }}>
         <ClienteleMarquee />
       </div>
 
-      <PinnedSection zIndex={4} isTall={true} className="bg-black">
+      {/* 
+        ABOUT SECTION 
+        - Tall content: Disable pin on mobile for better scroll UX
+        - On desktop: Pins at "bottom bottom" to show full content before freezing
+      */}
+      <PinnedSection 
+        zIndex={40} 
+        isTall={true} 
+        className="bg-black"
+        disableOnMobile={true}
+        mobileBreakpoint={768}
+      >
         <AboutSection />
       </PinnedSection>
 
-      {/* Services — self-pinning via GSAP ScrollTrigger.pin (not using PinnedSection).
-           pinSpacing:true adds scroll height automatically. z-index ensures stacking order. */}
-      <div className="relative w-full bg-black" style={{ zIndex: 5 }}>
+      {/* 
+        SERVICES SECTION 
+        - Uses internal GSAP pinning (not PinnedSection wrapper)
+        - Ensure ServicesSection.tsx also handles mobileBreakpoint internally
+      */}
+      <div className="relative w-full bg-black" style={{ zIndex: 50 }}>
         <ServicesSection />
       </div>
 
-      {/* Portfolio — commented out for now */}
-      {/* <PinnedSection zIndex={5} isTall={true} className="bg-black">
+      {/* PORTFOLIO - Commented out per your original code */}
+      {/* 
+      <PinnedSection zIndex={50} isTall={true} className="bg-black" disableOnMobile={true}>
         <PortfolioSection />
-      </PinnedSection> */}
+      </PinnedSection> 
+      */}
 
-      <div className="relative w-full bg-black" style={{ zIndex: 6 }}>
+      {/* WHY CHOOSE US - Natural flow section */}
+      <div className="relative w-full bg-black" style={{ zIndex: 60 }}>
         <WhyChooseUs />
       </div>
 
-      <PinnedSection zIndex={7} isTall={true} className="bg-black">
+      {/* 
+        CONTACT SECTION 
+        - Contains forms: Disable pin on mobile for easier input access
+        - Users can scroll naturally to submit without "trapped" pinning
+      */}
+      <PinnedSection 
+        zIndex={70} 
+        isTall={true} 
+        className="bg-black"
+        disableOnMobile={true}
+        mobileBreakpoint={768}
+      >
         <ContactSection />
       </PinnedSection>
+
     </main>
   );
 }

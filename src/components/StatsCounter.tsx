@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Ensure ScrollTrigger is registered
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
+
+const isMobile = () => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 const statsData = [
     { value: 18, label: "YEARS EXPERIENCE", suffix: "+" },
@@ -18,29 +22,47 @@ const statsData = [
 export default function StatsCounter() {
     const containerRef = useRef<HTMLDivElement>(null);
     const numbersRef = useRef<(HTMLSpanElement | null)[]>([]);
+    const [isMobileView, setIsMobileView] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobileView(isMobile());
+        checkMobile();
+        
+        let resizeTimeout: NodeJS.Timeout;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(checkMobile, 150);
+        };
+        
+        window.addEventListener("resize", handleResize);
+        return () => {
+            clearTimeout(resizeTimeout);
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
 
     useEffect(() => {
         const container = containerRef.current;
+        const mobile = isMobileView;
         if (!container) return;
 
-        // Scroll Reveal Animation (Fade in + translate up)
         gsap.fromTo(
             container,
-            { opacity: 0, y: 50 },
+            { opacity: 0, y: mobile ? 20 : 50 },
             {
                 opacity: 1,
                 y: 0,
-                duration: 1,
-                ease: "power3.out",
+                duration: mobile ? 0.6 : 1,
+                ease: mobile ? "power2.out" : "power3.out",
                 scrollTrigger: {
                     trigger: container,
-                    start: "top 80%", // Trigger when top of container hits 80% down viewport
-                    toggleActions: "play reverse play reverse",
+                    start: "top 85%",
+                    toggleActions: mobile ? "play none none none" : "play reverse play reverse",
+                    once: mobile,
                 },
             }
         );
 
-        // Count-Up Animation
         const ctx = gsap.context(() => {
             numbersRef.current.forEach((numElement, index) => {
                 if (!numElement) return;
@@ -50,16 +72,19 @@ export default function StatsCounter() {
 
                 gsap.to(startObj, {
                     val: targetValue,
-                    duration: 2,
-                    ease: "power3.out",
+                    duration: mobile ? 1.2 : 2,
+                    ease: mobile ? "power2.out" : "power3.out",
                     scrollTrigger: {
                         trigger: container,
-                        start: "top 80%",
-                        toggleActions: "play reverse play reverse",
+                        start: "top 85%",
+                        toggleActions: mobile ? "play none none none" : "play reverse play reverse",
+                        once: mobile,
                     },
                     onUpdate: () => {
-                        // Update the text content, rounding to the nearest integer
-                        numElement.innerText = Math.round(startObj.val).toString();
+                        if (numElement) {
+                            const rounded = Math.round(startObj.val);
+                            numElement.innerText = rounded.toString();
+                        }
                     },
                 });
             });
@@ -68,42 +93,76 @@ export default function StatsCounter() {
         return () => {
             ctx.revert();
         };
-    }, []);
+    }, [isMobileView]);
 
     return (
         <section
             ref={containerRef}
-            className="w-full bg-[#0a0a0a] py-32 md:py-48 px-6 md:px-12 lg:px-24 text-white overflow-hidden flex flex-col justify-center items-center"
+            className="w-full bg-[#0a0a0a] py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 text-white overflow-hidden"
+            aria-labelledby="stats-heading"
         >
-            <div className="flex flex-col items-center gap-4 mb-24 lg:mb-32">
-                <span className="text-sm md:text-base uppercase tracking-[0.35em] text-[#F67963] font-medium">
+            {/* Header */}
+            <div className="flex flex-col items-center gap-4 mb-16 md:mb-20 lg:mb-24">
+                <span className="text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#F67963] font-medium">
                     Company Statistics
                 </span>
-                <h2 className="text-5xl lg:text-6xl xl:text-7xl font-bold uppercase tracking-tight text-white text-center">
+                
+                <h2 
+                    id="stats-heading"
+                    className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white text-center"
+                >
                     Why Trust Us
                 </h2>
+                
                 <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
             </div>
-            <div className="max-w-[1400px] w-full grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 text-center">
+
+            {/* Stats Grid */}
+            <div className="max-w-[1400px] w-full mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 lg:gap-12">
                 {statsData.map((stat, index) => (
-                    <div key={index} className="flex flex-col items-center justify-center">
-                        <div className="flex items-baseline mb-4">
+                    <div 
+                        key={index} 
+                        className="flex flex-col items-center justify-center text-center px-4"
+                    >
+                        {/* Number + Suffix Container */}
+                        <div className="flex items-end justify-center mb-4 md:mb-6">
+                            {/* Number */}
                             <span
                                 ref={(el) => {
                                     numbersRef.current[index] = el;
                                 }}
-                                className="text-8xl md:text-9xl lg:text-[11rem] xl:text-[14rem] font-black tracking-tighter text-white leading-none"
-                                style={{ fontVariationSettings: '"wght" 900' }}
+                                className="font-black text-white leading-none
+                                         text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] 
+                                         [font-variation-settings:'wght'_900]"
+                                style={{ 
+                                    whiteSpace: "nowrap",
+                                    lineHeight: "0.9"
+                                }}
                             >
                                 0
                             </span>
+                            
+                            {/* Suffix (+) */}
                             {stat.suffix && (
-                                <span className="text-5xl md:text-7xl lg:text-[7rem] xl:text-[9rem] font-bold text-coral ml-1 leading-none">
+                                <span 
+                                    className="font-bold text-[#F67963] leading-none ml-1 md:ml-2
+                                             text-5xl sm:text-6xl md:text-7xl lg:text-[7rem]"
+                                    style={{ 
+                                        marginBottom: "0.1em",
+                                        lineHeight: "0.9"
+                                    }}
+                                >
                                     {stat.suffix}
                                 </span>
                             )}
                         </div>
-                        <p className="text-base md:text-xl lg:text-2xl tracking-[0.3em] lg:tracking-[0.4em] font-medium text-slate-400 uppercase">
+                        
+                        {/* Label - with proper spacing */}
+                        <p 
+                            className="text-xs md:text-sm lg:text-base 
+                                     tracking-[0.25em] md:tracking-[0.3em] 
+                                     font-medium text-slate-400 uppercase"
+                        >
                             {stat.label}
                         </p>
                     </div>
