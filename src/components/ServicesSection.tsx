@@ -53,30 +53,6 @@ const ServicesSection = () => {
     const counterRef = useRef<HTMLSpanElement>(null);
     const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    // Mobile: Update counter based on which slide is in view
-    useEffect(() => {
-        if (window.innerWidth >= 768) return; // Desktop uses GSAP
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    const index = slideRefs.current.indexOf(entry.target as HTMLDivElement);
-                    if (entry.isIntersecting && index !== -1 && counterRef.current && progressBarRef.current) {
-                        const progress = (index + 1) / TOTAL_SLIDES;
-                        counterRef.current.textContent = String(index + 1).padStart(2, "0");
-                        progressBarRef.current.style.transform = `scaleX(${progress})`;
-                    }
-                });
-            },
-            { threshold: 0.5 } // Trigger when 50% of slide is visible
-        );
-
-        slideRefs.current.forEach((slide) => {
-            if (slide) observer.observe(slide);
-        });
-
-        return () => observer.disconnect();
-    }, []);
 
     // Desktop: GSAP pinned scroll animation
     useGSAP(() => {
@@ -179,22 +155,13 @@ const ServicesSection = () => {
             {/* ─── MOBILE: Simple Vertical Scroll ─── */}
             <div className="md:hidden flex flex-col">
                 {/* Sticky Header */}
-                <div className="sticky top-0 z-30 bg-gradient-to-b from-black via-black/95 to-transparent px-6 py-8 border-b border-white/5">
+                <div className="sticky top-0 z-30 bg-gradient-to-b from-black via-black/95 to-transparent px-6 py-8 border-b border-white/5 text-center">
                     <span className="text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium block mb-3">
                         What we do
                     </span>
                     <h2 className="text-4xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
-                        Our<br />Services
+                        Our Services
                     </h2>
-                    <div className="w-10 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mb-6" />
-                    
-                    <div className="flex items-baseline gap-2 mb-3">
-                        <span ref={counterRef} className="text-3xl font-bold text-white tabular-nums">01</span>
-                        <span className="text-base text-white/30 font-light">/ {String(TOTAL_SLIDES).padStart(2, "0")}</span>
-                    </div>
-                    <div className="w-full max-w-[180px] h-[2px] bg-white/10 rounded-full overflow-hidden">
-                        <div ref={progressBarRef} className="h-full bg-[#F67963] rounded-full origin-left" style={{ transform: "scaleX(0)" }} />
-                    </div>
                 </div>
 
                 {/* Scrollable Service Cards */}
