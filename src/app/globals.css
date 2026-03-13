@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #2D3E50;
+  --background: #000000;
   --foreground: #ededed;
   /* Dynamic viewport height variable for mobile */
   --dvh: 1vh;
@@ -29,14 +29,8 @@
   --color-accent: #E86B5A;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #2D3E50;
-    --foreground: #ededed;
-  }
-}
-
-/* Base body styles - keep your original */
+/* --- Base Styles --- */
+html,
 body {
   background: #000000;
   color: var(--foreground);
@@ -46,167 +40,107 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  /* Use dynamic viewport height with fallback */
   min-height: 100vh;
   min-height: calc(var(--dvh, 1vh) * 100);
 }
 
-/* HTML overflow handling */
-html {
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-/* 
-  Mobile sticky fallback for PinnedSection 
-  - Only applies when GSAP pin is disabled on mobile
-  - Uses your theme's coral color for any borders if needed
-*/
-.pinned-section-mobile-fallback {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  /* Ensure z-index stacking works */
-  isolation: isolate;
-}
-
-/* 
-  Marquee animation utility 
-  - Scoped to avoid global conflicts 
-*/
+/* --- Utilities --- */
 @layer utilities {
+  /* Dynamic viewport height utilities */
+  .min-h-dvh {
+    min-height: 100vh;
+    min-height: calc(var(--dvh, 1vh) * 100);
+  }
+  
+  .h-dvh {
+    height: 100vh;
+    height: calc(var(--dvh, 1vh) * 100);
+  }
+
+  /* Safe area padding utilities */
+  @supports (padding: max(0px)) {
+    .safe-p-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+    .safe-p-left { padding-left: max(1rem, env(safe-area-inset-left)); }
+    .safe-p-right { padding-right: max(1rem, env(safe-area-inset-right)); }
+    
+    .mobile-safe-area {
+      @media (max-width: 767px) {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
+  }
+
+  /* Marquee Animation Support */
   @keyframes marquee {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    100% { transform: translateX(-33.333%); }
   }
   
   .animate-marquee {
-    animation: marquee 40s linear infinite;
-    will-change: transform; /* Performance hint */
-  }
-  
-  .pause-on-hover:hover .animate-marquee {
-    animation-play-state: paused;
-  }
-}
-
-/* 
-  Optional: Improve touch scrolling on iOS 
-  - Only apply to scrollable containers, not global body
-*/
-.scrollable-touch {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 
-  Prevent layout shift when mobile address bar toggles 
-  - Apply to main content wrapper, not html/body directly
-*/
-@media (max-width: 767px) {
-  .mobile-safe-area {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
-
-/* Add this inside @layer utilities or at root level */
-.min-h-dvh {
-  min-height: 100vh;
-  min-height: calc(var(--dvh, 1vh) * 100);
-}
-
-/* Add to globals.css */
-.h-dvh {
-  height: 100vh;
-  height: calc(var(--dvh, 1vh) * 100);
-}
-
-/* Safe area padding utility */
-@supports (padding: max(0px)) {
-  .safe-p-bottom {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-  .safe-p-left {
-    padding-left: max(1rem, env(safe-area-inset-left));
-  }
-  .safe-p-right {
-    padding-right: max(1rem, env(safe-area-inset-right));
-  }
-}
-
-/* globals.css - Add to @layer utilities or root */
-
-/* Responsive font size clamp for huge numbers */
-.text-clamp-number {
-  font-size: clamp(3.5rem, 12vw, 12rem);
-  line-height: 1;
-}
-
-/* Responsive label text */
-.text-clamp-label {
-  font-size: clamp(0.75rem, 2.5vw, 1.25rem);
-  letter-spacing: clamp(0.15em, 3vw, 0.35em);
-}
-
-/* Prevent layout shift during GSAP animations */
-.will-change-transform {
-  will-change: transform;
-  transform: translateZ(0); /* Force GPU layer */
-}
-
-/* globals.css - Add to root or @layer utilities */
-
-/* Mobile menu drawer scroll */
-#mobile-menu {
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Prevent layout shift during animations */
-.will-change-transform {
-  will-change: transform;
-}
-
-/* Smooth backdrop blur support */
-@supports (backdrop-filter: blur(10px)) {
-  .backdrop-blur-md {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-}
-
-/* Focus visible for keyboard navigation */
-.focus-visible:focus {
-  outline: 2px solid #F67963;
-  outline-offset: 2px;
-}
-
-/* globals.css - Update @layer utilities */
-
-@layer utilities {
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  
-  /* Desktop: Faster (20s) */
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
+    animation: marquee 7s linear infinite;
     will-change: transform;
     transform: translateZ(0);
   }
   
-  /* Mobile: Slower (30s) due to smaller logo widths */
   .animate-marquee-mobile {
-    animation: marquee 30s linear infinite;
+    animation: marquee 10s linear infinite;
     will-change: transform;
     transform: translateZ(0);
   }
   
-  /* Pause on hover - Desktop only */
   @media (min-width: 1024px) {
     .pause-on-hover:hover .animate-marquee {
       animation-play-state: paused;
     }
   }
+
+  /* Responsive Typography & Layout */
+  .text-clamp-number {
+    font-size: clamp(3.5rem, 12vw, 12rem);
+    line-height: 1;
+  }
+
+  .text-clamp-label {
+    font-size: clamp(0.75rem, 2.5vw, 1.25rem);
+    letter-spacing: clamp(0.15em, 3vw, 0.35em);
+  }
+
+  /* Performance & Interaction */
+  .will-change-transform {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .scrollable-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @supports (backdrop-filter: blur(10px)) {
+    .backdrop-blur-md {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  }
+
+  .focus-visible:focus {
+    outline: 2px solid #F67963;
+    outline-offset: 2px;
+  }
+}
+
+/* --- Section Specifics --- */
+
+/* PinnedSection Mobile Fallback */
+.pinned-section-mobile-fallback {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  isolation: isolate;
+}
+
+/* Mobile menu drawer behavior */
+#mobile-menu {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
