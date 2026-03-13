@@ -279,17 +279,17 @@ const HeroVideo = () => {
         </div>
 
         {/* Tier 2: Headline */}
-        {/* <h1 
+        <h1 
           ref={titleRef} 
-          className="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-tighter uppercase leading-[0.9]"
+          className="text-4xl md:text-6xl lg:text-7xl font-sans font-black text-white tracking-tighter uppercase leading-[0.85]"
         >
-          CRAFTING STORIES<br />
-          THAT MOVE
-        </h1> */}
+          Crafting Stories<br />
+          That Move
+        </h1>
 
         {/* Dynamic Progress Bar */}
-        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[280px] md:max-w-sm mt-2 md:mt-4">
-          <div className="w-full h-[2px] bg-white/20 relative overflow-hidden">
+        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-4">
+          <div className="w-full h-[1px] bg-white/20 relative overflow-hidden">
             <div
               className="absolute top-0 left-0 h-full bg-[#F67963] transition-all duration-75 ease-linear"
               style={{ width: `${progress}%` }}
@@ -298,9 +298,15 @@ const HeroVideo = () => {
         </div>
 
         {/* Tier 3: Subtext - Responsive font & max-width */}
-        <p className="text-[13px] md:text-base text-white/70 max-w-[280px] md:max-w-sm leading-relaxed mt-1 md:mt-2">
-          Cinematic production and creative media dedicated to elevating brand voices.
+        <p className="text-[12px] md:text-base text-white/50 max-w-[280px] md:max-w-md leading-relaxed">
+          Cinematic production and creative media dedicated to elevating brand voices for the digital age.
         </p>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4 opacity-50">
+        <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
+        <span className="text-[8px] uppercase tracking-[0.5em] font-bold">Scroll</span>
       </div>
 
       {/* Sound Toggle - Touch-Friendly */}
