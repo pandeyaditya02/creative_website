@@ -290,9 +290,10 @@ const Navbar = () => {
   return (
     <>
       <nav
-  ref={navRef}
-  className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between text-white transition-all duration-300 bg-transparent mix-blend-difference px-4 md:px-8 py-4 md:py-6"
->
+        ref={navRef}
+        className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between text-white transition-all duration-300 
+                   bg-black/80 backdrop-blur-md md:bg-transparent md:backdrop-blur-none md:mix-blend-difference px-4 md:px-8 py-4 md:py-6"
+      >
         {/* Logo */}
         <div ref={logoRef} className="flex items-center group cursor-pointer">
           <Image
@@ -365,7 +366,7 @@ const Navbar = () => {
         <>
           {/* Backdrop */}
           <div
-            className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden
+            className={`fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden
               ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             onClick={closeMenu}
             aria-hidden="true"
@@ -375,7 +376,7 @@ const Navbar = () => {
           <div
             id="mobile-menu"
             ref={mobileMenuRef}
-            className="fixed top-0 right-0 z-50 w-4/5 max-w-sm h-full bg-[#0a0a0a] 
+            className="fixed top-0 right-0 z-[130] w-4/5 max-w-sm h-full bg-[#0a0a0a] 
                        shadow-2xl md:hidden flex flex-col"
             role="dialog"
             aria-modal="true"
