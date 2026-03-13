@@ -207,7 +207,7 @@ const ServicesSection = () => {
             {/* ─── DESKTOP: Pinned Horizontal Scroll ─── */}
             <div className="hidden md:flex h-screen w-full flex-row">
                 {/* Left Panel - Fixed */}
-                <div className="w-[35%] lg:w-[40%] h-full flex flex-col justify-center px-8 lg:px-16 relative bg-black">
+                <div className="w-[30%] lg:w-[40%] xl:w-[35%] h-full flex flex-col justify-center px-6 md:px-10 lg:px-16 relative bg-black">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#F67963]/5 rounded-full blur-[180px] pointer-events-none" />
                     <div className="relative z-10 flex flex-col gap-8">
                         <span className="text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">What we do</span>
@@ -226,7 +226,7 @@ const ServicesSection = () => {
                 </div>
 
                 {/* Right Panel - Slides */}
-                <div className="w-[65%] lg:w-[60%] h-full relative">
+                <div className="w-[70%] lg:w-[60%] xl:w-[65%] h-full relative">
                     {services.map((service, index) => {
                         const number = String(index + 1).padStart(2, "0");
                         return (
@@ -235,25 +235,25 @@ const ServicesSection = () => {
                                 className="service-slide-desktop absolute inset-0 flex items-center pr-8 lg:pr-16"
                                 style={{ opacity: index === 0 ? 1 : 0, zIndex: index === 0 ? 5 : 1 }}
                             >
-                                <div className="w-full h-full flex flex-col justify-center lg:flex-row gap-8 lg:gap-12 items-center">
-                                    <div className="service-slide-text flex-1 flex flex-col gap-5">
-                                        <span className="inline-block w-fit px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
+                                <div className="w-full h-full flex flex-row gap-6 md:gap-8 lg:gap-12 items-center pr-8">
+                                    <div className="service-slide-text flex-[1.2] flex flex-col gap-3 md:gap-4 lg:gap-5">
+                                        <span className="inline-block w-fit px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20">
                                             {number} — Service
                                         </span>
-                                        <h3 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">{service.title}</h3>
-                                        <p className="text-[#B0B0B0] text-lg lg:text-xl leading-[1.6] max-w-md">{service.description}</p>
-                                        <ul className="flex flex-col gap-2.5 mt-1">
+                                        <h3 className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-bold text-white leading-[1.1] tracking-tight">{service.title}</h3>
+                                        <p className="text-[#B0B0B0] text-sm lg:text-lg xl:text-xl leading-[1.6] max-w-md line-clamp-3 md:line-clamp-4 lg:line-clamp-none">{service.description}</p>
+                                        <ul className="flex flex-col gap-2 mt-1">
                                             {service.highlights.map((h, i) => (
-                                                <li key={i} className="flex items-center gap-3 text-base text-[#A1A1A1]">
-                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] shrink-0" />
-                                                    {h}
+                                                <li key={i} className="flex items-center gap-3 text-xs md:text-sm lg:text-base text-[#A1A1A1]">
+                                                    <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#F67963] shrink-0" />
+                                                    <span className="truncate lg:whitespace-normal">{h}</span>
                                                 </li>
                                             ))}
                                         </ul>
-                                        <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
+                                        <div className="w-12 lg:w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-1" />
                                     </div>
-                                    <div className="service-slide-image flex-1 max-w-sm lg:max-w-md">
-                                        <div className="relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
+                                    <div className="service-slide-image flex-[0.8] max-w-[240px] md:max-w-[280px] lg:max-w-md">
+                                        <div className="relative rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
                                             <img src={service.image} alt={service.title} className="w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                                         </div>
