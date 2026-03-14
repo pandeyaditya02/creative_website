@@ -14,6 +14,7 @@ const isMobile = () => {
 
 const HeroVideo = () => {
   const [muted, setMuted] = useState(true);
+  const [isPreloaderFinished, setIsPreloaderFinished] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
   
@@ -24,6 +25,13 @@ const HeroVideo = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const progressContainerRef = useRef<HTMLDivElement>(null);
+
+  // Sync with Preloader
+  useEffect(() => {
+    const handlePreloaderFinish = () => setIsPreloaderFinished(true);
+    window.addEventListener("preloaderFinished", handlePreloaderFinish);
+    return () => window.removeEventListener("preloaderFinished", handlePreloaderFinish);
+  }, []);
 
   // Update mobile view state on resize
   useEffect(() => {
@@ -44,6 +52,8 @@ const HeroVideo = () => {
   }, []);
 
   useGSAP(() => {
+    if (!isPreloaderFinished) return;
+
     const mobile = isMobileView;
 
     // Progress container reveal
@@ -51,7 +61,25 @@ const HeroVideo = () => {
       opacity: 0,
       y: 20,
       duration: mobile ? 0.6 : 1.5,
-      delay: mobile ? 0.2 : 0.5
+      delay: mobile ? 0.2 : 0.4
+    });
+
+    // Showreel Mask Reveal
+    gsap.to(".showreel-word", {
+      y: 0,
+      duration: mobile ? 0.8 : 1.2,
+      stagger: 0.1,
+      ease: "power4.out",
+      delay: 0.2
+    });
+
+    // Subtext Fade-in
+    gsap.to(".hero-subtext", {
+      opacity: 1,
+      y: 0,
+      duration: mobile ? 0.6 : 1.2,
+      delay: mobile ? 0.5 : 0.8,
+      ease: "power2.out"
     });
 
     // 2. Parallax & Scale on Scroll - Mobile Optimized
@@ -71,7 +99,7 @@ const HeroVideo = () => {
         }
       );
     }
-  }, { scope: containerRef, dependencies: [isMobileView] });
+  }, { scope: containerRef, dependencies: [isMobileView, isPreloaderFinished] });
 
   const videoId = "4FXlxfgxGaQ";
 
@@ -220,13 +248,19 @@ const HeroVideo = () => {
                       md:bottom-[calc(6rem+env(safe-area-inset-bottom))] 
                       md:left-[calc(6rem+env(safe-area-inset-left))]">
         
-        {/* Tier 1: Overline */}
-        <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-[#F67963] font-medium">
-          SHOWREEL 2026
+        {/* Tier 1: Overline - Now with Staggered Mask Reveal */}
+        <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-[#F67963] font-medium flex gap-[0.4em]">
+          {["SHOWREEL", "2026"].map((word, i) => (
+            <span key={i} className="inline-block overflow-hidden py-1">
+              <span className="inline-block transform translate-y-full showreel-word">
+                {word}
+              </span>
+            </span>
+          ))}
         </div>
 
         {/* Dynamic Progress Bar */}
-        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-4">
+        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-2">
           <div className="w-full h-[1px] bg-white/20 relative overflow-hidden">
             <div
               className="absolute top-0 left-0 h-full bg-[#F67963] transition-all duration-75 ease-linear"
@@ -236,7 +270,7 @@ const HeroVideo = () => {
         </div>
 
         {/* Tier 3: Subtext - Responsive font & max-width */}
-        <p className="text-[12px] md:text-base text-white/50 max-w-[280px] md:max-w-md leading-relaxed">
+        <p className="text-[12px] md:text-base text-white/50 max-w-[280px] md:max-w-md leading-relaxed opacity-0 hero-subtext">
           Cinematic production and creative media dedicated to elevating brand voices for the digital age.
         </p>
       </div>

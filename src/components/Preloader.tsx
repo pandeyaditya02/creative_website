@@ -48,7 +48,10 @@ export default function Preloader() {
                         yPercent: -100,
                         duration: 1.2,
                         ease: "power4.inOut"
-                    }, "-=0.2");
+                    }, "-=0.2")
+                    .add(() => {
+                        window.dispatchEvent(new CustomEvent("preloaderFinished"));
+                    });
             }
         }, interval);
 
