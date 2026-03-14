@@ -21,7 +21,7 @@ export default function Home() {
       <PinnedSection 
         zIndex={1} 
         className="bg-black" 
-        disableOnMobile={false}
+        disableOnMobile={true}
         mobileBreakpoint={768}
       >
         <HeroVideo />
