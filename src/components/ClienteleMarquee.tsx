@@ -8,11 +8,11 @@ const logos = [
     { src: "/brand-logos/ccl.png", alt: "Celebrity Cricket League" },
     { src: "/brand-logos/dolby digital.png", alt: "Dolby Digital" },
     { src: "/brand-logos/Elite magazine.jpeg", alt: "Elite Magazine" },
-    { src: "/brand-logos/hamdard.webp", alt: "Hamdard" },
+    { src: "/brand-logos/hamdard2.jpg", alt: "Hamdard" },
     { src: "/brand-logos/kohler.png", alt: "Kohler" },
     { src: "/brand-logos/mahindra-new-logo-02.jpg.jpeg", alt: "Mahindra" },
     { src: "/brand-logos/outlook.avif", alt: "Outlook" },
-    { src: "/brand-logos/wcl.avif", alt: "World Champions League" },
+    { src: "/brand-logos/wcl2.jpg", alt: "World Champions League" },
 ];
 
 const ClienteleMarquee = () => {
@@ -20,7 +20,7 @@ const ClienteleMarquee = () => {
     const allLogos = [...logos, ...logos, ...logos];
 
     return (
-        <section 
+        <section
             className="relative bg-black py-12 lg:py-20 overflow-hidden border-y border-white/[0.05]"
             aria-label="Our valued clientele"
         >
@@ -56,7 +56,7 @@ const ClienteleMarquee = () => {
                                     draggable={false}
                                 />
                             </div>
-                            
+
                             {/* Tooltip */}
                             <span className="hidden lg:block absolute -bottom-4 left-1/2 -translate-x-1/2 
                                            text-[10px] uppercase tracking-[0.3em] font-bold text-[#F67963] 
