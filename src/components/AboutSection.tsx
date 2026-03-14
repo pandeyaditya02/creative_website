@@ -18,6 +18,7 @@ const AboutSection = () => {
   useGSAP(() => {
     const q = gsap.utils.selector(containerRef);
 
+    // 1. Background Parallax
     gsap.to(q(".bg-blob"), {
       y: (i) => (i === 0 ? 100 : -150),
       scrollTrigger: {
@@ -28,6 +29,7 @@ const AboutSection = () => {
       }
     });
 
+    // 2. Title Animation
     gsap.to(q(".title-char"), {
       y: 0,
       opacity: 1,
@@ -41,50 +43,40 @@ const AboutSection = () => {
       }
     });
 
-    const tl = gsap.timeline({
+    // 3. SYNCHRONIZED GRID TIMELINE
+    // Triggered precisely when the grid enters the viewport
+    const gridTl = gsap.timeline({
       scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 75%",
-        end: "bottom bottom",
-        scrub: 1.5,
+        trigger: q(".bento-grid"), 
+        start: "top 85%", // Starts when the top of the grid is 85% down the screen
+        toggleActions: "play none none reverse"
       }
     });
 
-    tl.fromTo(q(".bento-card"), 
-      { y: 70, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 2, stagger: 0.2, ease: "power3.out" }
-    );
-
     const statsObj = { val: 0 };
-    gsap.to(statsObj, {
-      val: 50,
-      scrollTrigger: {
-        trigger: q(".stats-card"),
-        start: "top 80%",
-        end: "top 50%",
-        scrub: true,
+
+    gridTl
+      // A: The cards themselves fade and slide up first
+      .fromTo(q(".bento-card"), 
+        { y: 60, opacity: 0, scale: 0.98 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+      )
+      // B: ALL text inside the cards (now including services & stats) staggers in
+      .fromTo(q(".reveal-text"), 
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: "power2.out" },
+        "-=0.5" // Overlap so the text starts appearing as the cards are settling
+      )
+      // C: The number counter counts up right as its text becomes visible
+      .to(statsObj, {
+        val: 50,
+        duration: 1.5,
+        ease: "power2.out",
         onUpdate: () => {
           const el = document.getElementById("stats-number");
           if (el) el.textContent = Math.ceil(statsObj.val) + "+";
         }
-      }
-    });
-
-    q(".reveal-text").forEach((el) => {
-      gsap.fromTo(el, 
-        { y: 20, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1, 
-          scrollTrigger: {
-            trigger: el,
-            start: "top 90%",
-            toggleActions: "play none none reverse"
-          } 
-        }
-      );
-    });
+      }, "-=0.6"); 
 
   }, { scope: containerRef });
 
@@ -111,7 +103,8 @@ const AboutSection = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        {/* ADDED .bento-grid class here for the ScrollTrigger */}
+        <div className="bento-grid grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           
           {/* Main Card */}
           <div className="bento-card md:col-span-2 p-8 md:p-12 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col justify-between">
@@ -122,7 +115,6 @@ const AboutSection = () => {
               <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight reveal-text">
                 Stories told with purpose.<br />Results that make an impact.
               </h3>
-              {/* INCREASED FONT SIZE HERE: Changed from text-lg md:text-xl to text-xl md:text-2xl */}
               <p className="text-white/60 text-xl md:text-2xl leading-relaxed max-w-2xl reveal-text">
                 We use creative, effective media solutions to bring stories to life and elevate brand voices — delivering high-quality, tailored content that reflects your vision and engages your audience.
               </p>
@@ -134,19 +126,18 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Stats Card */}
+          {/* Stats Card - Added .reveal-text to inner spans */}
           <div className="bento-card stats-card p-8 rounded-3xl bg-[#F67963]/10 border border-[#F67963]/20 flex flex-col items-center justify-center">
-            <span id="stats-number" className="text-7xl md:text-8xl font-black">0+</span>
-            <span className="text-sm font-bold uppercase text-[#F67963]">Global Brands</span>
+            <span id="stats-number" className="text-7xl md:text-8xl font-black reveal-text">0+</span>
+            <span className="text-sm font-bold uppercase text-[#F67963] reveal-text">Global Brands</span>
           </div>
 
-          {/* Services */}
+          {/* Services - Added .reveal-text to Emoji, Title, and Desc */}
           {services.map((s, i) => (
             <div key={i} className="bento-card p-8 rounded-3xl bg-white/[0.04] border border-white/10 hover:border-[#F67963]/30 transition-colors flex flex-col justify-center">
-              <div className="text-4xl mb-4">{s.emoji}</div>
-              <h4 className="text-2xl font-bold mb-4">{s.title}</h4>
-              {/* INCREASED FONT SIZE HERE: Changed from text-sm to text-base md:text-lg, added leading-relaxed */}
-              <p className="text-white/60 text-base md:text-lg leading-relaxed">{s.desc}</p>
+              <div className="text-4xl mb-4 reveal-text">{s.emoji}</div>
+              <h4 className="text-2xl font-bold mb-4 reveal-text">{s.title}</h4>
+              <p className="text-white/60 text-base md:text-lg leading-relaxed reveal-text">{s.desc}</p>
             </div>
           ))}
         </div>
