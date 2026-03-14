@@ -134,16 +134,18 @@ const Navbar = () => {
 
     if (isMenuOpen) {
       menuTimelineRef.current
-        .set(mobileMenuRef.current, { x: "100%", opacity: 0 })
+        .set(mobileMenuRef.current, { x: "100%", autoAlpha: 0, pointerEvents: "none" })
         .to(mobileMenuRef.current, {
           x: "0%",
-          opacity: 1,
+          autoAlpha: 1,
+          pointerEvents: "auto",
           duration: reduceMotion ? 0 : 0.3,
         });
     } else {
       menuTimelineRef.current.to(mobileMenuRef.current, {
         x: "100%",
-        opacity: 0,
+        autoAlpha: 0,
+        pointerEvents: "none",
         duration: reduceMotion ? 0 : 0.25,
         ease: reduceMotion ? "none" : "power2.in",
       });
@@ -449,7 +451,7 @@ const Navbar = () => {
             id="mobile-menu"
             ref={mobileMenuRef}
             className="fixed top-0 right-0 z-[130] w-4/5 max-w-sm h-full bg-[#0a0a0a] 
-                       shadow-2xl md:hidden flex flex-col translate-x-full opacity-0 pointer-events-none"
+                       shadow-2xl md:hidden flex flex-col translate-x-full opacity-0"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
