@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -8,7 +8,15 @@ import { useIsMobile } from "@/hooks/useMediaQuery";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const services = [
+// Define the shape of a service
+interface Service {
+    title: string;
+    description: string;
+    highlights: string[];
+    image: string;
+}
+
+const services: Service[] = [
     {
         title: "Branded Content",
         description:
@@ -83,9 +91,15 @@ const ServicesSection = () => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
     const counterRef = useRef<HTMLSpanElement>(null);
+    const carouselRef = useRef<HTMLDivElement>(null); // for mobile horizontal scroll
 
     const isMobileView = useIsMobile(768);
 
+    // Mobile swipe state
+    const [mobileIndex, setMobileIndex] = useState(0);
+    const [mobileProgress, setMobileProgress] = useState(0);
+
+    // ─── DESKTOP: GSAP pinned slides ─────────────────────────────
     useGSAP(() => {
         if (isMobileView) return;
 
@@ -98,6 +112,7 @@ const ServicesSection = () => {
 
         const tl = gsap.timeline();
 
+        // Initial states
         gsap.set(slides[0], { opacity: 1, zIndex: 5 });
         gsap.set(contents[0], { opacity: 1, y: 0 });
         gsap.set(bgs[0], { opacity: 1, scale: 1 });
@@ -110,18 +125,17 @@ const ServicesSection = () => {
             gsap.set(watermarks[i], { opacity: 0 });
         }
 
+        // Build timeline
         for (let i = 0; i < slides.length - 1; i++) {
             const label = `slide-${i}`;
-
-            tl.to(contents[i], { opacity: 0, y: -50, duration: 0.5, ease: "power2.in" }, label);
-            tl.to(bgs[i], { opacity: 0, scale: 0.96, duration: 0.6, ease: "power2.in" }, label);
-            tl.to(watermarks[i], { opacity: 0, duration: 0.3 }, label);
-            tl.to(slides[i], { opacity: 0, zIndex: 1, duration: 0.5 }, label);
-
-            tl.to(slides[i + 1], { opacity: 1, zIndex: 5, duration: 0.5 }, label + "+=0.15");
-            tl.to(bgs[i + 1], { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, label + "+=0.2");
-            tl.to(contents[i + 1], { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, label + "+=0.25");
-            tl.to(watermarks[i + 1], { opacity: 1, duration: 0.5 }, label + "+=0.3");
+            tl.to(contents[i], { opacity: 0, y: -50, duration: 0.5, ease: "power2.in" }, label)
+              .to(bgs[i], { opacity: 0, scale: 0.96, duration: 0.6, ease: "power2.in" }, label)
+              .to(watermarks[i], { opacity: 0, duration: 0.3 }, label)
+              .to(slides[i], { opacity: 0, zIndex: 1, duration: 0.5 }, label)
+              .to(slides[i + 1], { opacity: 1, zIndex: 5, duration: 0.5 }, label + "+=0.15")
+              .to(bgs[i + 1], { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, label + "+=0.2")
+              .to(contents[i + 1], { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, label + "+=0.25")
+              .to(watermarks[i + 1], { opacity: 1, duration: 0.5 }, label + "+=0.3");
         }
 
         ScrollTrigger.create({
@@ -146,28 +160,32 @@ const ServicesSection = () => {
         });
     }, { scope: wrapperRef, dependencies: [isMobileView] });
 
-    useGSAP(() => {
-        if (!isMobileView) return;
+    // ─── MOBILE: Swipeable carousel (horizontal scroll) ─────────
+    useEffect(() => {
+        if (!isMobileView || !carouselRef.current) return;
 
-        const cards = gsap.utils.toArray<HTMLElement>(".service-card-mobile");
-        cards.forEach((card) => {
-            gsap.fromTo(
-                card,
-                { y: 40, opacity: 0 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    duration: 0.7,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 88%",
-                        toggleActions: "play none none reverse",
-                    },
-                }
+        const carousel = carouselRef.current;
+        const onScroll = () => {
+            const containerWidth = carousel.clientWidth;
+            const scrollLeft = carousel.scrollLeft;
+            // Each card is exactly the container width, so index = round(scrollLeft / containerWidth)
+            const rawIndex = scrollLeft / containerWidth;
+            const newIndex = Math.min(
+                Math.max(0, Math.round(rawIndex)),
+                TOTAL_SLIDES - 1
             );
-        });
-    }, { scope: wrapperRef, dependencies: [isMobileView] });
+            const progress = Math.min(1, scrollLeft / (carousel.scrollWidth - containerWidth));
+
+            setMobileIndex(newIndex);
+            setMobileProgress(progress);
+        };
+
+        carousel.addEventListener("scroll", onScroll, { passive: true });
+        // Initial call to set correct values
+        onScroll();
+
+        return () => carousel.removeEventListener("scroll", onScroll);
+    }, [isMobileView]);
 
     return (
         <div
@@ -175,169 +193,191 @@ const ServicesSection = () => {
             ref={wrapperRef}
             className="services-wrapper relative w-full bg-black overflow-hidden"
         >
-            {/* ─── MOBILE ─── */}
-            <div className="md:hidden flex flex-col py-16 px-5 sm:px-8">
-                <div className="text-center mb-12">
-                    <span className="inline-flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium mb-4">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
-                        What we do
-                    </span>
-                    <h2 className="text-4xl sm:text-5xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
-                        Our Services
-                    </h2>
-                    <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mx-auto" />
-                </div>
+            {/* ─── MOBILE: Swipeable carousel ───────────────────── */}
+            {isMobileView && (
+                <div className="md:hidden flex flex-col py-16 px-5 sm:px-8">
+                    <div className="text-center mb-8">
+                        <span className="inline-flex items-center justify-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[#F67963] font-medium mb-4">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                            What we do
+                        </span>
+                        <h2 className="text-4xl sm:text-5xl font-bold uppercase tracking-tighter text-white leading-[0.95] mb-4">
+                            Our Services
+                        </h2>
+                        <div className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mx-auto" />
+                    </div>
 
-                <div className="flex flex-col gap-6">
-                    {services.map((service, index) => (
-                        <div
-                            key={index}
-                            className="service-card-mobile group rounded-2xl overflow-hidden
-                                       bg-white/[0.03] border border-white/[0.08]
-                                       hover:border-[#F67963]/20 transition-colors duration-500"
-                        >
-                            <div className="relative w-full aspect-[16/10] overflow-hidden">
-                                <Image
-                                    src={service.image}
-                                    alt={service.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                    sizes="100vw"
-                                    priority={index === 0}
-                                    loading={index === 0 ? undefined : "lazy"}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                                <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-                                    <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight tracking-tight">
-                                        {service.title}
-                                    </h3>
-                                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#F67963]/20 shrink-0 ml-3">
-                                        {String(index + 1).padStart(2, "0")}
-                                    </span>
+                    {/* Carousel container */}
+                    <div
+                        ref={carouselRef}
+                        className="flex flex-row overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+                        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                    >
+                        {services.map((service: Service, index: number) => (
+                            <div
+                                key={index}
+                                className="service-card-mobile w-full flex-shrink-0 snap-start rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.08] mr-4 last:mr-0"
+                            >
+                                <div className="relative w-full aspect-[16/10] overflow-hidden">
+                                    <Image
+                                        src={service.image}
+                                        alt={service.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="100vw"
+                                        priority={index === 0}
+                                        loading={index === 0 ? undefined : "lazy"}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                    <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
+                                        <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight tracking-tight">
+                                            {service.title}
+                                        </h3>
+                                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full border border-[#F67963]/20 shrink-0 ml-3">
+                                            {String(index + 1).padStart(2, "0")}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="px-5 py-5 flex flex-col gap-3">
+                                    <p className="text-[#A1A1A1] text-sm leading-relaxed">
+                                        {service.description}
+                                    </p>
+                                    <ul className="flex flex-col gap-2">
+                                        {service.highlights.map((h: string, i: number) => (
+                                            <li
+                                                key={i}
+                                                className="flex items-start gap-2.5 text-[13px] text-[#8A8A8A]"
+                                            >
+                                                <span className="w-1 h-1 rounded-full bg-[#F67963] shrink-0 mt-[7px]" />
+                                                <span>{h}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </div>
-
-                            <div className="px-5 py-5 flex flex-col gap-3">
-                                <p className="text-[#A1A1A1] text-sm leading-relaxed">
-                                    {service.description}
-                                </p>
-                                <ul className="flex flex-col gap-2">
-                                    {service.highlights.map((h, i) => (
-                                        <li
-                                            key={i}
-                                            className="flex items-start gap-2.5 text-[13px] text-[#8A8A8A]"
-                                        >
-                                            <span className="w-1 h-1 rounded-full bg-[#F67963] shrink-0 mt-[7px]" />
-                                            <span>{h}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* ─── DESKTOP: Full-Viewport Cinematic Slides ─── */}
-            <div className="hidden md:block h-screen w-full relative">
-                {services.map((service, index) => {
-                    const num = String(index + 1).padStart(2, "0");
-                    return (
-                        <div
-                            key={index}
-                            className="service-slide absolute inset-0"
-                            style={{
-                                opacity: index === 0 ? 1 : 0,
-                                zIndex: index === 0 ? 5 : 1,
-                            }}
-                        >
-                            <div className="service-bg absolute inset-0">
-                                <Image
-                                    src={service.image}
-                                    alt={service.title}
-                                    fill
-                                    className="object-cover"
-                                    sizes="100vw"
-                                    priority={index === 0}
-                                    loading={index === 0 ? undefined : "lazy"}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/25" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
-                            </div>
-
-                            <div className="service-watermark absolute right-8 lg:right-16 xl:right-24 top-1/2 -translate-y-1/2 text-[10rem] lg:text-[16rem] xl:text-[20rem] font-black text-white/[0.04] leading-none select-none pointer-events-none tracking-tighter">
-                                {num}
-                            </div>
-
-                            <div className="service-content absolute bottom-28 lg:bottom-32 left-10 lg:left-16 xl:left-24 max-w-lg lg:max-w-xl xl:max-w-2xl z-10 flex flex-col gap-4 lg:gap-5">
-                                <span className="inline-block w-fit px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10">
-                                    {num} — Service
-                                </span>
-
-                                <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] tracking-tight">
-                                    {service.title}
-                                </h3>
-
-                                <p className="text-white/55 text-sm lg:text-base xl:text-lg leading-relaxed">
-                                    {service.description}
-                                </p>
-
-                                <ul className="flex flex-col gap-2 mt-1">
-                                    {service.highlights.map((h, i) => (
-                                        <li
-                                            key={i}
-                                            className="flex items-center gap-2.5 text-xs lg:text-sm text-white/45"
-                                        >
-                                            <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#F67963] shrink-0" />
-                                            <span>{h}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                <div className="w-14 lg:w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
-                            </div>
-                        </div>
-                    );
-                })}
-
-                {/* Fixed: Section label */}
-                <div className="absolute top-[88px] lg:top-[100px] left-10 lg:left-16 xl:left-24 z-20 flex flex-col gap-2">
-                    <span className="inline-flex items-center gap-2 text-[10px] lg:text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
-                        What we do
-                    </span>
-                    <h2 className="text-xl lg:text-2xl font-bold uppercase tracking-tight text-white/80">
-                        Our Services
-                    </h2>
-                </div>
-
-                {/* Fixed: Progress + Counter */}
-                <div className="absolute bottom-8 lg:bottom-10 left-10 lg:left-16 xl:left-24 right-10 lg:right-16 xl:right-24 z-20 flex items-center gap-6">
-                    <div className="flex items-baseline gap-2 shrink-0">
-                        <span
-                            ref={counterRef}
-                            className="text-2xl lg:text-3xl font-bold text-white tabular-nums"
-                        >
-                            01
-                        </span>
-                        <span className="text-sm text-white/25 font-light">
-                            / {String(TOTAL_SLIDES).padStart(2, "0")}
-                        </span>
+                        ))}
                     </div>
 
-                    <div className="flex-1 h-[1px] bg-white/10 rounded-full overflow-hidden">
-                        <div
-                            ref={progressBarRef}
-                            className="h-full bg-[#F67963] rounded-full origin-left"
-                            style={{ transform: "scaleX(0)" }}
-                        />
+                    {/* Mobile progress bar & counter */}
+                    <div className="flex items-center gap-4 mt-8 px-1">
+                        <div className="flex items-baseline gap-1 shrink-0">
+                            <span className="text-2xl font-bold text-white tabular-nums">
+                                {String(mobileIndex + 1).padStart(2, "0")}
+                            </span>
+                            <span className="text-sm text-white/25 font-light">
+                                / {String(TOTAL_SLIDES).padStart(2, "0")}
+                            </span>
+                        </div>
+                        <div className="flex-1 h-[2px] bg-white/10 rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-[#F67963] rounded-full transition-transform duration-100"
+                                style={{ width: `${mobileProgress * 100}%` }}
+                            />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-[0.3em] text-white/25 whitespace-nowrap shrink-0">
+                            Swipe
+                        </span>
+                    </div>
+                </div>
+            )}
+
+            {/* ─── DESKTOP: Full-Viewport Cinematic Slides ─────── */}
+            {!isMobileView && (
+                <div className="hidden md:block h-screen w-full relative">
+                    {services.map((service: Service, index: number) => {
+                        const num = String(index + 1).padStart(2, "0");
+                        return (
+                            <div
+                                key={index}
+                                className="service-slide absolute inset-0"
+                                style={{
+                                    opacity: index === 0 ? 1 : 0,
+                                    zIndex: index === 0 ? 5 : 1,
+                                }}
+                            >
+                                <div className="service-bg absolute inset-0">
+                                    <Image
+                                        src={service.image}
+                                        alt={service.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="100vw"
+                                        priority={index === 0}
+                                        loading={index === 0 ? undefined : "lazy"}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/25" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+                                </div>
+
+                                <div className="service-watermark absolute right-8 lg:right-16 xl:right-24 top-1/2 -translate-y-1/2 text-[10rem] lg:text-[16rem] xl:text-[20rem] font-black text-white/[0.04] leading-none select-none pointer-events-none tracking-tighter">
+                                    {num}
+                                </div>
+
+                                <div className="service-content absolute bottom-28 lg:bottom-32 left-10 lg:left-16 xl:left-24 max-w-lg lg:max-w-xl xl:max-w-2xl z-10 flex flex-col gap-4 lg:gap-5">
+                                    <span className="inline-block w-fit px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10">
+                                        {num} — Service
+                                    </span>
+                                    <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.05] tracking-tight">
+                                        {service.title}
+                                    </h3>
+                                    <p className="text-white/55 text-sm lg:text-base xl:text-lg leading-relaxed">
+                                        {service.description}
+                                    </p>
+                                    <ul className="flex flex-col gap-2 mt-1">
+                                        {service.highlights.map((h: string, i: number) => (
+                                            <li
+                                                key={i}
+                                                className="flex items-center gap-2.5 text-xs lg:text-sm text-white/45"
+                                            >
+                                                <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#F67963] shrink-0" />
+                                                <span>{h}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <div className="w-14 lg:w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2" />
+                                </div>
+                            </div>
+                        );
+                    })}
+
+                    {/* Fixed: Section label */}
+                    <div className="absolute top-[88px] lg:top-[100px] left-10 lg:left-16 xl:left-24 z-20 flex flex-col gap-2">
+                        <span className="inline-flex items-center gap-2 text-[10px] lg:text-[11px] uppercase tracking-[0.35em] text-[#F67963] font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                            What we do
+                        </span>
+                        <h2 className="text-xl lg:text-2xl font-bold uppercase tracking-tight text-white/80">
+                            Our Services
+                        </h2>
                     </div>
 
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-white/25 whitespace-nowrap shrink-0">
-                        Scroll to explore
-                    </span>
+                    {/* Fixed: Progress + Counter */}
+                    <div className="absolute bottom-8 lg:bottom-10 left-10 lg:left-16 xl:left-24 right-10 lg:right-16 xl:right-24 z-20 flex items-center gap-6">
+                        <div className="flex items-baseline gap-2 shrink-0">
+                            <span
+                                ref={counterRef}
+                                className="text-2xl lg:text-3xl font-bold text-white tabular-nums"
+                            >
+                                01
+                            </span>
+                            <span className="text-sm text-white/25 font-light">
+                                / {String(TOTAL_SLIDES).padStart(2, "0")}
+                            </span>
+                        </div>
+                        <div className="flex-1 h-[1px] bg-white/10 rounded-full overflow-hidden">
+                            <div
+                                ref={progressBarRef}
+                                className="h-full bg-[#F67963] rounded-full origin-left"
+                                style={{ transform: "scaleX(0)" }}
+                            />
+                        </div>
+                        <span className="text-[10px] uppercase tracking-[0.3em] text-white/25 whitespace-nowrap shrink-0">
+                            Scroll to explore
+                        </span>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
