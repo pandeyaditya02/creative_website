@@ -43,31 +43,49 @@ const AboutSection = () => {
       }
     });
 
-    // 3. SYNCHRONIZED GRID TIMELINE
-    // Triggered precisely when the grid enters the viewport
+    // 3. SYNCHRONIZED GRID TIMELINE (Using Labels for parallel animation)
     const gridTl = gsap.timeline({
       scrollTrigger: {
         trigger: q(".bento-grid"), 
-        start: "top 85%", // Starts when the top of the grid is 85% down the screen
+        start: "top 85%", 
         toggleActions: "play none none reverse"
       }
     });
 
     const statsObj = { val: 0 };
 
-    gridTl
-      // A: The cards themselves fade and slide up first
-      .fromTo(q(".bento-card"), 
+    // Set a marker so we can animate elements at the exact same time
+    gridTl.addLabel("gridStart")
+      
+      // A: Top Row Cards slide in first
+      .fromTo(q(".top-row-card"), 
         { y: 60, opacity: 0, scale: 0.98 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" },
+        "gridStart" // Starts exactly at the label
       )
-      // B: ALL text inside the cards (now including services & stats) staggers in
-      .fromTo(q(".reveal-text"), 
+      
+      // B: Bottom 3 Service Cards slide in just 0.2s later (smooth wave effect)
+      .fromTo(q(".service-card"), 
+        { y: 60, opacity: 0, scale: 0.98 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" },
+        "gridStart+=0.2"
+      )
+
+      // C: Top Row Text reveals 
+      .fromTo(q(".top-row-card .reveal-text"), 
         { y: 15, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: "power2.out" },
-        "-=0.5" // Overlap so the text starts appearing as the cards are settling
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.03, ease: "power2.out" },
+        "gridStart+=0.3"
       )
-      // C: The number counter counts up right as its text becomes visible
+
+      // D: Bottom 3 Grids Text reveals simultaneously with top text
+      .fromTo(q(".service-card .reveal-text"), 
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.03, ease: "power2.out" },
+        "gridStart+=0.4" // Just 0.1s after top text so it looks continuous
+      )
+
+      // E: Number Counter starts exactly as the stats card settles
       .to(statsObj, {
         val: 50,
         duration: 1.5,
@@ -76,7 +94,7 @@ const AboutSection = () => {
           const el = document.getElementById("stats-number");
           if (el) el.textContent = Math.ceil(statsObj.val) + "+";
         }
-      }, "-=0.6"); 
+      }, "gridStart+=0.4");
 
   }, { scope: containerRef });
 
@@ -103,11 +121,10 @@ const AboutSection = () => {
           </h2>
         </div>
 
-        {/* ADDED .bento-grid class here for the ScrollTrigger */}
         <div className="bento-grid grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           
-          {/* Main Card */}
-          <div className="bento-card md:col-span-2 p-8 md:p-12 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col justify-between">
+          {/* Main Card - Added .top-row-card */}
+          <div className="bento-card top-row-card md:col-span-2 p-8 md:p-12 rounded-3xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col justify-between">
             <div>
               <span className="inline-block px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F67963] bg-[#F67963]/10 rounded-full mb-6 reveal-text">
                 Creative Chauk
@@ -126,15 +143,15 @@ const AboutSection = () => {
             </div>
           </div>
 
-          {/* Stats Card - Added .reveal-text to inner spans */}
-          <div className="bento-card stats-card p-8 rounded-3xl bg-[#F67963]/10 border border-[#F67963]/20 flex flex-col items-center justify-center">
+          {/* Stats Card - Added .top-row-card */}
+          <div className="bento-card top-row-card stats-card p-8 rounded-3xl bg-[#F67963]/10 border border-[#F67963]/20 flex flex-col items-center justify-center">
             <span id="stats-number" className="text-7xl md:text-8xl font-black reveal-text">0+</span>
             <span className="text-sm font-bold uppercase text-[#F67963] reveal-text">Global Brands</span>
           </div>
 
-          {/* Services - Added .reveal-text to Emoji, Title, and Desc */}
+          {/* Service Cards - Added .service-card */}
           {services.map((s, i) => (
-            <div key={i} className="bento-card p-8 rounded-3xl bg-white/[0.04] border border-white/10 hover:border-[#F67963]/30 transition-colors flex flex-col justify-center">
+            <div key={i} className="bento-card service-card p-8 rounded-3xl bg-white/[0.04] border border-white/10 hover:border-[#F67963]/30 transition-colors flex flex-col justify-center">
               <div className="text-4xl mb-4 reveal-text">{s.emoji}</div>
               <h4 className="text-2xl font-bold mb-4 reveal-text">{s.title}</h4>
               <p className="text-white/60 text-base md:text-lg leading-relaxed reveal-text">{s.desc}</p>

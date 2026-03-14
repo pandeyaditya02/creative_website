@@ -27,32 +27,25 @@ const ClienteleMarquee = () => {
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[800px] h-[300px] bg-[#F67963]/10 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="relative z-10">
-                {/* Horizontal Fade Edges */}
-                <div className="absolute left-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-r from-black via-black/80 to-transparent z-20 pointer-events-none" />
-                <div className="absolute right-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-l from-black via-black/80 to-transparent z-20 pointer-events-none" />
+            <div className="relative z-10 w-full bg-white py-2 md:py-4 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+                {/* Horizontal Fade Edges (Now fading from White) */}
+                <div className="absolute left-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
+                <div className="absolute right-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
 
-                {/* 
-                  Marquee Track 
-                  - We use a simpler structure: one long flex container
-                  - Animation moves it partially
-                */}
-                <div className="flex w-max whitespace-nowrap animate-marquee pause-on-hover">
+                <div className="flex w-max whitespace-nowrap animate-marquee pause-on-hover px-4">
                     {allLogos.map((logo, index) => (
                         <div
                             key={`${logo.alt}-${index}`}
-                            className="group relative flex-shrink-0 px-8 lg:px-16
-                                     grayscale-[0.5] opacity-70 
+                            className="group relative flex-shrink-0 px-12 lg:px-24
                                      transition-all duration-700 ease-in-out
-                                     hover:grayscale-0 hover:opacity-100
                                      cursor-default select-none"
                             role="img"
                             aria-label={logo.alt}
                         >
-                            {/* Logo Container */}
-                            <div className="relative h-14 w-28 lg:h-36 lg:w-72 flex items-center justify-center
+                            {/* Logo Container - Enlarged to "fit" the strip */}
+                            <div className="relative h-16 w-36 lg:h-36 lg:w-80 flex items-center justify-center
                                           transition-transform duration-700 ease-in-out
-                                          lg:group-hover:scale-110">
+                                          lg:group-hover:scale-105">
                                 <Image
                                     src={logo.src}
                                     alt={logo.alt}
