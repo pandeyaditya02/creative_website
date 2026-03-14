@@ -449,7 +449,7 @@ const Navbar = () => {
             id="mobile-menu"
             ref={mobileMenuRef}
             className="fixed top-0 right-0 z-[130] w-4/5 max-w-sm h-full bg-[#0a0a0a] 
-                       shadow-2xl md:hidden flex flex-col"
+                       shadow-2xl md:hidden flex flex-col translate-x-full opacity-0 pointer-events-none"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
