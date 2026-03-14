@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { useInView } from "@/hooks/useInView";
 
 const logos = [
     { src: "/brand-logos/Amazon logo.png", alt: "Amazon" },
@@ -16,13 +17,18 @@ const logos = [
 ];
 
 const ClienteleMarquee = () => {
-    // Triple the logos to ensure enough content for very wide screens and seamless looping
     const allLogos = [...logos, ...logos, ...logos];
+    const [sectionRef, inView] = useInView<HTMLElement>({ threshold: 0.15 });
 
     return (
         <section
+            ref={sectionRef}
             className="relative bg-black py-12 lg:py-20 overflow-hidden border-y border-white/[0.05]"
             aria-label="Our valued clientele"
+            style={{
+                opacity: inView ? undefined : 0,
+                animation: inView ? "fadeUpIn 0.8s cubic-bezier(0.16,1,0.3,1) both" : undefined,
+            }}
         >
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[800px] h-[300px] bg-[#F67963]/10 rounded-full blur-[120px] pointer-events-none" />

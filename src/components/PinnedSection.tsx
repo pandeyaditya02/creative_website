@@ -3,10 +3,9 @@ import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 gsap.registerPlugin(ScrollTrigger);
-
-import { useIsMobile } from "@/hooks/useMediaQuery";
 
 interface PinnedSectionProps {
     children: React.ReactNode;

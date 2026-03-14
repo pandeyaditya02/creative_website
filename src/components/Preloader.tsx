@@ -9,12 +9,54 @@ export default function Preloader() {
     const textRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Lock scroll explicitly during preloader
         document.body.style.overflow = "hidden";
 
-        // Counter animation logic
-        const duration = 1.5; // seconds
-        const interval = 20; // ms
+        let counterDone = false;
+        let fontsReady = false;
+        let hasExited = false;
+
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const tryExit = () => {
+            if (!counterDone || !fontsReady || hasExited) return;
+            hasExited = true;
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    document.body.style.overflow = "";
+                    if (containerRef.current) {
+                        containerRef.current.style.display = "none";
+                    }
+                    window.dispatchEvent(new CustomEvent("preloaderFinished"));
+                }
+            });
+
+            tl.to(textRef.current, {
+                y: -50,
+                opacity: 0,
+                duration: prefersReduced ? 0 : 0.6,
+                ease: "power3.in"
+            })
+            .to(containerRef.current, {
+                yPercent: -100,
+                duration: prefersReduced ? 0 : 1.2,
+                ease: "power4.inOut"
+            }, prefersReduced ? 0 : "-=0.2");
+        };
+
+        const fontTimeout = setTimeout(() => {
+            fontsReady = true;
+            tryExit();
+        }, 3000);
+
+        document.fonts.ready.then(() => {
+            clearTimeout(fontTimeout);
+            fontsReady = true;
+            tryExit();
+        });
+
+        const duration = 1.8;
+        const interval = 20;
         const increments = duration * 1000 / interval;
         let currentStep = 0;
 
@@ -25,37 +67,15 @@ export default function Preloader() {
 
             if (nextVal >= 100) {
                 clearInterval(counter);
-
-                // Trigger GSAP exit animation
-                const tl = gsap.timeline({
-                    onComplete: () => {
-                        // Unlock scroll
-                        document.body.style.overflow = "";
-                        // Remove from DOM conceptually by hiding deeply or we can rely on opacity:0 + pointer-events-none
-                        if (containerRef.current) {
-                            containerRef.current.style.display = "none";
-                        }
-                    }
-                });
-
-                tl.to(textRef.current, {
-                    y: -50,
-                    opacity: 0,
-                    duration: 0.6,
-                    ease: "power3.in"
-                })
-                    .to(containerRef.current, {
-                        yPercent: -100,
-                        duration: 1.2,
-                        ease: "power4.inOut"
-                    }, "-=0.2")
-                    .add(() => {
-                        window.dispatchEvent(new CustomEvent("preloaderFinished"));
-                    });
+                counterDone = true;
+                tryExit();
             }
         }, interval);
 
-        return () => clearInterval(counter);
+        return () => {
+            clearInterval(counter);
+            clearTimeout(fontTimeout);
+        };
     }, []);
 
     return (

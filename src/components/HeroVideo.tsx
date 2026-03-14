@@ -1,44 +1,76 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(ScrollTrigger);
-
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useIsMobile } from "@/hooks/useMediaQuery";
+
+declare global {
+  interface Window {
+    YT: typeof YT;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
 
 const HeroVideo = () => {
   const [muted, setMuted] = useState(true);
   const [isPreloaderFinished, setIsPreloaderFinished] = useState(false);
   const [progress, setProgress] = useState(0);
-  
+
   const isMobileView = useIsMobile(768);
-  
+
   const playerRef = useRef<YT.Player | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Refs for GSAP
   const containerRef = useRef<HTMLDivElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const progressContainerRef = useRef<HTMLDivElement>(null);
 
-  // Sync with Preloader
   useEffect(() => {
     const handlePreloaderFinish = () => setIsPreloaderFinished(true);
     window.addEventListener("preloaderFinished", handlePreloaderFinish);
     return () => window.removeEventListener("preloaderFinished", handlePreloaderFinish);
   }, []);
 
-  const startPolling = (mobile: boolean) => {
+  // Scroll parallax — direct DOM mutation via rAF, no library needed
+  useEffect(() => {
+    const videoEl = videoContainerRef.current;
+    const containerEl = containerRef.current;
+    if (!videoEl || !containerEl) return;
+
+    const baseScale = isMobileView ? 1.0 : 1.05;
+    const startScale = isMobileView ? 1.15 : 1.35;
+
+    let rafId = 0;
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = containerEl.getBoundingClientRect();
+        const sectionHeight = containerEl.offsetHeight;
+        // progress: 0 at top of section, 1 when section scrolled out
+        const scrollProgress = Math.max(0, Math.min(1, -rect.top / sectionHeight));
+        const scale = startScale + (baseScale - startScale) * scrollProgress;
+        const blurPx = isMobileView ? 0 : scrollProgress * 4;
+        videoEl.style.transform = `scale(${scale})`;
+        videoEl.style.filter = `blur(${blurPx}px) brightness(0.7) contrast(1.1)`;
+      });
+    };
+
+    // Set initial scale before any scroll
+    videoEl.style.transform = `scale(${startScale})`;
+    videoEl.style.filter = `brightness(0.7) contrast(1.1)`;
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, [isMobileView]);
+
+  const startPolling = useCallback((mobile: boolean) => {
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    
-    // Polling interval: 500ms on mobile (battery), 250ms on desktop
     const pollInterval = mobile ? 500 : 250;
-    
     progressIntervalRef.current = setInterval(() => {
       const player = playerRef.current;
-      if (player && player.getPlayerState() === (window as any).YT?.PlayerState.PLAYING) {
+      if (player && player.getPlayerState() === window.YT?.PlayerState?.PLAYING) {
         const duration = player.getDuration();
         const currentTime = player.getCurrentTime();
         if (duration > 0) {
@@ -46,206 +78,164 @@ const HeroVideo = () => {
         }
       }
     }, pollInterval);
-  };
+  }, []);
 
-  const stopPolling = () => {
+  const stopPolling = useCallback(() => {
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
       progressIntervalRef.current = null;
     }
-  };
+  }, []);
 
-  useGSAP(() => {
-    if (!isPreloaderFinished) return;
-
-    const mobile = isMobileView;
-
-    // Progress container reveal
-    gsap.from(progressContainerRef.current, {
-      opacity: 0,
-      y: 20,
-      duration: mobile ? 0.6 : 1.5,
-      delay: mobile ? 0.2 : 0.4
-    });
-
-    // Showreel Mask Reveal
-    gsap.to(".showreel-word", {
-      y: 0,
-      duration: mobile ? 0.8 : 1.2,
-      stagger: 0.1,
-      ease: "power4.out",
-      delay: 0.2
-    });
-
-    // Subtext Fade-in
-    gsap.to(".hero-subtext", {
-      opacity: 1,
-      y: 0,
-      duration: mobile ? 0.6 : 1.2,
-      delay: mobile ? 0.5 : 0.8,
-      ease: "power2.out"
-    });
-
-    // 2. Parallax & Scale on Scroll - Mobile Optimized
-    if (videoContainerRef.current) {
-      gsap.fromTo(videoContainerRef.current,
-        { scale: mobile ? 1.15 : 1.35, filter: "blur(0px)" },
-        {
-          scale: mobile ? 1.0 : 1.05,
-          filter: mobile ? "blur(0px)" : "blur(4px)",
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: mobile ? 0.3 : 1.5, // Reduced scrub on mobile for performance
-          }
-        }
-      );
-    }
-  }, { scope: containerRef, dependencies: [isMobileView, isPreloaderFinished] });
-
-  const videoId = "4FXlxfgxGaQ";
-
-  const toggleSound = () => {
-    setMuted((prev) => {
-      if (playerRef.current) {
-        if (prev) {
-          playerRef.current.unMute();
-        } else {
-          playerRef.current.mute();
-        }
-      }
-      return !prev;
-    });
-  };
-
-  const onPlayerReady = (event: { target: YT.Player }) => {
-    event.target.mute();
-    startPolling(isMobileView);
-  };
-
-  const onPlayerStateChange = (event: { data: number }) => {
-    if (event.data === (window as any).YT?.PlayerState.ENDED) {
-      setProgress(0);
-    }
-  };
-
-  // Pause progress polling when tab is hidden (saves battery)
+  // Pause progress polling when tab is hidden
   useEffect(() => {
     const handleVisibility = () => {
       if (document.hidden) {
         stopPolling();
-      } else if (playerRef.current?.getPlayerState() === (window as any).YT?.PlayerState.PLAYING) {
+      } else if (playerRef.current?.getPlayerState() === window.YT?.PlayerState?.PLAYING) {
         startPolling(isMobileView);
       }
     };
-
     document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       document.removeEventListener("visibilitychange", handleVisibility);
       stopPolling();
     };
-  }, [isMobileView]);
+  }, [isMobileView, startPolling, stopPolling]);
 
-  // YouTube API Loader
+  // YouTube API loader
   useEffect(() => {
-    let scriptLoaded = false;
+    let destroyed = false;
+    const videoId = "4FXlxfgxGaQ";
+
+    const onPlayerReady = (event: { target: YT.Player }) => {
+      if (destroyed) return;
+      event.target.mute();
+      startPolling(isMobileView);
+    };
+
+    const onPlayerStateChange = (event: { data: number }) => {
+      if (destroyed) return;
+      if (event.data === window.YT?.PlayerState?.ENDED) setProgress(0);
+    };
 
     const initPlayer = () => {
-      if (playerRef.current || scriptLoaded) return;
-      scriptLoaded = true;
-
-      playerRef.current = new (window as any).YT.Player("hero-video-player", {
+      if (destroyed || playerRef.current) return;
+      playerRef.current = new window.YT.Player("hero-video-player", {
         height: "100%",
         width: "100%",
         videoId,
         playerVars: {
-          autoplay: 1,
-          controls: 0,
-          disablekb: 1,
-          enablejsapi: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          loop: 1,
-          modestbranding: 1,
-          playlist: videoId,
-          playsinline: 1, // Critical for mobile
-          rel: 0,
-          showinfo: 0,
-          // Mobile optimization: prefer lower quality to save bandwidth
-          vq: isMobileView ? "small" : "medium",
+          autoplay: 1, controls: 0, disablekb: 1, enablejsapi: 1,
+          fs: 0, iv_load_policy: 3, loop: 1, modestbranding: 1,
+          playlist: videoId, playsinline: 1, rel: 0, showinfo: 0,
         },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-        },
+        events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange },
       });
     };
 
-    if ((window as any).YT?.Player) {
+    if (window.YT?.Player) {
       initPlayer();
-      return;
+    } else {
+      const existingScript = document.querySelector('script[src="https://www.youtube.com/iframe_api"]');
+      if (!existingScript) {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScript = document.getElementsByTagName("script")[0];
+        firstScript?.parentNode?.insertBefore(tag, firstScript);
+      }
+      window.onYouTubeIframeAPIReady = initPlayer;
     }
 
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScript = document.getElementsByTagName("script")[0];
-    firstScript?.parentNode?.insertBefore(tag, firstScript);
-
-    (window as any).onYouTubeIframeAPIReady = initPlayer;
-
     return () => {
+      destroyed = true;
       stopPolling();
-      if ((window as any).onYouTubeIframeAPIReady) delete (window as any).onYouTubeIframeAPIReady;
+      if (window.onYouTubeIframeAPIReady === initPlayer) {
+        delete window.onYouTubeIframeAPIReady;
+      }
     };
-  }, [isMobileView, onPlayerReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const toggleSound = () => {
+    setMuted((prev) => {
+      if (playerRef.current) {
+        prev ? playerRef.current.unMute() : playerRef.current.mute();
+      }
+      return !prev;
+    });
+  };
+
+  // CSS transition delays for text reveals — triggered by isPreloaderFinished
+  const mobile = isMobileView;
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="relative w-full h-dvh min-h-[calc(var(--dvh,1vh)*100)] overflow-hidden bg-black text-white"
     >
-      {/* Background Video Container */}
-      <div 
-        ref={videoContainerRef} 
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none origin-center brightness-[0.7] contrast-[1.1]"
-        // Mobile: reduce initial scale to avoid excessive cropping in portrait
-        style={{ transform: `scale(${isMobileView ? 1.15 : 1.35})` }}
+      {/* Background video container — transform managed by scroll listener */}
+      <div
+        ref={videoContainerRef}
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none origin-center"
       >
-        <div
-          id="hero-video-player"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-          // Mobile: adjust min dimensions for better portrait coverage
-          style={{
-            width: "100%",
-            height: "100%",
-            minWidth: isMobileView ? "100%" : "120%",
-            minHeight: isMobileView ? "100%" : "120%",
-          }}
-        />
+        <div id="hero-video-player" />
+        <style jsx global>{`
+          #hero-video-player,
+          #hero-video-player iframe {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 100vw !important;
+            height: 56.25vw !important;
+            min-height: 100vh !important;
+            min-height: 100dvh !important;
+            min-width: 177.78vh !important;
+            min-width: 177.78dvh !important;
+            pointer-events: none;
+          }
+        `}</style>
       </div>
 
-      {/* Text Content - Responsive Positioning + Safe Areas */}
-      <div className="absolute z-20 flex flex-col gap-3 md:gap-4 
-                      bottom-[calc(3rem+env(safe-area-inset-bottom))] 
-                      left-[calc(2rem+env(safe-area-inset-left))]
-                      md:bottom-[calc(6rem+env(safe-area-inset-bottom))] 
-                      md:left-[calc(6rem+env(safe-area-inset-left))]">
-        
-        {/* Tier 1: Overline - Now with Staggered Mask Reveal */}
+      {/* Text content */}
+      <div
+        className="absolute z-20 flex flex-col gap-3 md:gap-4
+                    bottom-[calc(3rem+env(safe-area-inset-bottom))]
+                    left-[calc(2rem+env(safe-area-inset-left))]
+                    md:bottom-[calc(6rem+env(safe-area-inset-bottom))]
+                    md:left-[calc(6rem+env(safe-area-inset-left))]"
+      >
         <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.4em] text-[#F67963] font-medium flex gap-[0.4em]">
           {["SHOWREEL", "2026"].map((word, i) => (
             <span key={i} className="inline-block overflow-hidden py-1">
-              <span className="inline-block transform translate-y-full showreel-word">
+              <span
+                className="inline-block"
+                style={{
+                  transform: isPreloaderFinished ? "translateY(0)" : "translateY(100%)",
+                  transition: isPreloaderFinished
+                    ? `transform ${mobile ? 0.8 : 1.2}s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.1}s`
+                    : "none",
+                }}
+              >
                 {word}
               </span>
             </span>
           ))}
         </div>
 
-        {/* Dynamic Progress Bar */}
-        <div ref={progressContainerRef} className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-2">
+        {/* Dynamic progress bar */}
+        <div
+          ref={progressContainerRef}
+          className="flex flex-col gap-2 w-full max-w-[240px] md:max-w-sm mt-2"
+          style={{
+            opacity: isPreloaderFinished ? 1 : 0,
+            transform: isPreloaderFinished ? "translateY(0)" : "translateY(20px)",
+            transition: isPreloaderFinished
+              ? `opacity ${mobile ? 0.6 : 1.5}s ease ${mobile ? 0.2 : 0.4}s, transform ${mobile ? 0.6 : 1.5}s ease ${mobile ? 0.2 : 0.4}s`
+              : "none",
+          }}
+        >
           <div className="w-full h-[1px] bg-white/20 relative overflow-hidden">
             <div
               className="absolute top-0 left-0 h-full bg-[#F67963] transition-all duration-75 ease-linear"
@@ -254,29 +244,53 @@ const HeroVideo = () => {
           </div>
         </div>
 
-        {/* Tier 3: Subtext - Responsive font & max-width */}
-        <p className="text-[12px] md:text-base text-white/50 max-w-[280px] md:max-w-md leading-relaxed opacity-0 hero-subtext">
+        <p
+          className="text-[12px] md:text-base text-white/50 max-w-[280px] md:max-w-md leading-relaxed"
+          style={{
+            opacity: isPreloaderFinished ? 1 : 0,
+            transform: isPreloaderFinished ? "translateY(0)" : "translateY(16px)",
+            transition: isPreloaderFinished
+              ? `opacity ${mobile ? 0.6 : 1.2}s ease ${mobile ? 0.5 : 0.8}s, transform ${mobile ? 0.6 : 1.2}s ease ${mobile ? 0.5 : 0.8}s`
+              : "none",
+          }}
+        >
           Cinematic production and creative media dedicated to elevating brand voices for the digital age.
         </p>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4 opacity-50">
+      {/* Scroll indicator */}
+      <div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4"
+        style={{
+          opacity: isPreloaderFinished ? 0.5 : 0,
+          transition: isPreloaderFinished
+            ? `opacity 1s ease ${mobile ? 0.8 : 1.2}s`
+            : "none",
+        }}
+      >
         <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
         <span className="text-[8px] uppercase tracking-[0.5em] font-bold">Scroll</span>
       </div>
 
-      {/* Sound Toggle - Touch-Friendly */}
-      <div className="absolute z-20 flex justify-end items-end 
-                      bottom-[calc(3rem+env(safe-area-inset-bottom))] 
-                      right-[calc(2rem+env(safe-area-inset-right))]
-                      md:bottom-[calc(6rem+env(safe-area-inset-bottom))] 
-                      md:right-[calc(6rem+env(safe-area-inset-right))]
-                      opacity-70 hover:opacity-100 transition-opacity">
+      {/* Sound toggle */}
+      <div
+        className="absolute z-20 flex justify-end items-end
+                    bottom-[calc(3rem+env(safe-area-inset-bottom))]
+                    right-[calc(2rem+env(safe-area-inset-right))]
+                    md:bottom-[calc(6rem+env(safe-area-inset-bottom))]
+                    md:right-[calc(6rem+env(safe-area-inset-right))]
+                    hover:opacity-100 transition-opacity"
+        style={{
+          opacity: isPreloaderFinished ? 0.7 : 0,
+          transition: isPreloaderFinished
+            ? `opacity 1s ease ${mobile ? 0.8 : 1.2}s`
+            : "none",
+        }}
+      >
         <button
           onClick={toggleSound}
-          className="flex items-center gap-3 group cursor-pointer pointer-events-auto 
-                     min-h-[44px] min-w-[44px] p-2 -m-2" // Increased touch target
+          className="flex items-center gap-3 group cursor-pointer pointer-events-auto
+                     min-h-[44px] min-w-[44px] p-2 -m-2"
           aria-label={muted ? "Unmute video" : "Mute video"}
         >
           <span className="text-[9px] md:text-[10px] font-bold tracking-[0.2em] text-[#F67963] uppercase whitespace-nowrap">
