@@ -20,3 +20,8 @@
 ### Phase 2: Page Layout & Integration
 **Status**: ⬜ Not Started
 **Objective**: Ensure the main page and layout wrappers handle the responsive child components properly without horizontal overflow.
+
+### Phase 8: Code Cleanup and Optimization
+**Status**: 🟦 Planning
+**Objective**: Comprehensive audit and refinement of the codebase to improve performance, maintainability, and asset efficiency.
+**Requirements**: REQ-OPT-01, REQ-OPT-02, REQ-OPT-03

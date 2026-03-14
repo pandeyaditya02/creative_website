@@ -6,6 +6,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { useIsMobile } from "@/hooks/useMediaQuery";
+
 interface PinnedSectionProps {
     children: React.ReactNode;
     zIndex: number;
@@ -35,15 +37,14 @@ const PinnedSection = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const scrollTriggerInstance = useRef<ScrollTrigger | null>(null);
 
-    // Helper: Check if current viewport is "mobile"
-    const isMobileView = () => typeof window !== "undefined" && window.innerWidth < mobileBreakpoint;
+    const isMobileView = useIsMobile(mobileBreakpoint);
 
     useGSAP(() => {
         const container = containerRef.current;
         if (!container) return;
 
         // Skip GSAP pinning if on mobile and disableOnMobile is true
-        if (disableOnMobile && isMobileView()) {
+        if (disableOnMobile && isMobileView) {
             container.style.position = "relative";
             container.style.zIndex = zIndex.toString();
             return;
@@ -66,40 +67,25 @@ const PinnedSection = ({
         return () => {
             st.kill();
         };
-    }, { scope: containerRef, dependencies: [isTall, disableOnMobile, mobileBreakpoint, zIndex] });
+    }, { scope: containerRef, dependencies: [isTall, disableOnMobile, isMobileView, zIndex] });
 
     // Handle resize: refresh ScrollTrigger if viewport crosses breakpoint
     useEffect(() => {
         if (!disableOnMobile) return;
 
-        let resizeTimeout: NodeJS.Timeout;
+        const container = containerRef.current;
+        if (!container) return;
 
-        const handleResize = () => {
-            // Debounce resize events for performance
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                const container = containerRef.current;
-                if (!container) return;
-
-                if (isMobileView()) {
-                    // On mobile: kill GSAP pin, let CSS sticky take over
-                    scrollTriggerInstance.current?.kill();
-                    container.style.position = "relative";
-                    container.style.zIndex = zIndex.toString();
-                } else {
-                    // On desktop: re-enable pinning by refreshing ScrollTrigger
-                    ScrollTrigger.refresh();
-                }
-            }, 150);
-        };
-
-        window.addEventListener("resize", handleResize);
-
-        return () => {
-            clearTimeout(resizeTimeout);
-            window.removeEventListener("resize", handleResize);
-        };
-    }, [disableOnMobile, mobileBreakpoint, zIndex]);
+        if (isMobileView) {
+            // On mobile: kill GSAP pin, let CSS sticky take over
+            scrollTriggerInstance.current?.kill();
+            container.style.position = "relative";
+            container.style.zIndex = zIndex.toString();
+        } else {
+            // On desktop: re-enable pinning by refreshing ScrollTrigger
+            ScrollTrigger.refresh();
+        }
+    }, [isMobileView, disableOnMobile, zIndex]);
 
     return (
         <>

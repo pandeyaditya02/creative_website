@@ -10,11 +10,8 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger);
 
 
-// ✅ NEW: Respect user's reduced motion preference
-const prefersReducedMotion = () => {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-};
+import { useIsMobile } from "@/hooks/useMediaQuery";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const navLinks = [
   { href: "#work-stats", label: "WORK" },
@@ -26,7 +23,9 @@ const navLinks = [
 const Navbar = () => {
   const [time, setTime] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
+  
+  const isMobileView = useIsMobile(768);
+  const reduceMotion = usePrefersReducedMotion();
   
   const navRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
@@ -55,14 +54,6 @@ const Navbar = () => {
       setIsMenuOpen(false);
     }
   };
-
-  // Update mobile view state
-  useEffect(() => {
-    const handleResize = () => setIsMobileView(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Live time update
   useEffect(() => {
@@ -96,8 +87,6 @@ const Navbar = () => {
   // ✅ FIX: Handle mobile menu animation separately with useEffect
   useEffect(() => {
     if (!isMobileView || !mobileMenuRef.current) return;
-
-    const reduceMotion = prefersReducedMotion();
     
     // Kill existing timeline if any
     if (menuTimelineRef.current) {
@@ -137,7 +126,7 @@ const Navbar = () => {
         menuTimelineRef.current.kill();
       }
     };
-  }, [isMenuOpen, isMobileView]);
+  }, [isMenuOpen, isMobileView, reduceMotion]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -151,10 +140,9 @@ const Navbar = () => {
     };
   }, [isMenuOpen, isMobileView]);
 
-  // ✅ FIX: useGSAP with prefersReducedMotion
+  // ✅ FIX: useGSAP with reduceMotion
   useGSAP(() => {
     const mobile = isMobileView;
-    const reduceMotion = prefersReducedMotion();
     
     // Entrance animations - respect reduced motion
     const tl = gsap.timeline({ 

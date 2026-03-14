@@ -6,17 +6,14 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Helper: Detect mobile devices
-const isMobile = () => {
-  if (typeof window === "undefined") return false;
-  return window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-};
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 const HeroVideo = () => {
   const [muted, setMuted] = useState(true);
   const [isPreloaderFinished, setIsPreloaderFinished] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [isMobileView, setIsMobileView] = useState(false);
+  
+  const isMobileView = useIsMobile(768);
   
   const playerRef = useRef<YT.Player | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,23 +30,30 @@ const HeroVideo = () => {
     return () => window.removeEventListener("preloaderFinished", handlePreloaderFinish);
   }, []);
 
-  // Update mobile view state on resize
-  useEffect(() => {
-    const checkMobile = () => setIsMobileView(isMobile());
-    checkMobile();
+  const startPolling = (mobile: boolean) => {
+    if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
     
-    let resizeTimeout: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(checkMobile, 150);
-    };
+    // Polling interval: 500ms on mobile (battery), 250ms on desktop
+    const pollInterval = mobile ? 500 : 250;
     
-    window.addEventListener("resize", handleResize);
-    return () => {
-      clearTimeout(resizeTimeout);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+    progressIntervalRef.current = setInterval(() => {
+      const player = playerRef.current;
+      if (player && player.getPlayerState() === (window as any).YT?.PlayerState.PLAYING) {
+        const duration = player.getDuration();
+        const currentTime = player.getCurrentTime();
+        if (duration > 0) {
+          setProgress((currentTime / duration) * 100);
+        }
+      }
+    }, pollInterval);
+  };
+
+  const stopPolling = () => {
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
+  };
 
   useGSAP(() => {
     if (!isPreloaderFinished) return;
@@ -118,24 +122,11 @@ const HeroVideo = () => {
 
   const onPlayerReady = (event: { target: YT.Player }) => {
     event.target.mute();
-
-    // Polling interval: 500ms on mobile (battery), 250ms on desktop
-    const pollInterval = isMobileView ? 500 : 250;
-    
-    progressIntervalRef.current = setInterval(() => {
-      const player = playerRef.current;
-      if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-        const duration = player.getDuration();
-        const currentTime = player.getCurrentTime();
-        if (duration > 0) {
-          setProgress((currentTime / duration) * 100);
-        }
-      }
-    }, pollInterval);
+    startPolling(isMobileView);
   };
 
   const onPlayerStateChange = (event: { data: number }) => {
-    if (event.data === YT.PlayerState.ENDED) {
+    if (event.data === (window as any).YT?.PlayerState.ENDED) {
       setProgress(0);
     }
   };
@@ -143,24 +134,18 @@ const HeroVideo = () => {
   // Pause progress polling when tab is hidden (saves battery)
   useEffect(() => {
     const handleVisibility = () => {
-      if (document.hidden && progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-        progressIntervalRef.current = null;
-      } else if (!document.hidden && playerRef.current?.getPlayerState() === YT.PlayerState.PLAYING) {
-        const pollInterval = isMobileView ? 500 : 250;
-        progressIntervalRef.current = setInterval(() => {
-          const player = playerRef.current;
-          if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-            const duration = player.getDuration();
-            const currentTime = player.getCurrentTime();
-            if (duration > 0) setProgress((currentTime / duration) * 100);
-          }
-        }, pollInterval);
+      if (document.hidden) {
+        stopPolling();
+      } else if (playerRef.current?.getPlayerState() === (window as any).YT?.PlayerState.PLAYING) {
+        startPolling(isMobileView);
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility);
+      stopPolling();
+    };
   }, [isMobileView]);
 
   // YouTube API Loader
@@ -211,7 +196,7 @@ const HeroVideo = () => {
     (window as any).onYouTubeIframeAPIReady = initPlayer;
 
     return () => {
-      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      stopPolling();
       if ((window as any).onYouTubeIframeAPIReady) delete (window as any).onYouTubeIframeAPIReady;
     };
   }, [isMobileView, onPlayerReady]);

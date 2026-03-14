@@ -3,6 +3,8 @@ import React, { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import Image from "next/image";
+import { useIsMobile } from "@/hooks/useMediaQuery";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,9 +56,11 @@ const ServicesSection = () => {
     const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
 
+    const isMobileView = useIsMobile(768);
+
     // Desktop: GSAP pinned scroll animation
     useGSAP(() => {
-        if (window.innerWidth < 768) return; // Skip on mobile
+        if (isMobileView) return; // Skip on mobile
 
         const slides = gsap.utils.toArray<HTMLElement>(".service-slide-desktop");
         const slideTexts = gsap.utils.toArray<HTMLElement>(".service-slide-text");
@@ -191,11 +195,14 @@ const ServicesSection = () => {
                             </div>
                             <div className="w-full">
                                 <div className="relative rounded-xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
-                                    <img
+                                    <Image
                                         src={service.image}
                                         alt={service.title}
-                                        className="w-full h-full object-cover"
-                                        loading={index === 0 ? "eager" : "lazy"}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        priority={index === 0}
+                                        loading={index === 0 ? undefined : "lazy"}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                                 </div>
@@ -258,7 +265,15 @@ const ServicesSection = () => {
                                     </div>
                                     <div className="service-slide-image flex-[0.8] max-w-[240px] md:max-w-[280px] lg:max-w-md">
                                         <div className="relative rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-2xl shadow-black/50">
-                                            <img src={service.image} alt={service.title} className="w-full h-full object-cover" loading={index === 0 ? "eager" : "lazy"} />
+                                            <Image 
+                                                src={service.image} 
+                                                alt={service.title} 
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 768px) 100vw, 50vw"
+                                                priority={index === 0}
+                                                loading={index === 0 ? undefined : "lazy"}
+                                            />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                                         </div>
                                     </div>

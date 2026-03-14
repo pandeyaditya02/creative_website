@@ -51,8 +51,9 @@ const ClienteleMarquee = () => {
                                     alt={logo.alt}
                                     fill
                                     className="object-contain"
-                                    sizes="(max-width: 768px) 112px, 288px"
-                                    loading={index < 10 ? "eager" : "lazy"}
+                                    sizes="(max-width: 768px) 150px, 320px"
+                                    priority={index < 4}
+                                    loading={index < 4 ? undefined : "lazy"}
                                     draggable={false}
                                 />
                             </div>
