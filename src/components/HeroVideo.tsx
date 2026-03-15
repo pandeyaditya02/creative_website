@@ -50,13 +50,13 @@ const HeroVideo = () => {
         const scale = startScale + (baseScale - startScale) * scrollProgress;
         const blurPx = isMobileView ? 0 : scrollProgress * 4;
         videoEl.style.transform = `scale(${scale})`;
-        videoEl.style.filter = `blur(${blurPx}px) brightness(0.7) contrast(1.1)`;
+        videoEl.style.filter = `blur(${blurPx}px) brightness(1) contrast(1.1)`;
       });
     };
 
     // Set initial scale before any scroll
     videoEl.style.transform = `scale(${startScale})`;
-    videoEl.style.filter = `brightness(0.7) contrast(1.1)`;
+    videoEl.style.filter = `brightness(1) contrast(1.1)`;
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
