@@ -92,6 +92,15 @@ const ContactSection = () => {
                 info@creativechauk.com
               </a>
             </div>
+            <div style={fadeUp(250)}>
+              <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Call us</p>
+              <a
+                href="tel:+919811922230"
+                className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
+              >
+                +91 98119 22230
+              </a>
+            </div>
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-16" style={fadeUp(300)}>
               <div>
                 <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
