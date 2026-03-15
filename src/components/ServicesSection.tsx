@@ -228,7 +228,7 @@ const ServicesSection = () => {
                                 >
                                     {/* Background image with zoom wrapper */}
                                     <div className="absolute inset-0 overflow-hidden">
-                                        <div className="slide-image w-full h-full">
+                                        <div className="slide-image relative w-full h-full">  {/* added relative */}
                                             <Image
                                                 src={service.image}
                                                 alt={service.title}
