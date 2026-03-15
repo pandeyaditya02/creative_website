@@ -52,7 +52,7 @@ const ContactSection = () => {
     <section
       id="contact"
       ref={containerRef}
-      className="relative min-h-[100svh] bg-[#0a0a0a] text-white py-24 md:py-32 lg:py-44 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center"
+      className="relative min-h-[100svh] bg-[#0a0a0a] text-white pt-32 pb-24 md:pt-48 md:pb-32 lg:pt-56 lg:pb-44 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center"
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
         <div className="w-[min(800px,150vw)] h-[min(800px,150vw)] rounded-full bg-[radial-gradient(circle,rgba(246,121,99,0.1)_0%,transparent_60%)] translate-x-1/4 translate-y-1/4" />

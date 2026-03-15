@@ -153,7 +153,7 @@ const ServicesSection = () => {
             className="relative w-full bg-black text-white overflow-hidden"
         >
             {/* Fixed header */}
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none md:top-12 md:left-12 md:translate-x-0">
+            <div className="absolute top-24 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none md:top-32 md:left-12 md:translate-x-0">
                 <span className="inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-[0.3em] text-[#F67963] font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
                     What we do
@@ -199,11 +199,11 @@ const ServicesSection = () => {
 
                             {/* Content */}
                             <div className="absolute bottom-28 lg:bottom-32 left-8 lg:left-16 max-w-2xl z-10">
-                                <span className="inline-block px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10 mb-4">
+                                {/* <span className="inline-block px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10 mb-4">
                                     {num} — Service
-                                </span>
+                                </span> */}
                                 <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-4">
-                                    {service.title}
+                                    {num} {service.title}
                                 </h3>
                                 <p className="text-white/70 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
                                     {service.description}
