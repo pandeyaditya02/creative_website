@@ -203,7 +203,7 @@ const ServicesSection = () => {
                                     {num} — Service
                                 </span> */}
                                 <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-4">
-                                    {num} {service.title}
+                                    <span className="text-[#F67963]">{num}</span> {service.title}
                                 </h3>
                                 <p className="text-white/70 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
                                     {service.description}
