@@ -234,7 +234,7 @@ const ServicesSection = () => {
                                                 alt={service.title}
                                                 fill
                                                 className="object-cover"
-                                                sizes="100vw"
+                                                sizes="(max-width: 768px) 100vw, 100vw"
                                                 priority={index === 0}
                                             />
                                         </div>
@@ -337,7 +337,7 @@ const ServicesSection = () => {
                                         alt={service.title}
                                         fill
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                        sizes="100vw"
+                                        sizes="(max-width: 768px) 90vw, 33vw"
                                         loading={index === 0 ? "eager" : "lazy"}
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
