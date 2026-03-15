@@ -8,11 +8,17 @@ const logos = [
     { src: "/brand-logos/Bausch__Lomb_Logo.png", alt: "Bausch + Lomb" },
     { src: "/brand-logos/ccl.png", alt: "Celebrity Cricket League" },
     { src: "/brand-logos/dolby digital.png", alt: "Dolby Digital" },
+    { src: "/brand-logos/dominos3.jpg", alt: "Domino's" },
+    { src: "/brand-logos/dove2.webp", alt: "Dove" },
+    { src: "/brand-logos/dyson2.png", alt: "Dyson" },
     { src: "/brand-logos/Elite magazine.jpeg", alt: "Elite Magazine" },
     { src: "/brand-logos/hamdard2.jpg", alt: "Hamdard" },
     { src: "/brand-logos/kohler.png", alt: "Kohler" },
+    { src: "/brand-logos/lg.webp", alt: "LG" },
     { src: "/brand-logos/mahindra-new-logo-02.jpg.jpeg", alt: "Mahindra" },
     { src: "/brand-logos/outlook.avif", alt: "Outlook" },
+    { src: "/brand-logos/renault.jpg", alt: "Renault" },
+    { src: "/brand-logos/unilever.png", alt: "Unilever" },
     { src: "/brand-logos/wcl2.jpg", alt: "World Champions League" },
 ];
 
