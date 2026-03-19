@@ -1,38 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #000000;
-  --foreground: #ededed;
-  /* Dynamic viewport height variable for mobile */
+  --background: #020617;
+  --foreground: #F8FAFC;
   --dvh: 1vh;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-space-grotesk);
 
-  /* Charcoal & Coral Theme Tokens */
-  --color-charcoal: #2D3E50;
-  --color-charcoal-light: #3A4D5F;
-  --color-charcoal-dark: #1F2D3D;
-  --color-coral: #e26954;
-  --color-coral-light: #F67963;
-  --color-coral-dark: #c95845;
+  /* Cinematic Noir & Rose Theme Tokens */
+  --color-noir: #020617;
+  --color-surface: #0F172A;
+  --color-rose-accent: #E11D48;
+  --color-rose-accent-hover: #FB7185;
 
   /* Primary/Secondary mappings */
-  --color-primary: #e26954;
-  --color-primary-hover: #F67963;
-  --color-secondary: #2D3E50;
-  --color-secondary-hover: #3A4D5F;
-  --color-accent: #E86B5A;
+  --color-primary: #E11D48;
+  --color-primary-hover: #FB7185;
+  --color-secondary: #0F172A;
+  --color-accent: #E11D48;
 }
 
 /* --- Base Styles --- */
 html,
 body {
-  background: #000000;
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   scroll-behavior: smooth;

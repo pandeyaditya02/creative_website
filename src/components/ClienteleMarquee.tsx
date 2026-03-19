@@ -29,7 +29,7 @@ const ClienteleMarquee = () => {
     return (
         <section
             ref={sectionRef}
-            className="relative bg-black py-12 lg:py-20 overflow-hidden border-y border-white/[0.05]"
+            className="relative bg-noir py-12 lg:py-20 overflow-hidden border-y border-white/[0.05]"
             aria-label="Our valued clientele"
             style={{
                 opacity: inView ? undefined : 0,
@@ -37,10 +37,10 @@ const ClienteleMarquee = () => {
             }}
         >
             {/* Ambient Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[800px] h-[300px] bg-[#F67963]/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[800px] h-[300px] bg-rose-accent/10 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="relative z-10 w-full bg-white py-2 md:py-4 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
-                {/* Horizontal Fade Edges (Now fading from White) */}
+            <div className="relative z-10 w-full bg-white/95 backdrop-blur-sm py-4 md:py-8 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+                {/* Horizontal Fade Edges */}
                 <div className="absolute left-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
                 <div className="absolute right-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
 
@@ -72,7 +72,7 @@ const ClienteleMarquee = () => {
 
                             {/* Tooltip */}
                             <span className="hidden lg:block absolute -bottom-4 left-1/2 -translate-x-1/2 
-                                           text-[10px] uppercase tracking-[0.3em] font-bold text-[#F67963] 
+                                           text-[10px] uppercase tracking-[0.3em] font-sans font-bold text-rose-accent
                                            opacity-0 lg:group-hover:opacity-100 
                                            transition-all duration-500 
                                            whitespace-nowrap pointer-events-none">

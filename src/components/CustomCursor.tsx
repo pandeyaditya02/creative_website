@@ -1,12 +1,11 @@
 "use client";
+
 import React, { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
   const [hasMouse, setHasMouse] = useState(false);
-
-  const leadDotRef = useRef<HTMLDivElement>(null);
-  const midDotRef = useRef<HTMLDivElement>(null);
-  const trailDotRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -19,137 +18,129 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!hasMouse) return;
 
-    const leadEl = leadDotRef.current;
-    const midEl = midDotRef.current;
-    const trailEl = trailDotRef.current;
-    if (!leadEl || !midEl || !trailEl) return;
+    const cursor = cursorRef.current;
+    const dot = dotRef.current;
+    if (!cursor || !dot) return;
 
-    // Chained lerp positions — each dot follows the previous one
-    const mouse = { x: -200, y: -200 };
-    const lead  = { x: -200, y: -200 };
-    const mid   = { x: -200, y: -200 };
-    const trail = { x: -200, y: -200 };
+    const mouse = { x: -100, y: -100 };
+    const pos = { x: -100, y: -100 };
+    const dotPos = { x: -100, y: -100 };
 
-    // Lerp factors: higher = faster / less lag
-    const LEAD_F  = 0.22;
-    const MID_F   = 0.10;
-    const TRAIL_F = 0.05;
+    // Lerp factors
+    const LERP = 0.15; // Smooth but heavy
+    const DOT_LERP = 0.35;
 
-    let rafId = 0;
+    let rafId: number;
 
     const tick = () => {
-      lead.x  += (mouse.x - lead.x)  * LEAD_F;
-      lead.y  += (mouse.y - lead.y)  * LEAD_F;
+      pos.x += (mouse.x - pos.x) * LERP;
+      pos.y += (mouse.y - pos.y) * LERP;
 
-      mid.x   += (lead.x  - mid.x)   * MID_F;
-      mid.y   += (lead.y  - mid.y)   * MID_F;
+      dotPos.x += (mouse.x - dotPos.x) * DOT_LERP;
+      dotPos.y += (mouse.y - dotPos.y) * DOT_LERP;
 
-      trail.x += (mid.x   - trail.x) * TRAIL_F;
-      trail.y += (mid.y   - trail.y) * TRAIL_F;
-
-      leadEl.style.transform  = `translate(${lead.x}px,  ${lead.y}px)`;
-      midEl.style.transform   = `translate(${mid.x}px,   ${mid.y}px)`;
-      trailEl.style.transform = `translate(${trail.x}px, ${trail.y}px)`;
+      cursor.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+      dot.style.transform = `translate3d(${dotPos.x}px, ${dotPos.y}px, 0)`;
 
       rafId = requestAnimationFrame(tick);
     };
 
     rafId = requestAnimationFrame(tick);
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
 
-    const handleMouseDown = () => {
-      leadEl.style.width  = "32px";
-      leadEl.style.height = "32px";
+    const onMouseDown = () => {
+      cursor.style.transform += " scale(0.8)";
+      cursor.style.borderColor = "var(--color-rose-accent)";
     };
 
-    const handleMouseUp = () => {
-      leadEl.style.width  = "24px";
-      leadEl.style.height = "24px";
+    const onMouseUp = () => {
+      cursor.style.transform = cursor.style.transform.replace(" scale(0.8)", "");
+      cursor.style.borderColor = "rgba(255,255,255,0.2)";
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"]')) {
-        leadEl.classList.add("cursor-hover");
+    const onMouseEnter = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, [data-magnetic]')) {
+        cursor.classList.add("cursor-active");
       }
     };
 
-    const handleMouseOut = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"]')) {
-        leadEl.classList.remove("cursor-hover");
+    const onMouseLeave = (e: MouseEvent) => {
+       const target = e.target as HTMLElement;
+      if (target.closest('a, button, [data-magnetic]')) {
+        cursor.classList.remove("cursor-active");
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("mouseover", handleMouseOver);
-    window.addEventListener("mouseout", handleMouseOut);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mouseover", onMouseEnter);
+    document.addEventListener("mouseout", onMouseLeave);
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("mouseover", handleMouseOver);
-      window.removeEventListener("mouseout", handleMouseOut);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("mouseover", onMouseEnter);
+      document.removeEventListener("mouseout", onMouseLeave);
     };
   }, [hasMouse]);
 
   if (!hasMouse) return null;
 
-  const base =
-    "fixed top-0 left-0 pointer-events-none rounded-full mix-blend-screen z-[9999] -translate-x-1/2 -translate-y-1/2 will-change-transform";
-
   return (
     <>
       <style jsx global>{`
         @media (hover: hover) and (pointer: fine) {
-          body { cursor: none; }
-          a, button, input, textarea, select { cursor: none; }
+          body { cursor: none !important; }
+          a, button, input, textarea, select { cursor: none !important; }
         }
 
-        .cursor-lead {
-          transition: width 0.15s ease, height 0.15s ease,
-                      background-color 0.2s ease, border-color 0.2s ease;
+        .cursor-outer {
+          position: fixed;
+          top: -20px;
+          left: -20px;
+          width: 40px;
+          height: 40px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 9999;
+          mix-blend-mode: difference;
+          transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+          will-change: transform;
         }
 
-        .cursor-lead.cursor-hover {
-          width: 48px !important;
-          height: 48px !important;
-          background-color: transparent !important;
-          border: 2px solid #F67963 !important;
+        .cursor-outer.cursor-active {
+          width: 80px;
+          height: 80px;
+          top: -40px;
+          left: -40px;
+          background: rgba(255, 255, 255, 0.1);
+          border-color: transparent;
+        }
+
+        .cursor-dot {
+          position: fixed;
+          top: -2px;
+          left: -2px;
+          width: 4px;
+          height: 4px;
+          background: var(--color-rose-accent);
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 10000;
+          mix-blend-mode: difference;
         }
       `}</style>
-
-      {/* Leading dot — snappiest */}
-      <div
-        ref={leadDotRef}
-        className={`${base} cursor-lead`}
-        style={{
-          width: 24,
-          height: 24,
-          backgroundColor: "#e26954",
-          border: "2px solid transparent",
-        }}
-      />
-
-      {/* Middle dot — medium lag */}
-      <div
-        ref={midDotRef}
-        className={base}
-        style={{ width: 16, height: 16, backgroundColor: "#F67963", opacity: 0.8 }}
-      />
-
-      {/* Trail dot — most lag */}
-      <div
-        ref={trailDotRef}
-        className={base}
-        style={{ width: 10, height: 10, backgroundColor: "#e26954", opacity: 0.6 }}
-      />
+      <div ref={cursorRef} className="cursor-outer" />
+      <div ref={dotRef} className="cursor-dot" />
     </>
   );
 }

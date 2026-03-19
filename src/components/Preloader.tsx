@@ -81,16 +81,16 @@ export default function Preloader() {
     return (
         <div
             ref={containerRef}
-            className="fixed inset-0 z-[110] flex flex-col items-center justify-center bg-[#0d0d0d] text-[#ffede6]"
+            className="fixed inset-0 z-[110] flex flex-col items-center justify-center bg-noir text-white"
         >
             <div className="overflow-hidden">
-                <div ref={textRef} className="text-8xl md:text-[12rem] font-bold tracking-tighter tabular-nums leading-none">
+                <div ref={textRef} className="text-8xl md:text-[12rem] font-display font-black tracking-tighter tabular-nums leading-none">
                     {progress}%
                 </div>
             </div>
 
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm md:text-base font-mono tracking-widest uppercase opacity-50">
-                Initiating Core Sequence
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm md:text-base font-sans font-bold tracking-widest uppercase opacity-50 text-rose-accent">
+                Initiating Cinematic Sequence
             </div>
         </div>
     );

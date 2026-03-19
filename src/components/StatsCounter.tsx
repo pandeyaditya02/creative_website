@@ -50,7 +50,7 @@ export default function StatsCounter() {
   return (
     <section
       id="work-stats"
-      className="w-full bg-[#0a0a0a] py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 text-white overflow-hidden"
+      className="w-full bg-noir py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 text-white overflow-hidden"
       aria-labelledby="stats-heading"
     >
       {/* Heading block */}
@@ -59,19 +59,19 @@ export default function StatsCounter() {
         className="flex flex-col items-center gap-4 mb-16 md:mb-20 lg:mb-24"
       >
         <span
-          className="inline-flex items-center gap-2 text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#F67963] font-medium"
+          className="inline-flex items-center gap-2 text-[10px] md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-rose-accent font-sans font-bold"
           style={{
             opacity: headingInView ? undefined : 0,
             animation: headingInView ? "fadeUpIn 0.6s ease 0ms both" : undefined,
           }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+          <span className="w-1.5 h-1.5 rounded-full bg-rose-accent blink-coral" />
           Company Statistics
         </span>
 
         <h2
           id="stats-heading"
-          className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight text-white text-center"
+          className="text-4xl md:text-5xl lg:text-6xl font-display font-bold uppercase tracking-tight text-white text-center"
           style={{
             opacity: headingInView ? undefined : 0,
             animation: headingInView ? "fadeUpIn 0.8s cubic-bezier(0.16,1,0.3,1) 80ms both" : undefined,
@@ -81,7 +81,7 @@ export default function StatsCounter() {
         </h2>
 
         <div
-          className="w-12 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-2"
+          className="w-12 h-[2px] bg-gradient-to-r from-rose-accent to-transparent mt-2"
           style={{
             opacity: headingInView ? undefined : 0,
             animation: headingInView ? "fadeUpIn 0.6s ease 200ms both" : undefined,
@@ -108,7 +108,7 @@ export default function StatsCounter() {
             <div className="flex items-end justify-center mb-4 md:mb-6">
               <span
                 ref={(el) => { numbersRef.current[index] = el; }}
-                className="font-black text-white leading-none
+                className="font-display font-black text-white leading-none
                            text-7xl sm:text-8xl md:text-9xl lg:text-[10rem]
                            [font-variation-settings:'wght'_900]"
                 style={{ whiteSpace: "nowrap", lineHeight: "0.9" }}
@@ -118,7 +118,7 @@ export default function StatsCounter() {
 
               {stat.suffix && (
                 <span
-                  className="font-bold text-[#F67963] leading-none ml-1 md:ml-2
+                  className="font-display font-bold text-rose-accent leading-none ml-1 md:ml-2
                              text-5xl sm:text-6xl md:text-7xl lg:text-[7rem]"
                   style={{ marginBottom: "0.1em", lineHeight: "0.9" }}
                 >
@@ -127,7 +127,7 @@ export default function StatsCounter() {
               )}
             </div>
 
-            <p className="text-xs md:text-sm lg:text-base tracking-[0.25em] md:tracking-[0.3em] font-medium text-slate-400 uppercase">
+            <p className="text-xs md:text-sm lg:text-base font-sans tracking-[0.25em] md:tracking-[0.3em] font-bold text-slate-400 uppercase">
               {stat.label}
             </p>
           </div>

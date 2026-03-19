@@ -154,11 +154,11 @@ const ServicesSection = () => {
         >
             {/* Fixed header */}
             <div className="absolute top-24 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none md:top-32 md:left-12 md:translate-x-0">
-                <span className="inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-[0.3em] text-[#F67963] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                <span className="inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-[0.3em] text-rose-accent font-sans font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-accent blink-coral" />
                     What we do
                 </span>
-                <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mt-2">
+                <h2 className="text-2xl md:text-3xl font-display font-bold uppercase tracking-tight mt-2 text-white/90">
                     Our Services
                 </h2>
             </div>
@@ -188,38 +188,35 @@ const ServicesSection = () => {
                                         priority={index === 0}
                                     />
                                 </div>
-                                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/25" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-noir/90 via-noir/60 to-noir/25" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-noir/80 via-transparent to-noir/40" />
                             </div>
 
                             {/* Large watermark */}
-                            <div className="absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 text-[10rem] lg:text-[16rem] font-black text-white/[0.04] leading-none select-none pointer-events-none">
+                            <div className="absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 text-[10rem] lg:text-[16rem] font-display font-black text-white/[0.04] leading-none select-none pointer-events-none">
                                 {num}
                             </div>
 
                             {/* Content */}
                             <div className="absolute bottom-28 lg:bottom-32 left-8 lg:left-16 max-w-2xl z-10">
-                                {/* <span className="inline-block px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10 mb-4">
-                                    {num} — Service
-                                </span> */}
-                                <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-4">
-                                    <span className="text-[#F67963]">{num}</span> {service.title}
+                                <h3 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold leading-[1.05] tracking-tight mb-4">
+                                    <span className="text-rose-accent">{num}</span> {service.title}
                                 </h3>
-                                <p className="text-white/70 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
+                                <p className="text-white/70 text-sm lg:text-base font-sans leading-relaxed max-w-xl mb-6">
                                     {service.description}
                                 </p>
                                 <ul className="space-y-2">
                                     {service.highlights.map((h, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-center gap-2.5 text-xs lg:text-sm text-white/50"
+                                            className="flex items-center gap-2.5 text-xs lg:text-sm font-sans text-white/50"
                                         >
-                                            <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#F67963]" />
+                                            <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-rose-accent" />
                                             <span>{h}</span>
                                         </li>
                                     ))}
                                 </ul>
-                                <div className="w-16 h-[2px] bg-gradient-to-r from-[#F67963] to-transparent mt-6" />
+                                <div className="w-16 h-[2px] bg-gradient-to-r from-rose-accent to-transparent mt-6" />
                             </div>
                         </div>
                     );
@@ -231,22 +228,22 @@ const ServicesSection = () => {
                 <div className="flex items-baseline gap-2 shrink-0">
                     <span
                         ref={counterRef}
-                        className="text-2xl lg:text-3xl font-bold tabular-nums"
+                        className="text-2xl lg:text-3xl font-display font-bold tabular-nums"
                     >
                         01
                     </span>
-                    <span className="text-sm text-white/25 font-light">
+                    <span className="text-sm text-white/25 font-sans font-light">
                         / {String(TOTAL_SLIDES).padStart(2, "0")}
                     </span>
                 </div>
                 <div className="flex-1 h-[2px] bg-white/10 rounded-full overflow-hidden">
                     <div
                         ref={progressBarRef}
-                        className="h-full bg-[#F67963] rounded-full origin-left"
+                        className="h-full bg-rose-accent rounded-full origin-left"
                         style={{ transform: "scaleX(0)" }}
                     />
                 </div>
-                <span className="text-[10px] uppercase tracking-[0.3em] text-white/25 whitespace-nowrap">
+                <span className="text-[10px] uppercase tracking-[0.3em] text-white/25 font-sans whitespace-nowrap">
                     Scroll to explore
                 </span>
             </div>

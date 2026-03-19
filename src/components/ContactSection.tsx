@@ -52,7 +52,7 @@ const ContactSection = () => {
     <section
       id="contact"
       ref={containerRef}
-      className="relative min-h-[100svh] bg-[#0a0a0a] text-white pt-32 pb-24 md:pt-48 md:pb-32 lg:pt-56 lg:pb-44 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center"
+      className="relative min-h-[100svh] bg-noir text-white pt-32 pb-24 md:pt-48 md:pb-32 lg:pt-56 lg:pb-44 px-6 md:px-12 lg:px-24 overflow-hidden flex flex-col justify-center"
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
         <div className="w-[min(800px,150vw)] h-[min(800px,150vw)] rounded-full bg-[radial-gradient(circle,rgba(246,121,99,0.1)_0%,transparent_60%)] translate-x-1/4 translate-y-1/4" />
@@ -66,7 +66,7 @@ const ContactSection = () => {
             {/* Mask-reveal headline */}
             <div className="overflow-hidden mb-[-2vw] lg:mb-[-1.5vw]">
               <h2
-                className="text-[clamp(3rem,18vw,20rem)] lg:text-[11vw] font-bold uppercase tracking-tighter text-white leading-[0.8] m-0 p-0"
+                className="text-[clamp(3rem,18vw,20rem)] lg:text-[11vw] font-display font-bold uppercase tracking-tighter text-white leading-[0.8] m-0 p-0"
                 style={slideUp(0)}
               >
                 LET&apos;S
@@ -74,7 +74,7 @@ const ContactSection = () => {
             </div>
             <div className="overflow-hidden">
               <h2
-                className="text-[clamp(3rem,18vw,20rem)] lg:text-[11vw] font-bold uppercase tracking-tighter text-[#F67963] leading-[0.8] m-0 p-0"
+                className="text-[clamp(3rem,18vw,20rem)] lg:text-[11vw] font-display font-bold uppercase tracking-tighter text-rose-accent leading-[0.8] m-0 p-0"
                 style={slideUp(120)}
               >
                 TALK.
@@ -84,36 +84,36 @@ const ContactSection = () => {
 
           <div className="mt-16 lg:mt-32 space-y-10 lg:space-y-12">
             <div style={fadeUp(200)}>
-              <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Drop us a line</p>
+              <p className="text-[#555] text-xs font-sans font-bold uppercase tracking-[0.3em] mb-3">Drop us a line</p>
               <a
                 href="mailto:info@creativechauk.com"
-                className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
+                className="text-xl md:text-3xl font-display font-medium tracking-tight hover:text-rose-accent transition-colors duration-300"
               >
                 info@creativechauk.com
               </a>
             </div>
             <div style={fadeUp(250)}>
-              <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Call us</p>
+              <p className="text-[#555] text-xs font-sans font-bold uppercase tracking-[0.3em] mb-3">Call us</p>
               <a
                 href="tel:+919811922230"
-                className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
+                className="text-xl md:text-3xl font-display font-medium tracking-tight hover:text-rose-accent transition-colors duration-300"
               >
                 +91 98119 22230
               </a>
             </div>
             <div className="flex flex-col sm:flex-row gap-6 sm:gap-16" style={fadeUp(300)}>
               <div>
-                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
+                <p className="text-[#555] text-xs font-sans font-bold uppercase tracking-[0.3em] mb-3">Socials</p>
                 <div className="flex flex-col gap-2">
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Instagram</a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">LinkedIn</a>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-base font-sans font-medium tracking-wide hover:text-rose-accent transition-colors duration-300">Instagram</a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-base font-sans font-medium tracking-wide hover:text-rose-accent transition-colors duration-300">LinkedIn</a>
                 </div>
               </div>
               <div>
-                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3 opacity-0 sm:opacity-100 hidden sm:block">Space</p>
+                <p className="text-[#555] text-xs font-sans font-bold uppercase tracking-[0.3em] mb-3 opacity-0 sm:opacity-100 hidden sm:block">Space</p>
                 <div className="flex flex-col gap-2">
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Twitter</a>
-                  <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Vimeo</a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-base font-sans font-medium tracking-wide hover:text-rose-accent transition-colors duration-300">Twitter</a>
+                  <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer" className="text-base font-sans font-medium tracking-wide hover:text-rose-accent transition-colors duration-300">Vimeo</a>
                 </div>
               </div>
             </div>
@@ -128,7 +128,7 @@ const ContactSection = () => {
               <input
                 type="text"
                 placeholder="Your Name"
-                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
+                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-rose-accent transition-colors duration-300 pb-4 text-lg md:text-xl font-sans font-light"
               />
             </div>
 
@@ -136,13 +136,13 @@ const ContactSection = () => {
               <input
                 type="email"
                 placeholder="Email Address"
-                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
+                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-rose-accent transition-colors duration-300 pb-4 text-lg md:text-xl font-sans font-light"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-8" style={fadeUp(260)}>
               <div className="relative">
-                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer">
+                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-rose-accent transition-colors duration-300 pb-4 text-lg md:text-xl font-sans font-light appearance-none rounded-none cursor-pointer">
                   <option value="" disabled>Project Type</option>
                   <option value="av" className="bg-[#111] text-white">AV Production</option>
                   <option value="digital" className="bg-[#111] text-white">Digital Content</option>
@@ -155,7 +155,7 @@ const ContactSection = () => {
               </div>
 
               <div className="relative">
-                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer">
+                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-rose-accent transition-colors duration-300 pb-4 text-lg md:text-xl font-sans font-light appearance-none rounded-none cursor-pointer">
                   <option value="" disabled>Budget Range</option>
                   <option value="<5L" className="bg-[#111] text-white">&lt; ₹5L</option>
                   <option value="5-15L" className="bg-[#111] text-white">₹5L - ₹15L</option>
@@ -172,7 +172,7 @@ const ContactSection = () => {
               <textarea
                 placeholder="Tell us about your project..."
                 rows={2}
-                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light resize-none"
+                className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-rose-accent transition-colors duration-300 pb-4 text-lg md:text-xl font-sans font-light resize-none"
               />
             </div>
 
@@ -180,7 +180,7 @@ const ContactSection = () => {
               <button
                 ref={btnRef}
                 type="button"
-                className="w-36 h-36 md:w-44 md:h-44 bg-[#F67963] text-black rounded-full font-bold uppercase tracking-widest flex items-center justify-center hover:bg-white transition-colors duration-500 will-change-transform shadow-[0_0_30px_rgba(246,121,99,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
+                className="w-36 h-36 md:w-44 md:h-44 bg-rose-accent text-black rounded-full font-display font-bold uppercase tracking-widest flex items-center justify-center hover:bg-white transition-colors duration-500 will-change-transform shadow-[0_0_30px_rgba(225,29,72,0.25)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
               >
                 <span className="pointer-events-none text-sm md:text-base">Submit</span>
               </button>

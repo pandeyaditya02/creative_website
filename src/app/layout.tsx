@@ -1,26 +1,26 @@
 // NO "use client" at top - keep as Server Component ✅
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Archivo } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
-import ViewportFix from "@/components/ViewportFix"; // ← Import the client component
+import ViewportFix from "@/components/ViewportFix";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Creative Chauk Production",
-  description: "Cinematic production and creative media dedicated to elevating brand voices for the digital age.",
+  title: "Cinematic Portfolio | Creative Studio",
+  description: "Immersive visual storytelling and high-end video production for the digital age.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${archivo.variable} font-archivo antialiased`}
       >
         {/* ← ViewportFix runs client-side but doesn't break server metadata */}
         <ViewportFix />

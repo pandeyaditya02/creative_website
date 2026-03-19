@@ -1,4 +1,4 @@
-import HeroVideo from "@/components/HeroVideo";
+import LivingHero from "@/components/LivingHero";
 import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import ContactSection from "@/components/ContactSection";
@@ -6,88 +6,58 @@ import PinnedSection from "@/components/PinnedSection";
 import ClienteleMarquee from "@/components/ClienteleMarquee";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import StatsCounter from "@/components/StatsCounter";
+import ProjectGallery from "@/components/ProjectGallery";
 
 export default function Home() {
   return (
-    // 1. min-h-dvh: Handles mobile browser address bar height changes
-    // 2. overflow-x-hidden: Prevents horizontal scroll from animations/marquees
-    // 3. Removed justify-between: Prevents unwanted gaps on long mobile content
-    <main className="flex flex-col w-full min-h-dvh bg-black overflow-x-hidden mobile-safe-area">
-      {/* 
-        HERO SECTION 
-        - Short content: Safe to keep pinned on all devices
-        - disableOnMobile={false}: Preserve the pinning effect
-      */}
-      <PinnedSection 
-        zIndex={1} 
-        className="bg-black" 
-        disableOnMobile={true}
-        mobileBreakpoint={768}
-      >
-        <HeroVideo />
-      </PinnedSection>
+    <main className="flex flex-col w-full min-h-dvh bg-noir overflow-x-hidden mobile-safe-area">
+      {/* 1. LIVING HERO (WebGL) */}
+      <LivingHero />
 
-      {/* STATS COUNTER - Natural flow section */}
-      <div className="relative w-full bg-[#0a0a0a]" style={{ zIndex: 20 }}>
+      {/* 2. STATS COUNTER */}
+      <div className="relative w-full bg-surface" style={{ zIndex: 20 }}>
         <StatsCounter />
       </div>
 
-      {/* CLIENTELE MARQUEE - Natural flow section */}
-      <div className="relative w-full bg-black" style={{ zIndex: 30 }}>
+      {/* 3. CLIENTELE MARQUEE */}
+      <div className="relative w-full bg-noir" style={{ zIndex: 30 }}>
         <ClienteleMarquee />
       </div>
 
-      {/* 
-        ABOUT SECTION 
-        - Tall content: Disable pin on mobile for better scroll UX
-        - On desktop: Pins at "bottom bottom" to show full content before freezing
-      */}
+      {/* 4. PROJECT GALLERY */}
+      <ProjectGallery />
+
+      {/* 5. ABOUT SECTION */}
       <PinnedSection 
         zIndex={40} 
         isTall={true} 
-        className="bg-black"
+        className="bg-noir"
         disableOnMobile={true}
         mobileBreakpoint={768}
       >
         <AboutSection />
       </PinnedSection>
 
-      {/* 
-        SERVICES SECTION 
-        - Uses internal GSAP pinning (not PinnedSection wrapper)
-        - Ensure ServicesSection.tsx also handles mobileBreakpoint internally
-      */}
-      <div className="relative w-full bg-black" style={{ zIndex: 50 }}>
+      {/* 6. SERVICES SECTION */}
+      <div className="relative w-full bg-noir" style={{ zIndex: 50 }}>
         <ServicesSection />
       </div>
 
-      {/* PORTFOLIO - Commented out per your original code */}
-      {/* 
-      <PinnedSection zIndex={50} isTall={true} className="bg-black" disableOnMobile={true}>
-        <PortfolioSection />
-      </PinnedSection> 
-      */}
-
-      {/* WHY CHOOSE US - Natural flow section */}
-      <div className="relative w-full bg-black" style={{ zIndex: 60 }}>
+      {/* 7. WHY CHOOSE US */}
+      <div className="relative w-full bg-noir" style={{ zIndex: 60 }}>
         <WhyChooseUs />
       </div>
 
-      {/* 
-        CONTACT SECTION 
-        - Contains forms: Disable pin on mobile for easier input access
-        - Users can scroll naturally to submit without "trapped" pinning
-      */}
+      {/* 8. CONTACT SECTION */}
       <PinnedSection 
         zIndex={70} 
         isTall={true} 
-        className="bg-black"
+        className="bg-noir"
         disableOnMobile={true}
         mobileBreakpoint={768}
       >
         <ContactSection />
       </PinnedSection>
-
     </main>
   );
-}
+}
