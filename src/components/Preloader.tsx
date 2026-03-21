@@ -9,7 +9,6 @@ import gsap from "gsap";
 const USE_LOTTIE = false;          // set true + install `@lottiefiles/react-lottie-player`
 const LOTTIE_SRC = "/preloader.json"; // path to your Lottie JSON
 const VIDEO_SRC  = "/LOGO LOW RESOLUTION.mp4";
-const MIN_DISPLAY_MS = 2000;       // Gate 1 — always show for at least 2 s
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Preloader() {
@@ -73,10 +72,29 @@ export default function Preloader() {
     };
 
     // ── DOUBLE-GATE LOGIC ─────────────────────────────────────────────────────
-    // Gate 1 — minimum display time (so the AE animation gets full screen time)
-    const gate1 = new Promise<void>((resolve) =>
-      setTimeout(resolve, MIN_DISPLAY_MS)
-    );
+    
+    // Gate 1 — Wait for video to complete its full playback
+    const gate1 = new Promise<void>((resolve) => {
+      const v = videoRef.current;
+      if (!v) {
+        resolve(); // skip if no video
+        return;
+      }
+      
+      const onEnded = () => {
+        v.removeEventListener("ended", onEnded);
+        resolve();
+      };
+      
+      // If video somehow already ended or failed to start
+      if (v.ended) {
+        resolve();
+      } else {
+        v.addEventListener("ended", onEnded);
+        // Safety timeout (5s) in case video fails to trigger 'ended'
+        setTimeout(resolve, 5000);
+      }
+    });
 
     // Gate 2 — all heavy assets (images, videos, fonts) fully loaded
     const gate2 = new Promise<void>((resolve) => {

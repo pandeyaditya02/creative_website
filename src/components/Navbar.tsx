@@ -364,7 +364,7 @@ const Navbar = () => {
       <nav
         ref={navRef}
         className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between text-white transition-colors duration-300 
-                   bg-transparent px-4 md:px-8 py-4 md:py-6"
+                   bg-transparent px-4 md:px-8 py-2 md:py-3"
       >
         {/* Logo */}
         <div ref={logoRef} className="flex items-center group cursor-pointer">
@@ -373,7 +373,7 @@ const Navbar = () => {
             alt="Creative Chauk Production"
             width={128}
             height={40}
-            className="w-28 md:w-40 h-auto transition-transform duration-300 group-hover:scale-105"
+            className="w-24 md:w-32 h-auto transition-transform duration-300 group-hover:scale-105"
             priority
           />
         </div>

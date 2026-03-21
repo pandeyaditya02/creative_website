@@ -89,7 +89,7 @@ const ContactSection = () => {
                 href="mailto:info@creativechauk.com"
                 className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
               >
-                info@creativechauk.com
+                cc@creativechauk.com
               </a>
             </div>
             <div style={fadeUp(250)}>
