@@ -3,95 +3,145 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG — flip these to switch from video → Lottie
+// ─────────────────────────────────────────────────────────────────────────────
+const USE_LOTTIE = false;          // set true + install `@lottiefiles/react-lottie-player`
+const LOTTIE_SRC = "/preloader.json"; // path to your Lottie JSON
+const VIDEO_SRC  = "/LOGO LOW RESOLUTION.mp4";
+const MIN_DISPLAY_MS = 2000;       // Gate 1 — always show for at least 2 s
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function Preloader() {
-    const [progress, setProgress] = useState(0);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLDivElement>(null);
+  const containerRef  = useRef<HTMLDivElement>(null);
+  const videoRef      = useRef<HTMLVideoElement>(null);
+  const hasExitedRef  = useRef(false);
+  const [showFallback, setShowFallback] = useState(false);
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
+  useEffect(() => {
+    // Lock scroll while preloader is active
+    document.body.style.overflow = "hidden";
 
-        let counterDone = false;
-        let fontsReady = false;
-        let hasExited = false;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // ── EXIT ANIMATION ────────────────────────────────────────────────────────
+    const triggerExit = () => {
+      if (hasExitedRef.current) return;
+      hasExitedRef.current = true;
 
-        const tryExit = () => {
-            if (!counterDone || !fontsReady || hasExited) return;
-            hasExited = true;
-
-            const tl = gsap.timeline({
-                onComplete: () => {
-                    document.body.style.overflow = "";
-                    if (containerRef.current) {
-                        containerRef.current.style.display = "none";
-                    }
-                    window.dispatchEvent(new CustomEvent("preloaderFinished"));
-                }
-            });
-
-            tl.to(textRef.current, {
-                y: -50,
-                opacity: 0,
-                duration: prefersReduced ? 0 : 0.6,
-                ease: "power3.in"
-            })
-            .to(containerRef.current, {
-                yPercent: -100,
-                duration: prefersReduced ? 0 : 1.2,
-                ease: "power4.inOut"
-            }, prefersReduced ? 0 : "-=0.2");
-        };
-
-        const fontTimeout = setTimeout(() => {
-            fontsReady = true;
-            tryExit();
-        }, 3000);
-
-        document.fonts.ready.then(() => {
-            clearTimeout(fontTimeout);
-            fontsReady = true;
-            tryExit();
+      // Use rAF to ensure the browser has committed one paint before animating,
+      // which prevents the scrollbar-flash jank on reveal.
+      requestAnimationFrame(() => {
+        const tl = gsap.timeline({
+          onComplete: () => {
+            // Restore scroll only after the panel is fully off-screen
+            document.body.style.overflow = "";
+            if (containerRef.current) {
+              containerRef.current.style.display = "none";
+            }
+            // Notify the rest of the app (e.g. Navbar entrance animations)
+            window.dispatchEvent(new CustomEvent("preloaderFinished"));
+          },
         });
 
-        const duration = 1.8;
-        const interval = 20;
-        const increments = duration * 1000 / interval;
-        let currentStep = 0;
+        if (prefersReduced) {
+          // Instant dismiss — no animation
+          tl.set(containerRef.current, { autoAlpha: 0 });
+        } else {
+          // ── CURTAIN SLIDE-UP ───────────────────────────────────────────────
+          tl
+            // 1. Fade out the video/logo first so the curtain lifts clean
+            .to(videoRef.current, {
+              opacity: 0,
+              duration: 0.45,
+              ease: "power2.in",
+            })
+            // 2. Slide entire panel upward like a theatre curtain
+            .to(
+              containerRef.current,
+              {
+                yPercent: -105,   // extra 5% ensures no pixel of overlay remains
+                duration: 1.15,
+                ease: "power4.inOut",
+              },
+              "-=0.1"            // tiny overlap for a seamless feel
+            );
+        }
+      });
+    };
 
-        const counter = setInterval(() => {
-            currentStep++;
-            const nextVal = Math.min(Math.round((currentStep / increments) * 100), 100);
-            setProgress(nextVal);
-
-            if (nextVal >= 100) {
-                clearInterval(counter);
-                counterDone = true;
-                tryExit();
-            }
-        }, interval);
-
-        return () => {
-            clearInterval(counter);
-            clearTimeout(fontTimeout);
-        };
-    }, []);
-
-    return (
-        <div
-            ref={containerRef}
-            className="fixed inset-0 z-[110] flex flex-col items-center justify-center bg-[#0d0d0d] text-[#ffede6]"
-        >
-            <div className="overflow-hidden">
-                <div ref={textRef} className="text-8xl md:text-[12rem] font-bold tracking-tighter tabular-nums leading-none">
-                    {progress}%
-                </div>
-            </div>
-
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm md:text-base font-mono tracking-widest uppercase opacity-50">
-                Initiating Core Sequence
-            </div>
-        </div>
+    // ── DOUBLE-GATE LOGIC ─────────────────────────────────────────────────────
+    // Gate 1 — minimum display time (so the AE animation gets full screen time)
+    const gate1 = new Promise<void>((resolve) =>
+      setTimeout(resolve, MIN_DISPLAY_MS)
     );
+
+    // Gate 2 — all heavy assets (images, videos, fonts) fully loaded
+    const gate2 = new Promise<void>((resolve) => {
+      if (document.readyState === "complete") {
+        resolve();
+      } else {
+        window.addEventListener("load", () => resolve(), { once: true });
+      }
+    });
+
+    Promise.all([gate1, gate2]).then(() => triggerExit());
+
+    return () => {
+      // Safety: restore scroll if component unmounts unexpectedly
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="preloader-overlay"
+      aria-hidden="true"
+      role="presentation"
+    >
+      {/* ── VIDEO LAYER ─────────────────────────────────────────────────────── */}
+      {!USE_LOTTIE && (
+        <video
+          ref={videoRef}
+          src={VIDEO_SRC}
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          onError={() => setShowFallback(true)}
+          className="preloader-video"
+        />
+      )}
+
+      {/* ── LOTTIE LAYER ────────────────────────────────────────────────────── 
+           To activate:
+           1. Set USE_LOTTIE = true above
+           2. npm install @lottiefiles/react-lottie-player
+           3. Place your .json file in /public and update LOTTIE_SRC
+      */}
+      {USE_LOTTIE && (
+        <div className="preloader-lottie-wrapper">
+          {/* <Player autoplay loop src={LOTTIE_SRC} style={{ width: "40vw", maxWidth: 500 }} /> */}
+          {/* ^ Uncomment after installing @lottiefiles/react-lottie-player */}
+          <p className="preloader-lottie-placeholder">
+            Lottie player — enable USE_LOTTIE
+          </p>
+        </div>
+      )}
+
+      {/* ── CSS-ONLY FALLBACK ────────────────────────────────────────────────── 
+           Shown automatically if the <video> element fires an error event.
+           Pure CSS — no JS required, no blank-screen risk.
+      */}
+      {showFallback && (
+        <div className="preloader-fallback" aria-label="Loading…">
+          <div className="preloader-ring" />
+          <span className="preloader-fallback-text">Loading…</span>
+        </div>
+      )}
+    </div>
+  );
 }
