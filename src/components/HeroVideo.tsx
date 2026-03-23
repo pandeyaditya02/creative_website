@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import { useIsMobile } from "@/hooks/useMediaQuery";
+
+gsap.registerPlugin(ScrollTrigger);
 
 declare global {
   interface Window {
@@ -29,41 +34,42 @@ const HeroVideo = () => {
     return () => window.removeEventListener("preloaderFinished", handlePreloaderFinish);
   }, []);
 
-  // Scroll parallax — direct DOM mutation via rAF, no library needed
-  useEffect(() => {
+  // Scroll parallax — GSAP ScrollTrigger for better compatibility with pinning & smooth scroll
+  useGSAP(() => {
     const videoEl = videoContainerRef.current;
     const containerEl = containerRef.current;
     if (!videoEl || !containerEl) return;
 
-    const baseScale = isMobileView ? 1.0 : 1.05;
-    const startScale = isMobileView ? 1.15 : 1.35;
+    const startScale = isMobileView ? 1.0 : 1.0;
+    const baseScale = isMobileView ? 1.15 : 2.0;
 
-    let rafId = 0;
+    // Set initial state
+    gsap.set(videoEl, { 
+      scale: startScale,
+      filter: "brightness(1) contrast(1.1)"
+    });
 
-    const onScroll = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const rect = containerEl.getBoundingClientRect();
-        const sectionHeight = containerEl.offsetHeight;
-        // progress: 0 at top of section, 1 when section scrolled out
-        const scrollProgress = Math.max(0, Math.min(1, -rect.top / sectionHeight));
-        const scale = startScale + (baseScale - startScale) * scrollProgress;
-        const blurPx = isMobileView ? 0 : scrollProgress * 4;
-        videoEl.style.transform = `scale(${scale})`;
-        videoEl.style.filter = `blur(${blurPx}px) brightness(1) contrast(1.1)`;
-      });
-    };
+    // Create the parallax animation
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerEl,
+        start: "top top",
+        end: "bottom top", 
+        scrub: true,
+        invalidateOnRefresh: true,
+      }
+    });
 
-    // Set initial scale before any scroll
-    videoEl.style.transform = `scale(${startScale})`;
-    videoEl.style.filter = `brightness(1) contrast(1.1)`;
+    tl.to(videoEl, {
+      scale: baseScale,
+      filter: "brightness(1) contrast(1.1)",
+      ease: "none"
+    });
 
-    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(rafId);
+      ScrollTrigger.getAll().filter(st => st.trigger === containerEl).forEach(st => st.kill());
     };
-  }, [isMobileView]);
+  }, { scope: containerRef, dependencies: [isMobileView] });
 
   const startPolling = useCallback((mobile: boolean) => {
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
