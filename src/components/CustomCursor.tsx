@@ -72,13 +72,13 @@ export default function CustomCursor() {
     };
 
     const handleMouseOver = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"]')) {
+      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"], h1, h2, h3, h4, h5, h6, p, span, li, label')) {
         leadEl.classList.add("cursor-hover");
       }
     };
 
     const handleMouseOut = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"]')) {
+      if ((e.target as HTMLElement).closest('a, button, [data-cursor="hover"], h1, h2, h3, h4, h5, h6, p, span, li, label')) {
         leadEl.classList.remove("cursor-hover");
       }
     };
@@ -109,7 +109,17 @@ export default function CustomCursor() {
       <style jsx global>{`
         @media (hover: hover) and (pointer: fine) {
           body { cursor: none; }
-          a, button, input, textarea, select { cursor: none; }
+          a, button, input, textarea, select, 
+          h1, h2, h3, h4, h5, h6, p, span, li, label { 
+            cursor: none; 
+          }
+
+          a:hover, button:hover, [data-cursor="hover"]:hover,
+          h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover,
+          p:hover, span:hover, li:hover, label:hover {
+            color: #F67963 !important;
+            transition: color 0.3s ease;
+          }
         }
 
         .cursor-lead {
