@@ -264,18 +264,19 @@ const HeroVideo = () => {
         </p>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - Responsive visibility */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4"
+        className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 
+                    hidden sm:flex flex-col items-center gap-3 md:gap-4"
         style={{
-          opacity: isPreloaderFinished ? 0.5 : 0,
+          opacity: isPreloaderFinished ? 0.4 : 0,
           transition: isPreloaderFinished
             ? `opacity 1s ease ${mobile ? 0.8 : 1.2}s`
             : "none",
         }}
       >
-        <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
-        <span className="text-[8px] uppercase tracking-[0.5em] font-bold">Scroll</span>
+        <div className="w-[1px] h-8 md:h-12 bg-gradient-to-b from-white to-transparent" />
+        <span className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] md:tracking-[0.5em] font-bold">Scroll</span>
       </div>
 
       {/* Sound toggle */}

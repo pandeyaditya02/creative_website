@@ -9,6 +9,7 @@ import gsap from "gsap";
 const USE_LOTTIE = false;          // set true + install `@lottiefiles/react-lottie-player`
 const LOTTIE_SRC = "/preloader.json"; // path to your Lottie JSON
 const VIDEO_SRC  = "/LOGO LOW RESOLUTION.mp4";
+const PRELOADER_TIMEOUT = 1600; // duration or safety cap in ms (e.g., 4000 = 4s)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Preloader() {
@@ -91,8 +92,8 @@ export default function Preloader() {
         resolve();
       } else {
         v.addEventListener("ended", onEnded);
-        // Safety timeout (5s) in case video fails to trigger 'ended'
-        setTimeout(resolve, 5000);
+        // Safety timeout in case video fails to trigger 'ended'
+        setTimeout(resolve, PRELOADER_TIMEOUT);
       }
     });
 
