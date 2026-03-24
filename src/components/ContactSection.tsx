@@ -101,7 +101,7 @@ const ContactSection = () => {
                 +91 98119 22230
               </a>
             </div>
-            <div className="flex flex-col sm:flex-row gap-6 sm:gap-16" style={fadeUp(300)}>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-16" style={fadeUp(300)}>
               <div>
                 <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
                 <div className="flex flex-col gap-2">
