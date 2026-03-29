@@ -229,19 +229,19 @@ const ServicesSection = () => {
                                 {/* <span className="inline-block px-3 py-1.5 text-[9px] lg:text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-white/[0.06] backdrop-blur-md rounded-full border border-white/10 mb-4">
                                     {num} — Service
                                 </span> */}
-                                <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-4">
+                                <h3 className="text-3xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-5">
                                     <span className="text-[#F67963]">{num}</span> {service.title}
                                 </h3>
-                                <p className="text-white/70 text-sm lg:text-base leading-relaxed max-w-xl mb-6">
+                                <p className="text-white/80 text-base lg:text-lg leading-relaxed max-w-xl mb-7">
                                     {service.description}
                                 </p>
-                                <ul className="space-y-2">
+                                <ul className="space-y-3">
                                     {service.highlights.map((h, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-center gap-2.5 text-xs lg:text-sm text-white/50"
+                                            className="flex items-center gap-3 text-sm lg:text-base text-white/65"
                                         >
-                                            <span className="w-1 h-1 lg:w-1.5 lg:h-1.5 rounded-full bg-[#F67963]" />
+                                            <span className="w-1.5 h-1.5 lg:w-2 lg:h-2 rounded-full bg-[#F67963] shrink-0" />
                                             <span>{h}</span>
                                         </li>
                                     ))}
