@@ -112,7 +112,7 @@ const ContactSection = () => {
               <div>
                 <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3 opacity-0 sm:opacity-100 hidden sm:block">Space</p>
                 <div className="flex flex-col gap-2">
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Twitter</a>
+                  <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">X</a>
                   <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Vimeo</a>
                 </div>
               </div>
