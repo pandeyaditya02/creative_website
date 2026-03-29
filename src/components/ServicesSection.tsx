@@ -90,59 +90,80 @@ const ServicesSection = () => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
     const counterRef = useRef<HTMLSpanElement>(null);
+    const introRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        if (!carouselRef.current) return;
+        if (!carouselRef.current || !introRef.current || !contentRef.current) return;
 
         const carousel = carouselRef.current;
         const scrollWidth = carousel.scrollWidth - carousel.clientWidth;
 
-        // Main ScrollTrigger: pins section and maps vertical scroll to carousel scrollLeft
-        ScrollTrigger.create({
-            trigger: sectionRef.current,
-            pin: true,
-            start: "top top",
-            end: `+=${TOTAL_SLIDES * 100}%`, // one viewport height per slide
-            scrub: 1,
-            onUpdate: (self) => {
-                const progress = self.progress;
-                carousel.scrollLeft = progress * scrollWidth;
-
-                // Update progress bar and counter
-                if (progressBarRef.current) {
-                    progressBarRef.current.style.transform = `scaleX(${progress})`;
-                }
-                if (counterRef.current) {
-                    const current = Math.min(Math.floor(progress * TOTAL_SLIDES) + 1, TOTAL_SLIDES);
-                    counterRef.current.textContent = String(current).padStart(2, "0");
-                }
+        // Master Timeline for the entire section
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                pin: true,
+                start: "top top",
+                end: `+=${(TOTAL_SLIDES + 1) * 100}%`,
+                scrub: 1,
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    if (progressBarRef.current) {
+                        progressBarRef.current.style.transform = `scaleX(${progress})`;
+                    }
+                    if (counterRef.current) {
+                        const slideProgress = Math.max(0, (progress - 0.15) / 0.85);
+                        const current = Math.min(Math.floor(slideProgress * TOTAL_SLIDES) + 1, TOTAL_SLIDES);
+                        counterRef.current.textContent = String(current).padStart(2, "0");
+                    }
+                },
             },
         });
 
-        // Optional: zoom background image on each slide as it becomes active
+        // 1. Intro Heading Fade Out
+        tl.to(introRef.current, {
+            opacity: 0,
+            y: -30,
+            duration: 1.5, // Increased duration for a more gradual fade
+            ease: "power2.inOut",
+        });
+
+        // 2. Carousel Contents Fade In
+        tl.to(contentRef.current, {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+        }, "-=0.5");
+
+        // 3. Horizontal Scroll via scrollLeft Proxy
+        const scrollProxy = { x: 0 };
+        tl.to(scrollProxy, {
+            x: scrollWidth,
+            onUpdate: function() {
+                if (carousel) {
+                    carousel.scrollLeft = scrollProxy.x;
+                }
+            },
+            ease: "none",
+            duration: TOTAL_SLIDES * 2,
+        }, "+=0.2"); // Small delay after fade in before starting scroll
+
+        // Background Image Zooms
         const slides = gsap.utils.toArray<HTMLElement>(".service-slide");
         slides.forEach((slide, i) => {
             const image = slide.querySelector(".slide-image") as HTMLElement;
             if (!image) return;
 
-            const start = i / TOTAL_SLIDES;
-            const end = (i + 1) / TOTAL_SLIDES;
-
-            ScrollTrigger.create({
-                trigger: sectionRef.current,
-                start: start * 100 + "%",
-                end: end * 100 + "%",
-                scrub: true,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    const scale = 1 + progress * 0.1; // zoom from 1 to 1.1
-                    gsap.set(image, { scale });
-                },
-            });
+            tl.to(image, {
+                scale: 1.15,
+                ease: "none",
+                duration: 2,
+            }, `-=${2 * (6/TOTAL_SLIDES)}`); // Roughly sync with its own scroll window
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach(st => st.kill());
+            if (ScrollTrigger.getById("servicesTrigger")) ScrollTrigger.getById("servicesTrigger")?.kill();
         };
     }, { scope: sectionRef });
 
@@ -152,23 +173,29 @@ const ServicesSection = () => {
             ref={sectionRef}
             className="relative w-full bg-black text-white overflow-hidden"
         >
-            {/* Fixed header */}
-            <div className="absolute top-24 left-1/2 -translate-x-1/2 z-20 text-center pointer-events-none md:top-32 md:left-12 md:translate-x-0">
-                <span className="inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-[0.3em] text-[#F67963] font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
-                    What we do
-                </span>
-                <h2 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mt-2">
-                    Our Services
-                </h2>
+            {/* Intro Overlay */}
+            <div 
+                ref={introRef}
+                className="absolute inset-0 z-30 flex items-center justify-center bg-black pointer-events-none"
+            >
+                <div className="text-center group">
+                    <span className="inline-flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#F67963] font-medium mb-4 opacity-70">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#F67963] blink-coral" />
+                        What we do
+                    </span>
+                    <h2 className="text-5xl md:text-7xl lg:text-9xl font-bold uppercase tracking-tight leading-none">
+                        Our Services
+                    </h2>
+                </div>
             </div>
 
-            {/* Horizontal carousel */}
-            <div
-                ref={carouselRef}
-                className="h-screen w-full flex overflow-x-hidden scrollbar-hide"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
+            {/* Horizontal carousel with content wrapper */}
+            <div ref={contentRef} className="h-full w-full opacity-0 relative z-10 overflow-hidden">
+                <div
+                    ref={carouselRef}
+                    className="h-screen w-full flex overflow-x-hidden scrollbar-hide"
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
                 {services.map((service, index) => {
                     const num = String(index + 1).padStart(2, "0");
                     return (
@@ -185,7 +212,7 @@ const ServicesSection = () => {
                                         fill
                                         className="object-cover"
                                         sizes="100vw"
-                                        priority={index === 0}
+                                        priority={index < 3} // Load first 3 slides eagerly
                                     />
                                 </div>
                                 <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/25" />
@@ -250,7 +277,8 @@ const ServicesSection = () => {
                     Scroll to explore
                 </span>
             </div>
-        </section>
+        </div>
+    </section>
     );
 };
 
