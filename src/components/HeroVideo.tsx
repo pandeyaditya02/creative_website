@@ -180,41 +180,46 @@ const HeroVideo = () => {
       ref={containerRef}
       className="relative w-full h-dvh min-h-[calc(var(--dvh,1vh)*100)] overflow-hidden bg-black text-white"
     >
-      {/* Background video container — transform managed by scroll listener */}
+      {/* Background video container — transform managed by GSAP scroll */}
       <div
         ref={videoContainerRef}
         className="absolute inset-0 w-full h-full z-0 pointer-events-none origin-center"
       >
-        <div id="hero-video-player" />
+        {/* 
+          Aspect-ratio wrapper: always 100vw wide, naturally 56.25vw tall (16:9).
+          Centered vertically inside the hero. The iframe just fills 100%
+          of this box — no complex vw transforms on YouTube-generated elements.
+        */}
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            aspectRatio: "16 / 9",
+            top: "50%",
+            left: "0",
+            transform: "translateY(-50%)",
+            pointerEvents: "none",
+          }}
+        >
+          <div id="hero-video-player" />
+        </div>
+
         <style jsx global>{`
-          /* ── Mobile (portrait): show full 16:9 frame — no cropping ── */
           #hero-video-player,
           #hero-video-player iframe {
             position: absolute !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            width: 100vw !important;
-            height: 56.25vw !important; /* natural 16:9 height */
+            top: 0 !important;
+            left: 0 !important;
+            transform: none !important;
+            width: 100% !important;
+            height: 100% !important;
             min-height: unset !important;
             min-width: unset !important;
             pointer-events: none;
           }
-
-          /* ── Desktop (landscape ≥ 768px): cover — fills the viewport ── */
-          @media (min-width: 768px) {
-            #hero-video-player,
-            #hero-video-player iframe {
-              width: 100vw !important;
-              height: 56.25vw !important;
-              min-height: 100vh !important;
-              min-height: 100dvh !important;
-              min-width: 177.78vh !important;
-              min-width: 177.78dvh !important;
-            }
-          }
         `}</style>
       </div>
+
 
       {/* Text content */}
       <div
