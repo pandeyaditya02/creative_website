@@ -185,19 +185,24 @@ const HeroVideo = () => {
         ref={videoContainerRef}
         className="absolute inset-0 w-full h-full z-0 pointer-events-none origin-center"
       >
-        {/* 
-          Aspect-ratio wrapper: always 100vw wide, naturally 56.25vw tall (16:9).
-          Centered vertically inside the hero. The iframe just fills 100%
-          of this box — no complex vw transforms on YouTube-generated elements.
+        {/*
+          CSS Letterbox wrapper — mathematically correct "contain" sizing for 16:9 video.
+          
+          Width  = min(100vw,  viewport-height × 16/9)
+          Height = min(100dvh, viewport-width  × 9/16)
+          
+          This guarantees the COMPLETE video frame is always visible on any
+          screen ratio (portrait mobile, 4:3, 16:9, 16:10, 21:9 ultrawide).
+          Black bars fill any remaining space. Video is centered both axes.
         */}
         <div
           style={{
             position: "absolute",
-            width: "100%",
-            aspectRatio: "16 / 9",
+            width: "min(100vw, calc(100dvh * 16 / 9))",
+            height: "min(100dvh, calc(100vw * 9 / 16))",
             top: "50%",
-            left: "0",
-            transform: "translateY(-50%)",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             pointerEvents: "none",
           }}
         >
