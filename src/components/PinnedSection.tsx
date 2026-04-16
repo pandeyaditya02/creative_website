@@ -58,7 +58,9 @@ const PinnedSection = ({
             end: "max",
             pin: true,
             pinSpacing: false, // Critical: allows next section to scroll OVER this one
-            anticipatePin: 1,
+            // NOTE: anticipatePin is intentionally omitted.
+            // With Lenis as the scroll engine, GSAP's pre-jump from anticipatePin
+            // conflicts with Lenis's interpolation and amplifies the jerk.
         });
 
         scrollTriggerInstance.current = st;

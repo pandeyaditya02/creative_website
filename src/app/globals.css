@@ -35,7 +35,9 @@ body {
   background: #000000;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
-  scroll-behavior: smooth;
+  /* NOTE: scroll-behavior: smooth is intentionally omitted.
+     Lenis handles smooth scrolling. Native scroll-behavior
+     conflicts with Lenis and causes a jerk at section transitions. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
