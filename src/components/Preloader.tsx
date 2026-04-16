@@ -51,23 +51,14 @@ export default function Preloader() {
           tl.set(containerRef.current, { autoAlpha: 0 });
         } else {
           // ── CURTAIN SLIDE-UP ───────────────────────────────────────────────
-          tl
-            // 1. Fade out the video/logo first so the curtain lifts clean
-            .to(videoRef.current, {
-              opacity: 0,
-              duration: 0.45,
-              ease: "power2.in",
-            })
-            // 2. Slide entire panel upward like a theatre curtain
-            .to(
-              containerRef.current,
-              {
-                yPercent: -105,   // extra 5% ensures no pixel of overlay remains
-                duration: 1.15,
-                ease: "power4.inOut",
-              },
-              "-=0.1"            // tiny overlap for a seamless feel
-            );
+          // Slide the entire panel (video included) upward like a theatre curtain.
+          // We do NOT fade the video out separately first — that would expose
+          // the black overlay background and cause the unwanted black-screen flash.
+          tl.to(containerRef.current, {
+            yPercent: -105,   // extra 5% ensures no pixel of overlay remains
+            duration: 1.15,
+            ease: "power4.inOut",
+          });
         }
       });
     };
