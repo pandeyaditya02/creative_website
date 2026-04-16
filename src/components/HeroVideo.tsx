@@ -187,6 +187,7 @@ const HeroVideo = () => {
       >
         <div id="hero-video-player" />
         <style jsx global>{`
+          /* ── Mobile (portrait): show full 16:9 frame — no cropping ── */
           #hero-video-player,
           #hero-video-player iframe {
             position: absolute !important;
@@ -194,12 +195,23 @@ const HeroVideo = () => {
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
             width: 100vw !important;
-            height: 56.25vw !important;
-            min-height: 100vh !important;
-            min-height: 100dvh !important;
-            min-width: 177.78vh !important;
-            min-width: 177.78dvh !important;
+            height: 56.25vw !important; /* natural 16:9 height */
+            min-height: unset !important;
+            min-width: unset !important;
             pointer-events: none;
+          }
+
+          /* ── Desktop (landscape ≥ 768px): cover — fills the viewport ── */
+          @media (min-width: 768px) {
+            #hero-video-player,
+            #hero-video-player iframe {
+              width: 100vw !important;
+              height: 56.25vw !important;
+              min-height: 100vh !important;
+              min-height: 100dvh !important;
+              min-width: 177.78vh !important;
+              min-width: 177.78dvh !important;
+            }
           }
         `}</style>
       </div>
