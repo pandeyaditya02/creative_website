@@ -51,7 +51,7 @@ const WcuPoint = ({ point, index }: { point: (typeof points)[0]; index: number }
 
         <div className="relative z-10">
           <span className="inline-block px-3 py-1.5 text-[10px] uppercase tracking-[0.25em] text-[#F67963] bg-[#F67963]/10 rounded-full border border-[#F67963]/20 mb-5">
-            {point.number} — Point
+            {point.number}
           </span>
           <h3 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-white leading-tight mb-4">
             {point.title}
