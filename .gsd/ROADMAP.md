@@ -21,6 +21,10 @@
 **Status**: ⬜ Not Started
 **Objective**: Ensure the main page and layout wrappers handle the responsive child components properly without horizontal overflow.
 
+### Phase 3: Contact Form Integration
+**Status**: 🟦 Planning
+**Objective**: Connect the existing contact section to `cc@creativechauk.com` with full validation and confirmation UI.
+
 ### Phase 8: Code Cleanup and Optimization
 **Status**: 🟦 Planning
 **Objective**: Comprehensive audit and refinement of the codebase to improve performance, maintainability, and asset efficiency.
