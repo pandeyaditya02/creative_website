@@ -145,18 +145,18 @@ const ContactSection = () => {
             <div style={fadeUp(250)}>
               <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Call us</p>
               <a
-                href="tel:+919811922230"
+                href="tel:+919711722230"
                 className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
               >
-                +91 98119 22230
+                +91 97117 22230
               </a>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-16" style={fadeUp(300)}>
               <div>
                 <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
                 <div className="flex flex-col gap-2">
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Instagram</a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">LinkedIn</a>
+                  <a href="https://www.instagram.com/creativechauk?utm_source=qr&igsh=OWwwNXQwZ2hvd21x" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Instagram</a>
+                  <a href="https://www.linkedin.com/company/creative-chauk/" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">LinkedIn</a>
                 </div>
               </div>
               <div>
