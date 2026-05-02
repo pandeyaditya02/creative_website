@@ -193,7 +193,7 @@ const ServicesSection = () => {
             <div ref={contentRef} className="h-full w-full opacity-0 relative z-10 overflow-hidden">
                 <div
                     ref={carouselRef}
-                    className="h-screen w-full flex overflow-x-hidden scrollbar-hide"
+                    className="h-screen w-full flex overflow-hidden scrollbar-hide"
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
                 {services.map((service, index) => {

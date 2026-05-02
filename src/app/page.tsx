@@ -12,7 +12,7 @@ export default function Home() {
     // 1. min-h-dvh: Handles mobile browser address bar height changes
     // 2. overflow-x-hidden: Prevents horizontal scroll from animations/marquees
     // 3. Removed justify-between: Prevents unwanted gaps on long mobile content
-    <main className="flex flex-col w-full min-h-dvh bg-black overflow-x-hidden mobile-safe-area">
+    <main className="flex flex-col w-screen min-h-dvh bg-black overflow-x-hidden mobile-safe-area">
       {/* 
         HERO SECTION 
         - Short content: Safe to keep pinned on all devices
