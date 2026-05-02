@@ -39,7 +39,7 @@ const ClienteleMarquee = () => {
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] lg:w-[800px] h-[300px] bg-[#F67963]/10 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="relative z-10 w-full bg-white py-2 md:py-4 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+            <div className="relative z-10 w-full bg-white py-2 md:py-4 shadow-[0_0_50px_rgba(255,255,255,0.05)] overflow-hidden">
                 {/* Horizontal Fade Edges (Now fading from White) */}
                 <div className="absolute left-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-r from-white via-white/80 to-transparent z-20 pointer-events-none" />
                 <div className="absolute right-0 top-0 h-full w-24 lg:w-48 bg-gradient-to-l from-white via-white/80 to-transparent z-20 pointer-events-none" />
