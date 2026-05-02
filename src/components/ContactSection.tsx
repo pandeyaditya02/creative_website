@@ -1,10 +1,60 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 
 const ContactSection = () => {
   const [containerRef, inView] = useInView<HTMLElement>({ threshold: 0.08 });
   const btnRef = useRef<HTMLButtonElement>(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    budget: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!formData.name || !formData.email || !formData.projectType || !formData.budget || !formData.message) {
+      setErrorMessage("All fields are required.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", projectType: "", budget: "", message: "" });
+      } else {
+        setErrorMessage(data.error || "Something went wrong.");
+        setStatus("error");
+      }
+    } catch (error) {
+      setErrorMessage("Failed to send query. Please try again.");
+      setStatus("error");
+    }
+  };
 
   // Magnetic button — vanilla JS
   useEffect(() => {
@@ -122,12 +172,16 @@ const ContactSection = () => {
 
         {/* Right column: form */}
         <div className="flex flex-col justify-center lg:pl-16 xl:pl-24">
-          <form className="flex flex-col gap-10 md:gap-14 w-full">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-10 md:gap-14 w-full">
 
             <div style={fadeUp(100)}>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Your Name"
+                required
                 className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
               />
             </div>
@@ -135,14 +189,24 @@ const ContactSection = () => {
             <div style={fadeUp(180)}>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Email Address"
+                required
                 className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-8" style={fadeUp(260)}>
               <div className="relative">
-                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer">
+                <select
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer"
+                >
                   <option value="" disabled>Project Type</option>
                   <option value="av" className="bg-[#111] text-white">AV Production</option>
                   <option value="digital" className="bg-[#111] text-white">Digital Content</option>
@@ -155,7 +219,13 @@ const ContactSection = () => {
               </div>
 
               <div className="relative">
-                <select defaultValue="" className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer">
+                <select
+                  name="budget"
+                  value={formData.budget}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-transparent border-b border-white/20 text-[#777] focus:text-white focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light appearance-none rounded-none cursor-pointer"
+                >
                   <option value="" disabled>Budget Range</option>
                   <option value="<5L" className="bg-[#111] text-white">&lt; ₹5L</option>
                   <option value="5-15L" className="bg-[#111] text-white">₹5L - ₹15L</option>
@@ -170,19 +240,32 @@ const ContactSection = () => {
 
             <div style={fadeUp(340)}>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Tell us about your project..."
                 rows={2}
+                required
                 className="w-full bg-transparent border-b border-white/20 text-white placeholder-[#777] focus:outline-none focus:border-[#F67963] transition-colors duration-300 pb-4 text-lg md:text-xl font-light resize-none"
               />
             </div>
 
-            <div className="flex sm:justify-end mt-4" style={fadeUp(420)}>
+            <div className="flex flex-col sm:items-end gap-4 mt-4" style={fadeUp(420)}>
+              {status === "success" && (
+                <p className="text-[#F67963] font-medium animate-pulse">Query sent successfully! We&apos;ll get back to you soon.</p>
+              )}
+              {status === "error" && (
+                <p className="text-red-500 font-medium">{errorMessage}</p>
+              )}
               <button
                 ref={btnRef}
-                type="button"
-                className="w-36 h-36 md:w-44 md:h-44 bg-[#F67963] text-black rounded-full font-bold uppercase tracking-widest flex items-center justify-center hover:bg-white transition-colors duration-500 will-change-transform shadow-[0_0_30px_rgba(246,121,99,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
+                type="submit"
+                disabled={status === "loading"}
+                className={`w-36 h-36 md:w-44 md:h-44 bg-[#F67963] text-black rounded-full font-bold uppercase tracking-widest flex items-center justify-center hover:bg-white transition-colors duration-500 will-change-transform shadow-[0_0_30px_rgba(246,121,99,0.15)] hover:shadow-[0_0_50px_rgba(255,255,255,0.3)] ${status === "loading" ? "opacity-50 cursor-not-allowed" : ""}`}
               >
-                <span className="pointer-events-none text-sm md:text-base">Submit</span>
+                <span className="pointer-events-none text-sm md:text-base">
+                  {status === "loading" ? "Sending..." : "Submit"}
+                </span>
               </button>
             </div>
 
