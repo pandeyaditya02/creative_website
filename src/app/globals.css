@@ -46,6 +46,16 @@ body {
   min-height: calc(var(--dvh, 1vh) * 100);
 }
 
+/* Hide the native browser scrollbar — Lenis handles scrolling entirely.
+   Without this, two scrollbars appear: the browser's native one + Lenis's virtual scroll. */
+html {
+  overflow-y: scroll; /* keep layout stable (avoids reflow on content change) */
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
 /* --- Utilities --- */
 @layer utilities {
   /* Dynamic viewport height utilities */

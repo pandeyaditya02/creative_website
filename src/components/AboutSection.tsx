@@ -40,14 +40,17 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen bg-black text-white py-24 md:py-32 px-6 sm:px-16 overflow-hidden"
+      className="relative w-full min-h-screen bg-black text-white flex flex-col justify-center py-24 md:py-32 px-6 sm:px-12 lg:px-20 overflow-hidden"
     >
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Solid black base to prevent hero video bleed-through */}
+      <div className="absolute inset-0 bg-black" />
+
+      <div className="absolute inset-0 pointer-events-none z-[1]">
         <div className="absolute top-0 right-0 w-[60ch] h-[60ch] bg-[#F67963]/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 left-0 w-[40ch] h-[40ch] bg-white/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center gap-16">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto flex flex-col items-center gap-16">
 
         {/* Title — char-by-char slideUpReveal keyframe */}
         <div ref={titleRef} className="text-center overflow-hidden">
