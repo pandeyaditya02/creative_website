@@ -144,14 +144,22 @@ const ContactSection = () => {
             </div>
             <div style={fadeUp(250)}>
               <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Call us</p>
-              <a
-                href="tel:+919711722230"
-                className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
-              >
-                +91 97117 22230
-              </a>
+              <div className="flex flex-col gap-2">
+                <a
+                  href="tel:+919711722230"
+                  className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
+                >
+                  +91 97117 22230
+                </a>
+                <a
+                  href="tel:+918882993191"
+                  className="text-xl md:text-3xl font-medium tracking-tight hover:text-[#F67963] transition-colors duration-300"
+                >
+                  +91 88829 93191
+                </a>
+              </div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-16" style={fadeUp(300)}>
+            <div className="flex flex-col gap-10 lg:gap-12" style={fadeUp(300)}>
               <div>
                 <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Socials</p>
                 <div className="flex flex-col gap-2">
@@ -160,11 +168,8 @@ const ContactSection = () => {
                 </div>
               </div>
               <div>
-                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3 opacity-0 sm:opacity-100 hidden sm:block">Space</p>
-                <div className="flex flex-col gap-2">
-                  <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">X</a>
-                  <a href="https://vimeo.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium tracking-wide hover:text-[#F67963] transition-colors duration-300">Vimeo</a>
-                </div>
+                <p className="text-[#555] text-xs font-semibold uppercase tracking-[0.3em] mb-3">Available in</p>
+                <p className="text-base font-medium tracking-wide text-white/80">Mumbai &nbsp;·&nbsp; Bangalore &nbsp;·&nbsp; Pune</p>
               </div>
             </div>
           </div>
